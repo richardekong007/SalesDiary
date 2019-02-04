@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/catalog_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dimen_small"
+    android:elevation="@dimen/elevation_lower"
+    app:cardCornerRadius="@dimen/dimen_small">
+
+    <LinearLayout
+        android:id="@+id/itemLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:padding="@dimen/dimen_small">
+
+        <ImageView
+            android:id="@+id/productImageElement"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/product_image" />
+
+        <TextView
+            android:id="@+id/productElement"
+            style="@style/CustomAppThemeText"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dimen_small"
+            android:text="@string/product_name" />
+
+        <TextView
+            android:id="@+id/priceElement"
+            style="@style/CustomAppThemeText"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dimen_small"
+            android:text="@string/price" />
+
+        <TextView
+            android:id="@+id/stockElement"
+            style="@style/CustomAppThemeText"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dimen_small"
+            android:text="@string/stock_text" />
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

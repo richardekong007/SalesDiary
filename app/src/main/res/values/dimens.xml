@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_size_large">30sp</dimen>
+    <dimen name="text_size_medium">20sp</dimen>
+    <dimen name="icon_large">188dp</dimen>
+    <dimen name="icon_small">30dp</dimen>
+    <dimen name="elevation_higher">8dp</dimen>
+    <dimen name="dimen_medium">20dp</dimen>
+    <dimen name="dimen_large">35dp</dimen>
+    <dimen name="dimen_extra_large">40dp</dimen>
+    <dimen name="dimen_tiny">5dp</dimen>
+    <dimen name="dimen_small">8dp</dimen>
+    <dimen name="elevation_lower">4dp</dimen>
+    <dimen name="small_button_width">50dp</dimen>
+    <dimen name="text_size_small">16sp</dimen>
+    <dimen name="text_size_tiny">12dp</dimen>
+    <dimen name="dimen_giant">120dp</dimen>
+    <dimen name="surface_view_height">400dp</dimen>
+</resources>

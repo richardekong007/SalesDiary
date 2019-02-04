@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/reportHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:contentPadding="@dimen/dimen_small"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/select_time_frame_instr"
+            style="@style/CustomAppThemeHeader"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+   <GridLayout
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:rowCount="3"
+       android:columnCount="2"
+       android:padding="@dimen/dimen_small"
+       app:layout_constraintTop_toBottomOf="@id/reportHeader"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent">
+
+       <include
+           android:id="@+id/dailyReportAction"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_margin="@dimen/dimen_tiny"
+           android:layout_row="0"
+           android:layout_column="0"
+           layout="@layout/component_daily_calendar" />
+
+       <include
+           android:id="@+id/weeklyReportAction"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_margin="@dimen/dimen_tiny"
+           android:layout_row="0"
+           android:layout_column="1"
+           layout="@layout/component_weekly_calendar" />
+
+       <include
+           android:id="@+id/monthlyReportAction"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_margin="@dimen/dimen_tiny"
+           android:layout_row="1"
+           android:layout_column="0"
+           layout="@layout/component_monthly_calendar" />
+
+       <include
+           android:id="@+id/quarterlyReportAction"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_margin="@dimen/dimen_tiny"
+           android:layout_row="1"
+           android:layout_column="1"
+           layout="@layout/component_quarterly" />
+
+       <include
+           android:id="@+id/semesterReportAction"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_margin="@dimen/dimen_tiny"
+           android:layout_row="2"
+           android:layout_column="0"
+           layout="@layout/component_semester" />
+
+       <include
+           android:id="@+id/yearlyReportAction"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_margin="@dimen/dimen_tiny"
+           android:layout_row="2"
+           android:layout_column="1"
+           layout="@layout/component_yearly_calendar" />
+
+   </GridLayout>
+
+   <LinearLayout
+       android:id="@+id/generalReportAction"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:background="@color/colorPrimary"
+       android:padding="@dimen/dimen_small"
+       android:gravity="center"
+       android:elevation="@dimen/elevation_lower"
+       app:layout_constraintBottom_toBottomOf="parent">
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_gravity="center"
+           android:text="@string/general_report"
+           android:textColor="@android:color/white"
+           style="@style/CustomAppThemeHeader"/>
+   </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

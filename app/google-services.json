@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "772439182560",
+    "firebase_url": "https://sales-dairy-66a03.firebaseio.com",
+    "project_id": "sales-dairy-66a03",
+    "storage_bucket": "sales-dairy-66a03.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772439182560:android:7340ec74ca51d80c",
+        "android_client_info": {
+          "package_name": "com.daveace.salesdiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "772439182560-1kfc1mksl3hfm3cpbhb0p3qlpb6tt1ss.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.daveace.salesdiary",
+            "certificate_hash": "fbbf75e7231f7320d3fc3c4f84edef62df27157e"
+          }
+        },
+        {
+          "client_id": "772439182560-ni3ahcb29gjscv3jn2e0jsjh6ke22scd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDavfn68daYvEoCSdkSAJONbHndq4q5cI8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "772439182560-ni3ahcb29gjscv3jn2e0jsjh6ke22scd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
