@@ -19,6 +19,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +30,8 @@ import static com.daveace.salesdiary.interfaces.Constant.USERS;
 
 public class ProductCatalogFragment extends BaseFragment implements ProductsAdapter.ProductLongClickListener {
 
+    @BindView(R.id.search)
+    SearchView searchView;
     @BindView(R.id.products)
     RecyclerView productsRecyclerView;
     @BindView(R.id.addButton)
@@ -36,6 +39,7 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
 
     private FirebaseAuth fbAuth;
     private FireStoreHelper fireStoreHelper;
+    private ProductsAdapter adapter;
 
     static final String PRODUCT_BUNDLE = "PRODUCT_BUNDLE";
 
@@ -62,11 +66,27 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
         setupMenu(product, view);
     }
 
+
+    private void listenForQueryText(SearchView searchView) {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+    }
+
     private void initUI() {
         setupProductRecyclerView();
         addButton.setOnClickListener(view ->
                 replaceFragment(new InventoryFragment(), false, null)
         );
+        listenForQueryText(searchView);
     }
 
     private void setupProductRecyclerView() {
@@ -82,7 +102,7 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
                             Product product = doc.toObject(Product.class);
                             products.add(product);
                         }
-                        ProductsAdapter adapter = new ProductsAdapter(products);
+                        adapter = new ProductsAdapter(products);
                         adapter.setProductLongClickListener(this);
                         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
                         productsRecyclerView.setLayoutManager(manager);
