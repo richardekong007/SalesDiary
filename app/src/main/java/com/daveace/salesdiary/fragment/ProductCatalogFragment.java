@@ -1,6 +1,11 @@
 package com.daveace.salesdiary.fragment;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.daveace.salesdiary.Adapter.ProductsAdapter;
@@ -15,6 +20,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,8 +36,6 @@ import static com.daveace.salesdiary.interfaces.Constant.USERS;
 
 public class ProductCatalogFragment extends BaseFragment implements ProductsAdapter.ProductLongClickListener {
 
-    @BindView(R.id.search)
-    SearchView searchView;
     @BindView(R.id.products)
     RecyclerView productsRecyclerView;
     @BindView(R.id.addButton)
@@ -48,6 +52,7 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
         super.onViewCreated(view, savedInstanceState);
         fbAuth = FirebaseAuth.getInstance();
         fireStoreHelper = FireStoreHelper.getInstance();
+        setHasOptionsMenu(true);
         initUI();
     }
 
@@ -59,6 +64,26 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
     @Override
     public CharSequence getTitle() {
         return getString(R.string.catalog_title);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_catalog_search,menu);
+        MenuItem searchItem = menu.findItem(R.id.search);
+        SearchManager manager = (SearchManager)getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = null;
+        if (searchItem != null){
+            searchView = (SearchView)searchItem.getActionView();
+        }
+
+        if (searchView != null){
+            searchView.setSearchableInfo(Objects.requireNonNull(manager)
+                    .getSearchableInfo(getActivity().getComponentName()));
+            listenForQueryText(searchView);
+            searchView.setQueryHint(getString(R.string.search_product));
+        }
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -83,14 +108,13 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
     }
 
     private void initUI() {
-        setupProductRecyclerView();
+        loadProducts();
         addButton.setOnClickListener(view ->
                 replaceFragment(new InventoryFragment(), false, null)
         );
-        listenForQueryText(searchView);
     }
 
-    private void setupProductRecyclerView() {
+    private void loadProducts() {
         setLoading(true);
         String userId = fbAuth.getCurrentUser().getUid();
         CollectionReference reference = fireStoreHelper.readDocsFromSubCollection(USERS, userId, PRODUCTS);
@@ -103,13 +127,13 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
                             Product product = doc.toObject(Product.class);
                             products.add(product);
                         }
-                        setupAdapter(products);
+                        setupRecycleView(products);
                         setLoading(false);
                     }
                 });
     }
 
-    private void setupAdapter(List<Product> products) {
+    private void setupRecycleView(List<Product> products) {
         adapter = new ProductsAdapter(products);
         adapter.setProductLongClickListener(this);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
@@ -145,6 +169,6 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
     }
 
     private void refresh() {
-        setupProductRecyclerView();
+        loadProducts();
     }
 }

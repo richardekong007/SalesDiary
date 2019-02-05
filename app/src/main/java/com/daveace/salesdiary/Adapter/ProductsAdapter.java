@@ -56,7 +56,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         Glide.with(ctx).load(ctx.getResources().getDrawable(R.mipmap.stock))
                 .into(holder.productImageElement);
         holder.itemLayout.setOnLongClickListener(view -> {
-            productLongClickListener.setOnItemLongClick(product,holder.itemLayout);
+            productLongClickListener.setOnItemLongClick(product, holder.itemLayout);
             return true;
         });
 
@@ -73,13 +73,15 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 String searchValue = constraint.toString();
-                if (searchValue.isEmpty()){
+                if (searchValue.isEmpty()) {
                     filteredProducts = products;
-                } else{
-                    List<Product>theFilteredProducts = new ArrayList<>();
-                    for (Product product:products){
+                } else {
+                    List<Product> theFilteredProducts = new ArrayList<>();
+                    for (Product product : products) {
                         String productName = product.getName();
-                        if (productName.contains(searchValue) || productName.toLowerCase().contains(searchValue))
+                        if (productName.contains(searchValue)
+                                || productName.toLowerCase().contains(searchValue)
+                                || productName.toUpperCase().contains(searchValue))
                             theFilteredProducts.add(product);
                     }
 
@@ -93,7 +95,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                filteredProducts = (List<Product>)results.values;
+                filteredProducts = (List<Product>) results.values;
                 notifyDataSetChanged();
             }
         };
@@ -114,6 +116,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         TextView priceElement;
         @BindView(R.id.stockElement)
         TextView stockElement;
+
         public ProductAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -121,6 +124,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     }
 
     public interface ProductLongClickListener {
-        void setOnItemLongClick(Product product,View view);
+        void setOnItemLongClick(Product product, View view);
     }
 }
