@@ -73,6 +73,7 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 adapter.getFilter().filter(newText);
@@ -102,16 +103,20 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
                             Product product = doc.toObject(Product.class);
                             products.add(product);
                         }
-                        adapter = new ProductsAdapter(products);
-                        adapter.setProductLongClickListener(this);
-                        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-                        productsRecyclerView.setLayoutManager(manager);
-                        productsRecyclerView.hasFixedSize();
-                        productsRecyclerView.setItemAnimator(new DefaultItemAnimator());
-                        productsRecyclerView.setAdapter(adapter);
+                        setupAdapter(products);
                         setLoading(false);
                     }
                 });
+    }
+
+    private void setupAdapter(List<Product> products) {
+        adapter = new ProductsAdapter(products);
+        adapter.setProductLongClickListener(this);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        productsRecyclerView.setLayoutManager(manager);
+        productsRecyclerView.hasFixedSize();
+        productsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        productsRecyclerView.setAdapter(adapter);
     }
 
     private void setupMenu(Product product, View view) {
