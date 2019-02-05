@@ -28,13 +28,14 @@
             android:layout_height="wrap_content"
             android:elevation="@dimen/elevation_lower">
 
-            <TextView
-                android:id="@+id/header"
-                style="@style/CustomAppThemeHeader"
-                android:layout_width="wrap_content"
+
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/product_catalog_title" />
+                app:queryHint="@string/search_product"
+                app:closeIcon="@drawable/ic_clear_red" />
 
         </androidx.cardview.widget.CardView>
 
