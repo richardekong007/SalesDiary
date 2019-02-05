@@ -94,7 +94,7 @@
                     android:layout_gravity="end"
                     android:visibility="invisible"
                     android:backgroundTint="@android:color/white"
-                    android:src="@drawable/ic_clear_black" />
+                    android:src="@drawable/ic_clear_red" />
 
                 <com.daveace.salesdiary.customview.SignatureDrawer
                     android:id="@+id/signature"

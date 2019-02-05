@@ -97,5 +97,7 @@
     <string name="invalid_sales_quantity">Invalid Quantity sold</string>
     <string name="no_customer_flag">Provide Customer details</string>
     <string name="select_product">Please, select a product.</string>
+    <string name="search">Search</string>
+    <string name="search_product">Search by Product Name</string>
 
 </resources>
