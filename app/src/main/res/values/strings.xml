@@ -98,6 +98,6 @@
     <string name="no_customer_flag">Provide Customer details</string>
     <string name="select_product">Please, select a product.</string>
     <string name="search">Search</string>
-    <string name="search_product">Search product by name</string>
+    <string name="search_catalog">Search Catalog</string>
 
 </resources>
