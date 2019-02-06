@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.daveace.salesdiary.Adapter.ProductsAdapter;
 import com.daveace.salesdiary.R;
@@ -68,20 +69,14 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_catalog_search,menu);
+        inflater.inflate(R.menu.menu_catalog_search, menu);
         MenuItem searchItem = menu.findItem(R.id.search);
-        SearchManager manager = (SearchManager)getActivity().getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = null;
-        if (searchItem != null){
-            searchView = (SearchView)searchItem.getActionView();
-        }
-
-        if (searchView != null){
-            searchView.setSearchableInfo(Objects.requireNonNull(manager)
-                    .getSearchableInfo(getActivity().getComponentName()));
-            listenForQueryText(searchView);
-            searchView.setQueryHint(getString(R.string.search_product));
-        }
+        SearchManager manager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setSearchableInfo(Objects.requireNonNull(manager).getSearchableInfo(getActivity()
+                .getComponentName()));
+        customizeSearchView(searchView);
+        listenForQueryText(searchView);
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -91,6 +86,13 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
         setupMenu(product, view);
     }
 
+    private void customizeSearchView(SearchView searchView) {
+        ImageView searchIcon = searchView.findViewById(androidx.appcompat.R.id.search_button);
+        ImageView searchCloseIcon = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
+        searchIcon.setColorFilter(getResources().getColor(R.color.white));
+        searchCloseIcon.setColorFilter(getResources().getColor(R.color.white));
+        searchView.setQueryHint(getString(R.string.search_catalog));
+    }
 
     private void listenForQueryText(SearchView searchView) {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
