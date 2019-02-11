@@ -19,7 +19,8 @@ public class ReportUtil {
         List<SalesEvent> dailySalesEventReports = new ArrayList<>();
         try {
             for (SalesEvent event : salesEvents) {
-                boolean dateInInterval = dateIsBetween(convertJavaDateToLocalDateTime(event.getDate()),
+                boolean dateInInterval = dateIsBetween(
+                        convertJava7DateToLocalDateTime(event.getDate()),
                         LocalDateTime.now().minusDays(1),
                         LocalDateTime.now());
                 if (dateInInterval) {
@@ -37,8 +38,8 @@ public class ReportUtil {
         try {
             for (SalesEvent event : salesEvents) {
                 boolean dateInInterval = dateIsBetween(
-                        convertJavaDateToLocalDateTime(event.getDate()),
-                        LocalDateTime.now().minusDays(7),
+                        convertJava7DateToLocalDateTime(event.getDate()),
+                        LocalDateTime.now().minusWeeks(1),
                         LocalDateTime.now());
                 if (dateInInterval) {
                     weeklySalesEventReports.add(event);
@@ -55,7 +56,7 @@ public class ReportUtil {
         try {
             for (SalesEvent event : salesEvents) {
                 boolean dateInInterval = dateIsBetween(
-                        convertJavaDateToLocalDateTime(event.getDate()),
+                        convertJava7DateToLocalDateTime(event.getDate()),
                         LocalDateTime.now().minusMonths(1),
                         LocalDateTime.now()
                 );
@@ -74,7 +75,7 @@ public class ReportUtil {
         try {
             for (SalesEvent event : salesEvents) {
                 boolean dateInInterval = dateIsBetween(
-                        convertJavaDateToLocalDateTime(event.getDate()),
+                        convertJava7DateToLocalDateTime(event.getDate()),
                         LocalDateTime.now().minusMonths(3),
                         LocalDateTime.now()
                 );
@@ -93,7 +94,7 @@ public class ReportUtil {
         try {
             for (SalesEvent event : salesEvents) {
                 boolean dateInInterval = dateIsBetween(
-                        convertJavaDateToLocalDateTime(event.getDate()),
+                        convertJava7DateToLocalDateTime(event.getDate()),
                         LocalDateTime.now().minusMonths(6),
                         LocalDateTime.now()
                 );
@@ -112,7 +113,7 @@ public class ReportUtil {
         try {
             for (SalesEvent event : salesEvents) {
                 boolean dateInInterval = dateIsBetween(
-                        convertJavaDateToLocalDateTime(event.getDate()),
+                        convertJava7DateToLocalDateTime(event.getDate()),
                         LocalDateTime.now().minusYears(1),
                         LocalDateTime.now()
                 );
@@ -136,12 +137,12 @@ public class ReportUtil {
         return generalSalesReport;
     }
 
-    private static boolean dateIsBetween(LocalDateTime dateTime, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        return (dateTime.isAfter(startDateTime) || dateTime.isEqual(startDateTime))
-                && (dateTime.isBefore(endDateTime) || dateTime.isEqual(endDateTime));
+    private static boolean dateIsBetween(LocalDateTime theDateTime, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        return (theDateTime.isAfter(startDateTime) || theDateTime.isEqual(startDateTime))
+                && (theDateTime.isBefore(endDateTime) || theDateTime.isEqual(endDateTime));
     }
 
-    private static LocalDateTime convertJavaDateToLocalDateTime(Date date) {
+    private static LocalDateTime convertJava7DateToLocalDateTime(Date date) {
         return Instant.ofEpochMilli(date.getTime())
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
