@@ -33,7 +33,6 @@
        app:layout_constraintStart_toStartOf="parent">
 
        <include
-           android:id="@+id/dailyReportAction"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_margin="@dimen/dimen_tiny"
@@ -42,7 +41,6 @@
            layout="@layout/component_daily_calendar" />
 
        <include
-           android:id="@+id/weeklyReportAction"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_margin="@dimen/dimen_tiny"
@@ -60,7 +58,6 @@
            layout="@layout/component_monthly_calendar" />
 
        <include
-           android:id="@+id/quarterlyReportAction"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_margin="@dimen/dimen_tiny"
@@ -69,7 +66,6 @@
            layout="@layout/component_quarterly" />
 
        <include
-           android:id="@+id/semesterReportAction"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_margin="@dimen/dimen_tiny"
@@ -78,7 +74,6 @@
            layout="@layout/component_semester" />
 
        <include
-           android:id="@+id/yearlyReportAction"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_margin="@dimen/dimen_tiny"
