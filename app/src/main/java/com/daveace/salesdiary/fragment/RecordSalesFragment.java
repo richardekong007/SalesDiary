@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.daveace.salesdiary.R;
-import com.daveace.salesdiary.SubCollectionMetaData;
+import com.daveace.salesdiary.SubCollectionPath;
 import com.daveace.salesdiary.dialog.RecordCustomerDialog;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
@@ -121,8 +121,8 @@ public class RecordSalesFragment extends BaseFragment implements RecordCustomerD
         SalesEvent salesEvent = SalesEvent.getInstance(productId, userId, customerId, recordedPrice,
                 recordedQuantity, quantityLeft, new Date(), null);
         fireStoreHelper.update(USERS, userId, PRODUCTS, productId, selectedProduct);
-        SubCollectionMetaData metaData =
-                new SubCollectionMetaData(USERS, userId, SALESEVENTS, salesEvent.getId(), salesEvent);
+        SubCollectionPath metaData =
+                new SubCollectionPath(USERS, userId, SALESEVENTS, salesEvent.getId(), salesEvent);
         fireStoreHelper.addDocumentToSubCollection(metaData, rootView);
 
         if (selectedProduct.getStock() < 1.0) {

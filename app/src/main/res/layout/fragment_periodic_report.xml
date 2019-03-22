@@ -13,7 +13,7 @@
 
         <TextView
             android:id="@+id/reportHeader"
-            style="@style/CustomAppThemeText"
+            style="@style/CustomAppThemeText.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

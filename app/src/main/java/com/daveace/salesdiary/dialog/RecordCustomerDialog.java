@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.daveace.salesdiary.R;
-import com.daveace.salesdiary.SubCollectionMetaData;
+import com.daveace.salesdiary.SubCollectionPath;
 import com.daveace.salesdiary.customview.SignatureDrawer;
 import com.daveace.salesdiary.entity.Customer;
 import com.daveace.salesdiary.store.FireStoreHelper;
@@ -90,7 +90,7 @@ public class RecordCustomerDialog extends BaseDialog {
         String signaturePath = signatureDrawer.save();
         customer.setSignaturePath(signaturePath);
         String userId = fbAuth.getCurrentUser().getUid();
-        SubCollectionMetaData metaData = new SubCollectionMetaData(
+        SubCollectionPath metaData = new SubCollectionPath(
                 USERS,
                 userId,
                 CUSTOMERS,

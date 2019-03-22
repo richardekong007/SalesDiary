@@ -128,13 +128,7 @@ public class ReportUtil {
     }
 
     public static List<SalesEvent> getGeneralSalesReports(List<SalesEvent> salesEvents) {
-        List<SalesEvent> generalSalesReport = new ArrayList<>();
-        try {
-            generalSalesReport = salesEvents;
-        } catch (NullPointerException e) {
-            Log.e("General Report Error", e.getMessage());
-        }
-        return generalSalesReport;
+        return salesEvents != null ? salesEvents : new ArrayList<>();
     }
 
     private static boolean dateIsBetween(LocalDateTime theDateTime, LocalDateTime startDateTime, LocalDateTime endDateTime) {

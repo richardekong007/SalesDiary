@@ -1,6 +1,6 @@
 package com.daveace.salesdiary;
 
-public class SubCollectionMetaData {
+public class SubCollectionPath {
 
     private String collection;
     private String doc;
@@ -8,7 +8,7 @@ public class SubCollectionMetaData {
     private String subDocId;
     private Object subDoc;
 
-    public SubCollectionMetaData(String collection, String doc, String subCollection, String subDocId, Object subDoc) {
+    public SubCollectionPath(String collection, String doc, String subCollection, String subDocId, Object subDoc) {
         this.collection = collection;
         this.doc = doc;
         this.subCollection = subCollection;

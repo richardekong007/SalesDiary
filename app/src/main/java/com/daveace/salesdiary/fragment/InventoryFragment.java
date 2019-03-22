@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.daveace.salesdiary.R;
-import com.daveace.salesdiary.SubCollectionMetaData;
+import com.daveace.salesdiary.SubCollectionPath;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.interfaces.Constant;
 import com.daveace.salesdiary.store.FireStoreHelper;
@@ -128,7 +128,7 @@ public class InventoryFragment extends BaseFragment {
         Date date = new Date();
         Product product = Product.getInstance(name, quantity, cost, code, imgPath, date);
         String userId = fbAuth.getCurrentUser().getUid();
-        SubCollectionMetaData metaData = new SubCollectionMetaData(USERS, userId, PRODUCTS, product.getId(), product);
+        SubCollectionPath metaData = new SubCollectionPath(USERS, userId, PRODUCTS, product.getId(), product);
         fireStoreHelper.addDocumentToSubCollection(metaData, rootView);
         setLoading(false);
         StringUtil.clear(productNameInput, quantityInput, productCode, costInput);

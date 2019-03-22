@@ -3,10 +3,9 @@ package com.daveace.salesdiary.store;
 import android.util.Log;
 import android.view.ViewGroup;
 
-import com.daveace.salesdiary.SubCollectionMetaData;
+import com.daveace.salesdiary.SubCollectionPath;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -45,7 +44,7 @@ public class FireStoreHelper {
                 });
     }
 
-    public void addDocumentToSubCollection(SubCollectionMetaData metaData, ViewGroup container) {
+    public void addDocumentToSubCollection(SubCollectionPath metaData, ViewGroup container) {
         final String TAG = "add to sub coll";
         fireStore.collection(metaData.getCollection())
                 .document(metaData.getDoc())

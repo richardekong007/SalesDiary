@@ -98,4 +98,18 @@ public interface Constant {
 
     String SALESEVENTS = "SalesEvents";
 
+    String DAILY_SALES_REPORT = "Daily Sales Report";
+
+    String WEEKLY_SALES_REPORT = "Weekly Sales Report";
+
+    String MONTHLY_SALES_REPORT = "Monthly Sales Report";
+
+    String QUARTERLY_SALES_REPORT = "Quarterly Sales Report";
+
+    String SEMESTER_SALES_REPORT = "Semester Sales Report";
+
+    String YEARLY_SALES_REPORT = "Yearly Sales Report";
+
+    String GENERAL_SALES_REPORT = "General Sales Report";
+
 }
