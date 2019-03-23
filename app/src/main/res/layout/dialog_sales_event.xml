@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dimen_tiny"
+    android:elevation="@dimen/elevation_higher"
+    app:cardCornerRadius="@dimen/dimen_tiny">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_medium">
+
+        <TextView
+            android:id="@+id/salesDate"
+            style="@style/CustomAppThemeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sample_text"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/section_header1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/salesDate">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:background="@color/colorPrimary" />
+
+            <TextView
+                style="@style/CustomAppThemeText.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:padding="@dimen/dimen_tiny"
+                android:text="@string/product_details"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:background="@color/colorPrimary" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/productImage"
+            android:layout_width="@dimen/icon_medium"
+            android:layout_height="@dimen/icon_medium"
+            android:contentDescription="@string/product_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/section_header1" />
+
+        <TextView
+            android:id="@+id/productName"
+            style="@style/CustomAppThemeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_medium"
+            android:layout_marginTop="@dimen/dimen_medium"
+            android:text="@string/sample_text"
+            app:layout_constraintBottom_toBottomOf="@+id/productImage"
+            app:layout_constraintStart_toEndOf="@id/productImage" />
+
+        <ImageView
+            android:id="@+id/productCodeIcon"
+            android:layout_width="@dimen/icon_medium"
+            android:layout_height="@dimen/icon_medium"
+            android:layout_marginTop="@dimen/dimen_tiny"
+            android:contentDescription="@string/product_code"
+            app:layout_constraintTop_toBottomOf="@+id/productImage"
+            app:srcCompat="@mipmap/barcode" />
+
+        <TextView
+            android:id="@+id/productCode"
+            style="@style/CustomAppThemeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_medium"
+            android:layout_marginTop="@dimen/dimen_medium"
+            android:text="@string/sample_text"
+            app:layout_constraintBottom_toBottomOf="@+id/productCodeIcon"
+            app:layout_constraintStart_toEndOf="@id/productCodeIcon" />
+
+        <ImageView
+            android:id="@+id/priceIcon"
+            style="@style/CustomAppThemeText"
+            android:layout_width="@dimen/icon_medium"
+            android:layout_height="@dimen/icon_medium"
+            android:layout_marginTop="@dimen/dimen_tiny"
+            android:contentDescription="@string/price_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cartIcon"
+            app:srcCompat="@mipmap/diamond" />
+
+        <TextView
+            android:id="@+id/price"
+            style="@style/CustomAppThemeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_medium"
+            android:layout_marginTop="@dimen/dimen_medium"
+            android:text="@string/sample_text"
+            app:layout_constraintBottom_toBottomOf="@id/priceIcon"
+            app:layout_constraintStart_toEndOf="@id/priceIcon" />
+
+        <ImageView
+            android:id="@+id/cartIcon"
+            android:layout_width="@dimen/icon_medium"
+            android:layout_height="@dimen/icon_medium"
+            android:layout_margin="@dimen/dimen_tiny"
+            android:contentDescription="@string/cart_icon"
+            app:layout_constraintTop_toBottomOf="@+id/productCodeIcon"
+            app:srcCompat="@drawable/ic_shopping_cart_black" />
+
+        <TextView
+            android:id="@+id/quantitySold"
+            style="@style/CustomAppThemeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_medium"
+            android:layout_marginTop="@dimen/dimen_medium"
+            android:text="@string/sample_text"
+            app:layout_constraintBottom_toBottomOf="@id/cartIcon"
+            app:layout_constraintStart_toEndOf="@id/cartIcon" />
+
+        <ImageView
+            android:id="@+id/stockIcon"
+            android:layout_width="@dimen/icon_medium"
+            android:layout_height="@dimen/icon_medium"
+            android:layout_marginTop="@dimen/dimen_tiny"
+            android:contentDescription="@string/inventory_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/priceIcon"
+            app:srcCompat="@mipmap/inventory2" />
+
+        <TextView
+            android:id="@+id/leftOver"
+            style="@style/CustomAppThemeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_medium"
+            android:layout_marginTop="@dimen/dimen_medium"
+            android:text="@string/sample_text"
+            app:layout_constraintBottom_toBottomOf="@id/stockIcon"
+            app:layout_constraintStart_toEndOf="@id/stockIcon" />
+
+        <LinearLayout
+            android:id="@+id/section_header2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/stockIcon">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:background="@color/colorPrimary" />
+
+            <TextView
+                style="@style/CustomAppThemeText.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:padding="@dimen/dimen_tiny"
+                android:text="@string/customer_details"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:background="@color/colorPrimary" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/customerIcon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="@dimen/dimen_tiny"
+            android:layout_marginEnd="@dimen/dimen_tiny"
+            android:contentDescription="@string/product_image"
+            android:src="@drawable/ic_account_box_black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/section_header2" />
+
+        <TextView
+            android:id="@+id/customerName"
+            style="@style/CustomAppThemeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/text_size_small"
+            android:text="@string/sample_text"
+            app:layout_constraintBottom_toBottomOf="@id/customerIcon"
+            app:layout_constraintStart_toEndOf="@id/customerIcon" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
