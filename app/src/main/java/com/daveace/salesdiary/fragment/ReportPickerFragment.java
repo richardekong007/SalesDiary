@@ -137,16 +137,16 @@ public class ReportPickerFragment extends BaseFragment {
                 });
     }
 
-    private void loadRelatedCustomers(List<SalesEvent> theSalesEvents){
+    private void loadRelatedCustomers(List<SalesEvent> theSalesEvents) {
         relatedCustomers = new ArrayList<>();
         FireStoreHelper.getInstance()
                 .readDocsFromSubCollection(USERS, fbAuth.getCurrentUser().getUid(), CUSTOMERS)
                 .get()
-                .addOnCompleteListener(task->{
-                    if (task.isSuccessful()){
-                        for (DocumentSnapshot doc : task.getResult()){
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot doc : task.getResult()) {
                             Customer customer = doc.toObject(Customer.class);
-                            for(SalesEvent event : theSalesEvents)
+                            for (SalesEvent event : theSalesEvents)
                                 if (event.getCustomerId().equals(Objects.requireNonNull(customer).getId()))
                                     relatedCustomers.add(customer);
                         }

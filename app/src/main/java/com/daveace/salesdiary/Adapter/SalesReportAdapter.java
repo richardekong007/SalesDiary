@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +30,7 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
     private List<SalesEvent> salesEvents;
     private List<Product> relatedProducts;
     private List<Customer> relatedCustomers;
-    private static final String DATE_FORMAT = "dd-MM-yyyy HH:mm:ss";
+    private static final String DATE_FORMAT = "MMM d, y";
 
 
     public SalesReportAdapter(List<SalesEvent> salesEvents) {
@@ -49,19 +50,18 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
     @Override
     public void onBindViewHolder(@NonNull SalesReportViewHolder holder, int position) {
         Context ctx = holder.itemView.getContext();
-        Drawable productDrawable = ctx.getResources().getDrawable(R.mipmap.stock);
+        Drawable productDrawable = ctx.getResources().getDrawable(R.mipmap.stock, null);
         SalesEvent salesEvent = salesEvents.get(position);
         Product relatedProduct = relatedProducts.get(position);
-        Customer relatedCustomer = relatedCustomers.get(position);
+        //Customer relatedCustomer = relatedCustomers.get(position);
         holder.salesDate.setText(new SimpleDateFormat(
                 DATE_FORMAT, Locale.getDefault()).format(salesEvent.getDate()));
         holder.productName.setText(relatedProduct.getName());
-        holder.productCode.setText(relatedProduct.getCode());
-        holder.customerName.setText(relatedCustomer.getName());
-        holder.price.setText(String.valueOf(salesEvent.getPrice()));
-        holder.quantitySold.setText(String.valueOf(salesEvent.getSales()));
-        holder.leftOver.setText(String.valueOf(salesEvent.getLeft()));
         Glide.with(ctx).load(productDrawable).into(holder.productImage);
+        holder.moreButton.setOnClickListener(view->{
+            //display full details of sales event in the dialog
+
+        });
 
     }
 
@@ -86,20 +86,13 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
         TextView salesDate;
         @BindView(R.id.productName)
         TextView productName;
-        @BindView(R.id.productCode)
-        TextView productCode;
-        @BindView(R.id.customerName)
-        TextView customerName;
-        @BindView(R.id.price)
-        TextView price;
-        @BindView(R.id.quantitySold)
-        TextView quantitySold;
-        @BindView(R.id.leftOver)
-        TextView leftOver;
+        @BindView(R.id.moreButton)
+        AppCompatButton moreButton;
 
         private SalesReportViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
     }
+
 }
