@@ -12,19 +12,21 @@ import com.daveace.salesdiary.R;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
     private Unbinder unbinder;
-
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayout());
         unbinder = ButterKnife.bind(this);
+        setDrawerLayout(drawerLayout);
         setSupportActionBar(getToolbar());
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -49,11 +51,19 @@ public abstract class BaseActivity extends AppCompatActivity {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(getResources()
-                    .getColor(color));
+                    .getColor(color, null));
+        }
+    }
+
+    private void setDrawerLayout(DrawerLayout drawerLayout) {
+        if (drawerLayout != null){
+            this.drawerLayout = drawerLayout;
         }
     }
 
     abstract int getLayout();
 
     abstract Toolbar getToolbar();
+
+    public abstract DrawerLayout getDrawerLayout();
 }

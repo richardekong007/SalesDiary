@@ -38,6 +38,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         setupNavigationHeader();
         setNavigationItemSelectedListener();
         init();
@@ -51,6 +52,11 @@ public class MainActivity extends BaseActivity {
     @Override
     Toolbar getToolbar() {
         return toolbar;
+    }
+
+    @Override
+    public DrawerLayout getDrawerLayout() {
+        return drawerLayout;
     }
 
     @Override
@@ -111,4 +117,5 @@ public class MainActivity extends BaseActivity {
                 .signOut();
         FragmentUtil.replaceFragment(getSupportFragmentManager(), new LoginFragment(), null, false);
     }
+
 }

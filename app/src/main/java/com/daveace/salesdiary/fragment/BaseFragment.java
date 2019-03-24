@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.daveace.salesdiary.R;
+import com.daveace.salesdiary.activity.BaseActivity;
 import com.daveace.salesdiary.util.FragmentUtil;
 
 import java.util.Objects;
@@ -13,7 +14,9 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -28,6 +31,7 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = createWithLoadingIndicator(getLayout(), container);
         showOrHideActionBar(this);
+        reConfigureDrawerLayoutSwipe(this.getActivity(), this);
         unbinder = ButterKnife.bind(this, view);
         retainInstance();
         return view;
@@ -52,7 +56,6 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        //showActionBar(this);
         if (unbinder != null)
             unbinder.unbind();
         super.onDestroy();
@@ -66,7 +69,7 @@ public abstract class BaseFragment extends Fragment {
         swipeRefreshLayout.setEnabled(false);
         View view = LayoutInflater.from(getContext()).inflate(resId, parent, false);
         swipeRefreshLayout.addView(view);
-        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary, null));
         return swipeRefreshLayout;
     }
 
@@ -92,7 +95,7 @@ public abstract class BaseFragment extends Fragment {
         FragmentUtil.retainFragmentInstance(getActivity().getSupportFragmentManager(), this);
     }
 
-    private void hideActionBar(Fragment fragment) {
+    private void hideActionBar() {
         try {
             ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         } catch (NullPointerException e) {
@@ -100,7 +103,8 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    private void showActionBar(Fragment fragment) {
+
+    private void showActionBar() {
         try {
             ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         } catch (NullPointerException e) {
@@ -111,9 +115,22 @@ public abstract class BaseFragment extends Fragment {
     private void showOrHideActionBar(Fragment fragment) {
         if (fragment instanceof SignUpFragment ||
                 fragment instanceof LoginFragment) {
-            hideActionBar(fragment);
+            hideActionBar();
         } else {
-            showActionBar(fragment);
+            showActionBar();
+        }
+    }
+
+    private void reConfigureDrawerLayoutSwipe(FragmentActivity activity, Fragment fragment) {
+        if (activity instanceof BaseActivity) {
+            if (fragment instanceof SignUpFragment
+                    || fragment instanceof LoginFragment) {
+                ((BaseActivity) activity).getDrawerLayout()
+                        .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            } else {
+                ((BaseActivity) activity).getDrawerLayout()
+                        .setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            }
         }
     }
 
