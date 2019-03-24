@@ -1,6 +1,5 @@
 package com.daveace.salesdiary.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -29,7 +27,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = createWithLoadingIndicator(getLayout(), container);
-        hideActionBar(this);
+        showOrHideActionBar(this);
         unbinder = ButterKnife.bind(this, view);
         retainInstance();
         return view;
@@ -54,7 +52,7 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        showActionBar(this);
+        //showActionBar(this);
         if (unbinder != null)
             unbinder.unbind();
         super.onDestroy();
@@ -94,14 +92,29 @@ public abstract class BaseFragment extends Fragment {
         FragmentUtil.retainFragmentInstance(getActivity().getSupportFragmentManager(), this);
     }
 
-    protected void hideActionBar(Fragment fragment) {
-        if (fragment instanceof SignUpFragment || fragment instanceof LoginFragment)
+    private void hideActionBar(Fragment fragment) {
+        try {
             ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
-    protected void showActionBar(Fragment fragment) {
-        if (fragment instanceof SignUpFragment || fragment instanceof LoginFragment)
+    private void showActionBar(Fragment fragment) {
+        try {
             ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showOrHideActionBar(Fragment fragment) {
+        if (fragment instanceof SignUpFragment ||
+                fragment instanceof LoginFragment) {
+            hideActionBar(fragment);
+        } else {
+            showActionBar(fragment);
+        }
     }
 
     public abstract int getLayout();

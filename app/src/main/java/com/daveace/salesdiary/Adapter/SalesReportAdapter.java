@@ -51,18 +51,20 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
     public void onBindViewHolder(@NonNull SalesReportViewHolder holder, int position) {
         Context ctx = holder.itemView.getContext();
         Drawable productDrawable = ctx.getResources().getDrawable(R.mipmap.stock, null);
-        SalesEvent salesEvent = salesEvents.get(position);
-        Product relatedProduct = relatedProducts.get(position);
-        //Customer relatedCustomer = relatedCustomers.get(position);
-        holder.salesDate.setText(new SimpleDateFormat(
-                DATE_FORMAT, Locale.getDefault()).format(salesEvent.getDate()));
-        holder.productName.setText(relatedProduct.getName());
-        Glide.with(ctx).load(productDrawable).into(holder.productImage);
-        holder.moreButton.setOnClickListener(view->{
-            //display full details of sales event in the dialog
-
-        });
-
+        try{
+            SalesEvent salesEvent = salesEvents.get(position);
+            Product relatedProduct = relatedProducts.get(position);
+            //Customer relatedCustomer = relatedCustomers.get(position);
+            holder.salesDate.setText(new SimpleDateFormat(
+                    DATE_FORMAT, Locale.getDefault()).format(salesEvent.getDate()));
+            holder.productName.setText(relatedProduct.getName());
+            Glide.with(ctx).load(productDrawable).into(holder.productImage);
+            holder.moreButton.setOnClickListener(view->{
+                //display full details of sales event in the dialog
+            });
+        }catch (IndexOutOfBoundsException e){
+            e.printStackTrace();
+        }
     }
 
     public void setRelatedProducts(List<Product> relatedProducts) {
