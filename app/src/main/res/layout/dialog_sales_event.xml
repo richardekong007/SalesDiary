@@ -56,8 +56,8 @@
 
         <ImageView
             android:id="@+id/productImage"
-            android:layout_width="@dimen/icon_medium"
-            android:layout_height="@dimen/icon_medium"
+            android:layout_width="@dimen/icon_small"
+            android:layout_height="@dimen/icon_small"
             android:contentDescription="@string/product_image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/section_header1" />
@@ -75,8 +75,8 @@
 
         <ImageView
             android:id="@+id/productCodeIcon"
-            android:layout_width="@dimen/icon_medium"
-            android:layout_height="@dimen/icon_medium"
+            android:layout_width="@dimen/icon_small"
+            android:layout_height="@dimen/icon_small"
             android:layout_marginTop="@dimen/dimen_tiny"
             android:contentDescription="@string/product_code"
             app:layout_constraintTop_toBottomOf="@+id/productImage"
@@ -96,8 +96,8 @@
         <ImageView
             android:id="@+id/priceIcon"
             style="@style/CustomAppThemeText"
-            android:layout_width="@dimen/icon_medium"
-            android:layout_height="@dimen/icon_medium"
+            android:layout_width="@dimen/icon_small"
+            android:layout_height="@dimen/icon_small"
             android:layout_marginTop="@dimen/dimen_tiny"
             android:contentDescription="@string/price_icon"
             app:layout_constraintStart_toStartOf="parent"
@@ -117,8 +117,8 @@
 
         <ImageView
             android:id="@+id/cartIcon"
-            android:layout_width="@dimen/icon_medium"
-            android:layout_height="@dimen/icon_medium"
+            android:layout_width="@dimen/icon_small"
+            android:layout_height="@dimen/icon_small"
             android:layout_margin="@dimen/dimen_tiny"
             android:contentDescription="@string/cart_icon"
             app:layout_constraintTop_toBottomOf="@+id/productCodeIcon"
@@ -137,8 +137,8 @@
 
         <ImageView
             android:id="@+id/stockIcon"
-            android:layout_width="@dimen/icon_medium"
-            android:layout_height="@dimen/icon_medium"
+            android:layout_width="@dimen/icon_small"
+            android:layout_height="@dimen/icon_small"
             android:layout_marginTop="@dimen/dimen_tiny"
             android:contentDescription="@string/inventory_image"
             app:layout_constraintStart_toStartOf="parent"
@@ -192,8 +192,8 @@
 
         <ImageView
             android:id="@+id/customerIcon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/icon_small"
+            android:layout_height="@dimen/icon_small"
             android:layout_marginTop="@dimen/dimen_tiny"
             android:layout_marginEnd="@dimen/dimen_tiny"
             android:contentDescription="@string/product_image"
@@ -210,6 +210,27 @@
             android:text="@string/sample_text"
             app:layout_constraintBottom_toBottomOf="@id/customerIcon"
             app:layout_constraintStart_toEndOf="@id/customerIcon" />
+
+        <ImageView
+            android:id="@+id/emailIcon"
+            android:layout_width="@dimen/icon_small"
+            android:layout_height="@dimen/icon_small"
+            android:layout_marginTop="@dimen/dimen_tiny"
+            android:layout_marginEnd="@dimen/dimen_tiny"
+            android:contentDescription="@string/product_image"
+            android:src="@drawable/ic_email_black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/customerIcon" />
+
+        <TextView
+            android:id="@+id/customerEmail"
+            style="@style/CustomAppThemeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/text_size_small"
+            android:text="@string/sample_text"
+            app:layout_constraintBottom_toBottomOf="@id/emailIcon"
+            app:layout_constraintStart_toEndOf="@id/emailIcon" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

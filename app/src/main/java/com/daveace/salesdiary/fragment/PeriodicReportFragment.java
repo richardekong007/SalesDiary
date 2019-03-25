@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.daveace.salesdiary.Adapter.SalesReportAdapter;
 import com.daveace.salesdiary.R;
+import com.daveace.salesdiary.dialog.SalesEventDetailsDialog;
 import com.daveace.salesdiary.entity.Customer;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
@@ -22,7 +23,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
-public class PeriodicReportFragment extends BaseFragment {
+import static com.daveace.salesdiary.interfaces.Constant.EVENTS_RELATED_CUSTOMER;
+import static com.daveace.salesdiary.interfaces.Constant.EVENTS_RELATED_CUSTOMERS;
+import static com.daveace.salesdiary.interfaces.Constant.EVENT_RELATED_PRODUCT;
+import static com.daveace.salesdiary.interfaces.Constant.EVENT_RELATED_PRODUCTS;
+import static com.daveace.salesdiary.interfaces.Constant.REPORT_TYPE;
+import static com.daveace.salesdiary.interfaces.Constant.SALES_EVENTS_REPORT;
+import static com.daveace.salesdiary.interfaces.Constant.SALES_EVENTS_REPORTS;
+
+public class PeriodicReportFragment extends BaseFragment
+        implements SalesReportAdapter.MoreClickListener {
 
     @BindView(R.id.reportHeader)
     TextView reportHeaderTextView;
@@ -58,19 +68,32 @@ public class PeriodicReportFragment extends BaseFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initUI(){
+    @Override
+    public void onClick(SalesEvent event, Product relatedProduct,
+                        Customer relatedCustomer) {
+        final String TAG = "SALES_EVENT_DETAILS_DIALOG";
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(SALES_EVENTS_REPORT, event);
+        bundle.putParcelable(EVENT_RELATED_PRODUCT, relatedProduct);
+        bundle.putParcelable(EVENTS_RELATED_CUSTOMER, relatedCustomer);
+        SalesEventDetailsDialog.getInstance(bundle)
+                .show(getFragmentManager(), TAG);
+    }
+
+    private void initUI() {
         List<SalesEvent> salesEvents = new ArrayList<>();
         List<Product> relatedProducts = new ArrayList<>();
         List<Customer> relatedCustomers = new ArrayList<>();
-        if (getArguments() != null){
-            salesEvents = getArguments().getParcelableArrayList(ReportPickerFragment.SALES_EVENTS_REPORTS);
-            relatedProducts = getArguments().getParcelableArrayList(ReportPickerFragment.EVENT_RELATED_PRODUCTS);
-            relatedCustomers = getArguments().getParcelableArrayList(ReportPickerFragment.EVENTS_RELATED_CUSTOMERS);
-            reportHeaderTextView.setText(getArguments().getString(ReportPickerFragment.REPORT_TYPE));
+        if (getArguments() != null) {
+            salesEvents = getArguments().getParcelableArrayList(SALES_EVENTS_REPORTS);
+            relatedProducts = getArguments().getParcelableArrayList(EVENT_RELATED_PRODUCTS);
+            relatedCustomers = getArguments().getParcelableArrayList(EVENTS_RELATED_CUSTOMERS);
+            reportHeaderTextView.setText(getArguments().getString(REPORT_TYPE));
         }
         SalesReportAdapter adapter = new SalesReportAdapter(salesEvents);
         adapter.setRelatedProducts(relatedProducts);
         adapter.setRelatedCustomer(relatedCustomers);
+        adapter.setMoreClickListener(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         periodicReportRecyclerView.hasFixedSize();
         periodicReportRecyclerView.setItemAnimator(new DefaultItemAnimator());

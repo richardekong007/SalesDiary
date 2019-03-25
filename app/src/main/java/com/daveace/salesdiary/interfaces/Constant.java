@@ -90,7 +90,7 @@ public interface Constant {
 
     String ADDRESS_FORMAT = "%s, %s, %s";
 
-    String USERS ="Users";
+    String USERS = "Users";
 
     String PRODUCTS = "Products";
 
@@ -111,5 +111,21 @@ public interface Constant {
     String YEARLY_SALES_REPORT = "Yearly Sales Report";
 
     String GENERAL_SALES_REPORT = "General Sales Report";
+
+    String SALES_EVENTS_REPORT = "SALES_EVENTS_REPORT";
+
+    String EVENT_RELATED_PRODUCT = "EVENT_RELATED_PRODUCT";
+
+    String EVENTS_RELATED_CUSTOMER = "EVENT_RELATED_CUSTOMER";
+
+    String SALES_EVENTS_REPORTS = "SALES_EVENTS_REPORTS";
+
+    String EVENT_RELATED_PRODUCTS = "EVENT_RELATED_PRODUCTS";
+
+    String EVENTS_RELATED_CUSTOMERS = "EVENT_RELATED_CUSTOMERS";
+
+    String REPORT_TYPE = "REPORT_TYPE";
+
+    String SALES_EVENT_DATE_FORMAT = "MMM d, y";
 
 }

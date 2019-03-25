@@ -25,11 +25,15 @@ import butterknife.BindView;
 
 import static com.daveace.salesdiary.interfaces.Constant.CUSTOMERS;
 import static com.daveace.salesdiary.interfaces.Constant.DAILY_SALES_REPORT;
+import static com.daveace.salesdiary.interfaces.Constant.EVENTS_RELATED_CUSTOMERS;
+import static com.daveace.salesdiary.interfaces.Constant.EVENT_RELATED_PRODUCTS;
 import static com.daveace.salesdiary.interfaces.Constant.GENERAL_SALES_REPORT;
 import static com.daveace.salesdiary.interfaces.Constant.MONTHLY_SALES_REPORT;
 import static com.daveace.salesdiary.interfaces.Constant.PRODUCTS;
 import static com.daveace.salesdiary.interfaces.Constant.QUARTERLY_SALES_REPORT;
+import static com.daveace.salesdiary.interfaces.Constant.REPORT_TYPE;
 import static com.daveace.salesdiary.interfaces.Constant.SALESEVENTS;
+import static com.daveace.salesdiary.interfaces.Constant.SALES_EVENTS_REPORTS;
 import static com.daveace.salesdiary.interfaces.Constant.SEMESTER_SALES_REPORT;
 import static com.daveace.salesdiary.interfaces.Constant.USERS;
 import static com.daveace.salesdiary.interfaces.Constant.WEEKLY_SALES_REPORT;
@@ -51,12 +55,6 @@ public class ReportPickerFragment extends BaseFragment {
     CardView yearlyReportCardView;
     @BindView(R.id.generalReportAction)
     LinearLayout generalReportLayout;
-
-
-    static final String SALES_EVENTS_REPORTS = "SALES_EVENTS_REPORTS";
-    static final String EVENT_RELATED_PRODUCTS = "EVENT_RELATED_PRODUCTS";
-    static final String EVENTS_RELATED_CUSTOMERS = "EVENT_RELATED_CUSTOMERS";
-    static final String REPORT_TYPE = "REPORT_TYPE";
 
     private FirebaseAuth fbAuth;
     private List<SalesEvent> salesEvents;
