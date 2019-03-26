@@ -37,7 +37,7 @@ public class SalesEventDetailsDialog extends BaseDialog {
     @BindView(R.id.price)
     TextView priceTextView;
     @BindView(R.id.quantitySold)
-    TextView quantitiyTextView;
+    TextView quantityTextView;
     @BindView(R.id.leftOver)
     TextView leftOverTextView;
     @BindView(R.id.customerName)
@@ -101,7 +101,7 @@ public class SalesEventDetailsDialog extends BaseDialog {
                     .getCode());
             priceTextView.setText(String.valueOf(salesEventsDetail
                     .getPrice()));
-            quantitiyTextView.setText(String.valueOf(salesEventsDetail
+            quantityTextView.setText(String.valueOf(salesEventsDetail
                     .getSales()));
             leftOverTextView.setText(String.valueOf(salesEventsDetail
                     .getLeft()));
