@@ -167,9 +167,7 @@ public class FireStoreHelper {
             throw new RuntimeException("Document is null");
         }
         docRef.set(doc)
-                .addOnCompleteListener(task -> {
-                    Log.d(TAG, "Update Successful");
-                });
+                .addOnCompleteListener(task -> Log.d(TAG, "Update Successful"));
     }
 
 
