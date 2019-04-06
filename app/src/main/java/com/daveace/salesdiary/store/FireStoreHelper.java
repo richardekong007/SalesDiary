@@ -6,9 +6,11 @@ import android.view.ViewGroup;
 import com.daveace.salesdiary.SubCollectionPath;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +62,29 @@ public class FireStoreHelper {
                     String msg = exception.getMessage();
                     Log.e(TAG, msg);
                 });
+    }
+
+    public <T> void addDocumentToSubCollection(DocumentReference docRef, T doc) {
+        final String TAG = "add to sub coll";
+        if (docRef == null) {
+            throw new RuntimeException("docRef is null");
+        }
+        docRef.set(doc)
+                .addOnSuccessListener(ref -> {
+                    String msg = "Added successfully.";
+                    Log.d(TAG, msg);
+                })
+                .addOnFailureListener(exception -> {
+                    String msg = exception.getMessage();
+                    Log.e(TAG, msg);
+                });
+    }
+
+    public DocumentReference getSubDocumentReference(String collection, String userId, String subCollection, String docId) {
+        return fireStore.collection(collection)
+                .document(userId)
+                .collection(subCollection)
+                .document(docId);
     }
 
     public CollectionReference readDocsFromSubCollection(String collection, String userId, String subCollection) {
@@ -135,6 +160,18 @@ public class FireStoreHelper {
         }).addOnFailureListener(exception -> Log.d(TAG, exception.getMessage()));
 
     }
+
+    public <T> void update(DocumentReference docRef, T doc) {
+        final String TAG = "FireStoreHelper update:";
+        if (docRef == null) {
+            throw new RuntimeException("Document is null");
+        }
+        docRef.set(doc)
+                .addOnCompleteListener(task -> {
+                    Log.d(TAG, "Update Successful");
+                });
+    }
+
 
     public <T> void delete(String collection, String userId, String subCollection, String docId) {
         final String TAG = "FireStoreHelper delete";

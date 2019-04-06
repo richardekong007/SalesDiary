@@ -12,7 +12,11 @@ import com.daveace.salesdiary.entity.SalesEvent;
 import com.daveace.salesdiary.store.FireStoreHelper;
 import com.daveace.salesdiary.util.ReportUtil;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,15 +60,19 @@ public class ReportPickerFragment extends BaseFragment {
     @BindView(R.id.generalReportAction)
     LinearLayout generalReportLayout;
 
-    private FirebaseAuth fbAuth;
-    private List<SalesEvent> salesEvents;
-    private List<Product> relatedProducts;
-    private List<Customer> relatedCustomers;
+    private String userId;
+    private final List<SalesEvent> salesEvents = new ArrayList<>();
+    private final List<Product> relatedProducts = new ArrayList<>();
+    private final List<Customer> relatedCustomers = new ArrayList<>();
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fbAuth = FirebaseAuth.getInstance();
+        FirebaseAuth fbAuth = FirebaseAuth.getInstance();
+        userId = fbAuth.getCurrentUser().getUid();
+        loadData(SALESEVENTS, salesEvents, SalesEvent.class);
+        loadData(PRODUCTS, relatedProducts, Product.class);
+        loadData(CUSTOMERS, relatedCustomers, Customer.class);
         initUI();
     }
 
@@ -79,7 +87,7 @@ public class ReportPickerFragment extends BaseFragment {
     }
 
     private void initUI() {
-        loadEvents();
+
         dailyReportCardView.setOnClickListener(view ->
                 transferSaleReports(ReportUtil.getDailySalesEventReports(salesEvents), DAILY_SALES_REPORT));
         weeklyReportCardView.setOnClickListener(view ->
@@ -96,57 +104,15 @@ public class ReportPickerFragment extends BaseFragment {
                 transferSaleReports(ReportUtil.getGeneralSalesReports(salesEvents), GENERAL_SALES_REPORT));
     }
 
-    private void loadEvents() {
-        FireStoreHelper.getInstance()
-                .readDocsFromSubCollection(USERS, fbAuth.getCurrentUser().getUid(), SALESEVENTS)
-                .get()
+    private <T> void loadData(String subCollection, List<T> docs, Class<T> entityClass) {
+        CollectionReference reference = FireStoreHelper.getInstance()
+                .readDocsFromSubCollection(USERS, userId, subCollection);
+        reference.get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        List<SalesEvent> theSalesEvents = new ArrayList<>();
-                        for (DocumentSnapshot doc : task.getResult()) {
-                            theSalesEvents.add(doc.toObject(SalesEvent.class));
-                        }
-                        loadSalesEvents(theSalesEvents);
-                    }
-                });
-    }
-
-    private void loadSalesEvents(List<SalesEvent> theSaleEvents) {
-        salesEvents = new ArrayList<>();
-        salesEvents = theSaleEvents;
-        loadRelatedProducts(salesEvents);
-        loadRelatedCustomers(salesEvents);
-    }
-
-    private void loadRelatedProducts(List<SalesEvent> theSalesEvents) {
-        relatedProducts = new ArrayList<>();
-        FireStoreHelper.getInstance()
-                .readDocsFromSubCollection(USERS, fbAuth.getCurrentUser().getUid(), PRODUCTS)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (DocumentSnapshot doc : task.getResult()) {
-                            Product product = doc.toObject(Product.class);
-                            for (SalesEvent event : theSalesEvents)
-                                if (event.getProductId().equals(Objects.requireNonNull(product).getId()))
-                                    relatedProducts.add(product);
-                        }
-                    }
-                });
-    }
-
-    private void loadRelatedCustomers(List<SalesEvent> theSalesEvents) {
-        relatedCustomers = new ArrayList<>();
-        FireStoreHelper.getInstance()
-                .readDocsFromSubCollection(USERS, fbAuth.getCurrentUser().getUid(), CUSTOMERS)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (DocumentSnapshot doc : task.getResult()) {
-                            Customer customer = doc.toObject(Customer.class);
-                            for (SalesEvent event : theSalesEvents)
-                                if (event.getCustomerId().equals(Objects.requireNonNull(customer).getId()))
-                                    relatedCustomers.add(customer);
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
+                            if (doc.exists())
+                                docs.add(doc.toObject(entityClass));
                         }
                     }
                 });

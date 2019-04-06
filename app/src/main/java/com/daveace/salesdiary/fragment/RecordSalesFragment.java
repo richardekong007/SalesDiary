@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.daveace.salesdiary.R;
-import com.daveace.salesdiary.SubCollectionPath;
 import com.daveace.salesdiary.dialog.RecordCustomerDialog;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
@@ -17,7 +16,8 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,6 +96,7 @@ public class RecordSalesFragment extends BaseFragment implements RecordCustomerD
 
     private void recordSalesEvent() {
         //save sales record and customer details to the database
+        setLoading(true);
         if (selectedProduct == null){
             Snackbar.make(rootView,getString(R.string.select_product),Snackbar.LENGTH_LONG).show();
             return;
@@ -120,13 +121,17 @@ public class RecordSalesFragment extends BaseFragment implements RecordCustomerD
         selectedProduct.setStock(quantityLeft);
         SalesEvent salesEvent = SalesEvent.getInstance(productId, userId, customerId, recordedPrice,
                 recordedQuantity, quantityLeft, new Date(), null);
-        fireStoreHelper.update(USERS, userId, PRODUCTS, productId, selectedProduct);
-        SubCollectionPath metaData =
-                new SubCollectionPath(USERS, userId, SALESEVENTS, salesEvent.getId(), salesEvent);
-        fireStoreHelper.addDocumentToSubCollection(metaData, rootView);
 
+        DocumentReference productRef = fireStoreHelper
+                .getSubDocumentReference(USERS, userId, PRODUCTS, productId);
+        DocumentReference salesEventRef = fireStoreHelper
+                .getSubDocumentReference(USERS, userId, SALESEVENTS, salesEvent.getId());
+
+        fireStoreHelper.update(productRef, selectedProduct);
+        fireStoreHelper.addDocumentToSubCollection(salesEventRef,salesEvent);
         if (selectedProduct.getStock() < 1.0) {
-            fireStoreHelper.delete(USERS, userId, PRODUCTS, productId);
+            selectedProduct.setAvailable(false);
+            fireStoreHelper.update(productRef,selectedProduct);
             Snackbar.make(rootView, selectedProduct.getName() + getString(R.string.out_of_stock), Snackbar.LENGTH_LONG)
                     .show();
         }
@@ -214,7 +219,7 @@ public class RecordSalesFragment extends BaseFragment implements RecordCustomerD
                     int index = 0;
                     Product product;
                     if (task.isSuccessful()) {
-                        for (DocumentSnapshot doc : task.getResult()) {
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
                             product = doc.toObject(Product.class);
                             products.add(product);
                             productMenu.getMenu().add(0, index,

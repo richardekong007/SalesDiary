@@ -10,9 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.FilterReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -29,7 +27,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     private List<Product> products;
     private List<Product> filteredProducts;
 
-    private ProductLongClickListener productLongClickListener;
+    private OnProductClickListener productLongClickListener;
 
     public ProductsAdapter(List<Product> products) {
         this.products = products;
@@ -55,10 +53,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         holder.stockElement.setText(String.valueOf(product.getStock()));
         Glide.with(ctx).load(ctx.getResources().getDrawable(R.mipmap.stock))
                 .into(holder.productImageElement);
-        holder.itemLayout.setOnLongClickListener(view -> {
-            productLongClickListener.setOnItemLongClick(product, holder.itemLayout);
-            return true;
-        });
+        holder.itemLayout.setOnClickListener(view ->
+                productLongClickListener.onProductClick(product, holder.itemLayout));
 
     }
 
@@ -101,7 +97,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         };
     }
 
-    public void setProductLongClickListener(ProductLongClickListener listener) {
+    public void setProductLongClickListener(OnProductClickListener listener) {
         this.productLongClickListener = listener;
     }
 
@@ -123,7 +119,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         }
     }
 
-    public interface ProductLongClickListener {
-        void setOnItemLongClick(Product product, View view);
+    public interface OnProductClickListener {
+        void onProductClick(Product product, View view);
     }
 }

@@ -19,6 +19,7 @@ public class Product implements ObjectMapper, Parcelable {
     private double cost;
     private String code;
     private double stock;
+    private boolean available;
     @ServerTimestamp
     private Date date;
 
@@ -48,6 +49,7 @@ public class Product implements ObjectMapper, Parcelable {
         dest.writeString(this.code);
         dest.writeString(this.imagePath);
         dest.writeLong(this.date.getTime());
+        dest.writeInt(available?1:0);
 
     }
 
@@ -55,6 +57,7 @@ public class Product implements ObjectMapper, Parcelable {
     }
 
     private Product(String name, double stock, double cost) {
+        //do not modify
         this.name = name;
         this.stock = stock;
         this.cost = cost;
@@ -67,6 +70,7 @@ public class Product implements ObjectMapper, Parcelable {
         this.code = code;
         this.imagePath = imagePath;
         this.date = date;
+        this.setAvailable(true);
         setId(UUID.randomUUID().toString());
     }
 
@@ -145,4 +149,11 @@ public class Product implements ObjectMapper, Parcelable {
         this.date = date;
     }
 
+    public void setAvailable(boolean available){
+        this.available = available;
+    }
+
+    public boolean isAvailable(){
+        return this.available;
+    }
 }

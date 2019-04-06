@@ -121,7 +121,7 @@ public class InventoryFragment extends BaseFragment {
         }
         setLoading(true);
         String name = productNameInput.getText().toString().trim();
-        Integer quantity = Integer.parseInt(quantityInput.getText().toString().trim());
+        double quantity = Double.parseDouble(quantityInput.getText().toString().trim());
         double cost = Double.parseDouble(costInput.getText().toString().trim());
         String code = productCode.getText().toString().trim();
         String imgPath = !(TextUtils.isEmpty(imageFilePath)) ? imageFilePath : "";
