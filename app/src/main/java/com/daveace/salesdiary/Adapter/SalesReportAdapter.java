@@ -2,7 +2,6 @@ package com.daveace.salesdiary.Adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +10,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.daveace.salesdiary.R;
-import com.daveace.salesdiary.dialog.SalesEventDetailsDialog;
 import com.daveace.salesdiary.entity.Customer;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
-import com.daveace.salesdiary.fragment.ReportPickerFragment;
-import com.daveace.salesdiary.interfaces.Constant;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -28,9 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.daveace.salesdiary.interfaces.Constant.EVENTS_RELATED_CUSTOMER;
-import static com.daveace.salesdiary.interfaces.Constant.EVENT_RELATED_PRODUCT;
-import static com.daveace.salesdiary.interfaces.Constant.SALES_EVENTS_REPORT;
 import static com.daveace.salesdiary.interfaces.Constant.SALES_EVENT_DATE_FORMAT;
 
 public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.SalesReportViewHolder> {
@@ -61,15 +54,14 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
         Drawable productDrawable = ctx.getResources().getDrawable(R.mipmap.stock, null);
         try {
             SalesEvent salesEvent = salesEvents.get(position);
-            Product relatedProduct = relatedProducts.get(position);
-            Customer relatedCustomer = relatedCustomers.get(position);
+            Product relatedProduct = getRelatedProduct(salesEvent.getProductId());
+            Customer relatedCustomer = getRelatedCustomer(salesEvent.getCustomerId());
             holder.salesDate.setText(new SimpleDateFormat(
                     SALES_EVENT_DATE_FORMAT, Locale.getDefault()).format(salesEvent.getDate()));
             holder.productName.setText(relatedProduct.getName());
             Glide.with(ctx).load(productDrawable).into(holder.productImage);
-            holder.moreButton.setOnClickListener(view -> {
-                moreClickListener.onClick(salesEvent, relatedProduct, relatedCustomer);
-            });
+            holder.moreButton.setOnClickListener(view ->
+                    moreClickListener.onClick(salesEvent, relatedProduct, relatedCustomer));
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
@@ -79,12 +71,30 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
         this.relatedProducts = relatedProducts;
     }
 
-    public void setMoreClickListener(MoreClickListener listener) {
-        moreClickListener = listener;
-    }
-
     public void setRelatedCustomer(List<Customer> relatedCustomers) {
         this.relatedCustomers = relatedCustomers;
+    }
+
+    private Product getRelatedProduct(String productId) {
+        Product relatedProduct = Product.getInstance();
+        for (Product product : relatedProducts) {
+            if (product != null && product.getId().equals(productId))
+                relatedProduct = product;
+        }
+        return relatedProduct;
+    }
+
+    private Customer getRelatedCustomer(String customerId) {
+        Customer relatedCustomer = Customer.getInstance();
+        for (Customer customer : relatedCustomers) {
+            if (customer.getId().equals(customerId))
+                relatedCustomer = customer;
+        }
+        return relatedCustomer;
+    }
+
+    public void setMoreClickListener(MoreClickListener listener) {
+        moreClickListener = listener;
     }
 
     @Override

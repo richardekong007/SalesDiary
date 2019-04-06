@@ -12,12 +12,11 @@ import android.widget.ImageView;
 import com.daveace.salesdiary.Adapter.ProductsAdapter;
 import com.daveace.salesdiary.R;
 import com.daveace.salesdiary.entity.Product;
-import com.daveace.salesdiary.menu.PopupMenuBuilder;
 import com.daveace.salesdiary.store.FireStoreHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,6 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,7 +33,7 @@ import butterknife.BindView;
 import static com.daveace.salesdiary.interfaces.Constant.PRODUCTS;
 import static com.daveace.salesdiary.interfaces.Constant.USERS;
 
-public class ProductCatalogFragment extends BaseFragment implements ProductsAdapter.ProductLongClickListener {
+public class ProductCatalogFragment extends BaseFragment implements ProductsAdapter.OnProductClickListener {
 
     @BindView(R.id.products)
     RecyclerView productsRecyclerView;
@@ -82,15 +80,18 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
     }
 
     @Override
-    public void setOnItemLongClick(Product product, View view) {
-        setupMenu(product, view);
+    public void onProductClick(Product product, View view) {
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(PRODUCT_BUNDLE, product);
+        replaceFragment(new EditProductFragment(), false, bundle);
     }
 
     private void customizeSearchView(SearchView searchView) {
         ImageView searchIcon = searchView.findViewById(androidx.appcompat.R.id.search_button);
         ImageView searchCloseIcon = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
-        searchIcon.setColorFilter(getResources().getColor(R.color.white));
-        searchCloseIcon.setColorFilter(getResources().getColor(R.color.white));
+        searchIcon.setColorFilter(getResources().getColor(R.color.white, null));
+        searchCloseIcon.setColorFilter(getResources().getColor(R.color.white, null));
         searchView.setQueryHint(getString(R.string.search_catalog));
     }
 
@@ -125,9 +126,11 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
                 .addOnCompleteListener(task -> {
                     List<Product> products = new ArrayList<>();
                     if (task.isSuccessful()) {
-                        for (DocumentSnapshot doc : task.getResult()) {
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
                             Product product = doc.toObject(Product.class);
-                            products.add(product);
+                            if (Objects.requireNonNull(product).isAvailable()){
+                                products.add(product);
+                            }
                         }
                         setupRecycleView(products);
                         setLoading(false);
@@ -143,34 +146,5 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
         productsRecyclerView.hasFixedSize();
         productsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         productsRecyclerView.setAdapter(adapter);
-    }
-
-    private void setupMenu(Product product, View view) {
-        PopupMenu popupMenu = PopupMenuBuilder
-                .from(getActivity(), view, R.menu.menu_catalog_action)
-                .build();
-        popupMenu.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.editItem:
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable(PRODUCT_BUNDLE, product);
-                    replaceFragment(new EditProductFragment(), false, bundle);
-                    break;
-                case R.id.deleteItem:
-                    String userId = fbAuth.getCurrentUser().getUid();
-                    fireStoreHelper.delete(USERS, userId, PRODUCTS, product.getId());
-                    refresh();//not good enough
-                    break;
-                case R.id.refreshItem:
-                    refresh();//not good enough
-                    break;
-            }
-            return true;
-        });
-        popupMenu.show();
-    }
-
-    private void refresh() {
-        loadProducts();
     }
 }

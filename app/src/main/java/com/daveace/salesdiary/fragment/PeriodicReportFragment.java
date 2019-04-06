@@ -3,7 +3,6 @@ package com.daveace.salesdiary.fragment;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.daveace.salesdiary.Adapter.SalesReportAdapter;
 import com.daveace.salesdiary.R;
@@ -34,11 +33,10 @@ import static com.daveace.salesdiary.interfaces.Constant.SALES_EVENTS_REPORTS;
 public class PeriodicReportFragment extends BaseFragment
         implements SalesReportAdapter.MoreClickListener {
 
-    @BindView(R.id.reportHeader)
-    TextView reportHeaderTextView;
-
     @BindView(R.id.periodicReports)
     RecyclerView periodicReportRecyclerView;
+
+    private String reportHeader;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -54,6 +52,9 @@ public class PeriodicReportFragment extends BaseFragment
 
     @Override
     public CharSequence getTitle() {
+        if (reportHeader != null && reportHeader.length() > 0){
+            return  reportHeader;
+        }
         return getString(R.string.periodic_report_title);
     }
 
@@ -88,7 +89,7 @@ public class PeriodicReportFragment extends BaseFragment
             salesEvents = getArguments().getParcelableArrayList(SALES_EVENTS_REPORTS);
             relatedProducts = getArguments().getParcelableArrayList(EVENT_RELATED_PRODUCTS);
             relatedCustomers = getArguments().getParcelableArrayList(EVENTS_RELATED_CUSTOMERS);
-            reportHeaderTextView.setText(getArguments().getString(REPORT_TYPE));
+            reportHeader = (getArguments().getString(REPORT_TYPE));
         }
         SalesReportAdapter adapter = new SalesReportAdapter(salesEvents);
         adapter.setRelatedProducts(relatedProducts);

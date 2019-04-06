@@ -33,7 +33,6 @@ public abstract class BaseFragment extends Fragment {
         showOrHideActionBar(this);
         reConfigureDrawerLayoutSwipe(this.getActivity(), this);
         unbinder = ButterKnife.bind(this, view);
-        retainInstance();
         return view;
     }
 
