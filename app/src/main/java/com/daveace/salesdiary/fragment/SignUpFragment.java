@@ -89,9 +89,11 @@ public class SignUpFragment extends BaseFragment {
         User user = createUser();
         user.setId(fbAuth.getCurrentUser().getUid());
         setLoading(true);
+        signUpButton.setEnabled(false);
         fbAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
                 .addOnFailureListener(error -> {
                     setLoading(false);
+                    signUpButton.setEnabled(true);
                     Snackbar.make(rootView, error.getMessage(), Snackbar.LENGTH_LONG)
                             .show();
                 })

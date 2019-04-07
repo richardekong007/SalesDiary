@@ -81,6 +81,7 @@ public class LoginFragment extends BaseFragment {
             return;
         }
         setLoading(true);
+        logInButton.setEnabled(false);
         String email = emailInput.getText().toString();
         String password = passwordInput.getText().toString();
         fbAuth.signInWithEmailAndPassword(email, password)
@@ -91,6 +92,7 @@ public class LoginFragment extends BaseFragment {
                 })
                 .addOnCompleteListener(task -> {
                     setLoading(false);
+                    logInButton.setEnabled(true);
                     if (task.isSuccessful()) {
                         Snackbar.make(rootView, getString(R.string.auth_successful), Snackbar.LENGTH_LONG)
                                 .show();
