@@ -5,8 +5,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.daveace.salesdiary.interfaces.ObjectMapper;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.IgnoreExtraProperties;
-import com.google.firebase.firestore.GeoPoint;
 
 import java.util.UUID;
 
@@ -18,7 +18,7 @@ public class Customer implements ObjectMapper, Parcelable {
     private String email;
     private String phone;
     private String company;
-    private GeoPoint loc;
+    private LatLng loc;
     private String signaturePath;
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -45,6 +45,8 @@ public class Customer implements ObjectMapper, Parcelable {
         dest.writeString(this.email);
         dest.writeString(this.phone);
         dest.writeString(this.company);
+        dest.writeDouble(this.loc.latitude);
+        dest.writeDouble(this.loc.longitude);
     }
 
     private Customer() {
@@ -56,6 +58,7 @@ public class Customer implements ObjectMapper, Parcelable {
         this.email = source.readString();
         this.phone = source.readString();
         this.company = source.readString();
+        this.loc = new LatLng(source.readDouble(), source.readDouble());
     }
 
 
@@ -115,11 +118,11 @@ public class Customer implements ObjectMapper, Parcelable {
         this.company = company;
     }
 
-    public GeoPoint getLoc() {
+    public LatLng getLoc() {
         return loc;
     }
 
-    public void setLoc(GeoPoint loc) {
+    public void setLoc(LatLng loc) {
         this.loc = loc;
     }
 
