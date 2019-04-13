@@ -13,7 +13,6 @@ import com.daveace.salesdiary.R;
 import com.daveace.salesdiary.entity.Customer;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
-import com.daveace.salesdiary.util.LocationUtil;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -30,7 +29,6 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import butterknife.BindView;
 
 import static com.daveace.salesdiary.interfaces.Constant.BEARING;
@@ -59,8 +57,10 @@ public class SalesEventDetailsFragment extends BaseFragment implements OnMapRead
     TextView customerNameTextView;
     @BindView(R.id.customerEmail)
     TextView customerEmailTextView;
-//    @BindView(R.id.place_text)
-//    TextView placeTextView;
+    @BindView(R.id.customerCompany)
+    TextView customerCompanyTextView;
+    @BindView(R.id.customerPhone)
+    TextView customerPhoneTextView;
     @BindView(R.id.productImage)
     ImageView productImageView;
     @BindView(R.id.productCodeIcon)
@@ -75,37 +75,37 @@ public class SalesEventDetailsFragment extends BaseFragment implements OnMapRead
     ImageView customerImageView;
     @BindView(R.id.emailIcon)
     ImageView customerEmailImageView;
-    //    @BindView(R.id.locationIcon)
-//    ImageView locationImageView;
+    @BindView(R.id.customerCompanyIcon)
+    ImageView customerCompanyImageView;
+    @BindView(R.id.customerPhoneIcon)
+    ImageView customerPhoneImageView;
+    @BindView(R.id.map)
     MapView map;
-    @BindView(R.id.sales_event_holder)
-    CardView salesEventHolder;
-    @BindView(R.id.map_holder)
-    ExpandableCardView mapHolder;
+    @BindView(R.id.location_detail_card)
+    ExpandableCardView locationDetailContainer;
+    @BindView(R.id.product_detail_card)
+    ExpandableCardView productDetailContainer;
+    @BindView(R.id.customer_detail_card)
+    ExpandableCardView customerDetailContainer;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        map = view.findViewById(R.id.map);
-        map.onCreate(savedInstanceState);
-        if (map != null) {
-            map.getMapAsync(this);
-        }
-        initUI();
+        initUI(savedInstanceState);
         return view;
     }
 
 
     @Override
     public int getLayout() {
-        return R.layout.dialog_sales_event;
+        return R.layout.fragment_sales_event_diary_details;
     }
 
     @Override
     public CharSequence getTitle() {
-        return "";
+        return getString(R.string.saies_event_details);
     }
 
     @Override
@@ -153,8 +153,11 @@ public class SalesEventDetailsFragment extends BaseFragment implements OnMapRead
 
     }
 
-    private void initUI() {
-
+    private void initUI(Bundle savedInstanceState) {
+        map.onCreate(savedInstanceState);
+        if (map != null) {
+            map.getMapAsync(this);
+        }
         try {
             Bundle bundle = getArguments();
             SalesEvent salesEventsDetail =
@@ -166,8 +169,6 @@ public class SalesEventDetailsFragment extends BaseFragment implements OnMapRead
             salesDateTextView.setText((new SimpleDateFormat(SALES_EVENT_DATE_FORMAT, Locale.ENGLISH)
                     .format(Objects.requireNonNull(salesEventsDetail)
                             .getDate())));
-
-            //placeTextView.setText(getPlace(salesEventsDetail));
 
             productNameTextView.setText(Objects.requireNonNull(relatedProduct)
                     .getName());
@@ -183,6 +184,10 @@ public class SalesEventDetailsFragment extends BaseFragment implements OnMapRead
                     .getName());
             customerEmailTextView.setText(Objects.requireNonNull(relatedCustomer
                     .getEmail()));
+            customerCompanyTextView.setText(Objects.requireNonNull(relatedCustomer)
+                    .getCompany());
+            customerPhoneTextView.setText(Objects.requireNonNull(relatedCustomer)
+                    .getPhone());
 
             Glide.with(getActivity()).load(getActivity()
                     .getResources().getDrawable(R.mipmap.stock, null))
@@ -205,29 +210,17 @@ public class SalesEventDetailsFragment extends BaseFragment implements OnMapRead
             Glide.with(getActivity()).load(getActivity()
                     .getResources().getDrawable(R.drawable.ic_email_black, null))
                     .into(customerEmailImageView);
-//            Glide.with(getActivity()).load(getActivity()
-//                    .getResources().getDrawable(R.drawable.ic_location_black, null))
-//                    .into(locationImageView);
+            Glide.with(getActivity()).load(getActivity()
+                    .getResources().getDrawable(R.drawable.ic_company_black, null))
+                    .into(customerCompanyImageView);
+            Glide.with(getActivity()).load(getActivity()
+                    .getResources().getDrawable(R.drawable.ic_phone_black, null))
+                    .into(customerPhoneImageView);
 
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
-        mapHolder.setOnExpandedListener((v, isExpanded) ->
-            salesEventHolder.setVisibility(isExpanded ? View.GONE : View.VISIBLE));
-
-    }
-
-    private String getPlace(SalesEvent salesEventsDetail) {
-        String place = "";
-        LatLng location = new LatLng(salesEventsDetail.getLatitude(),
-                salesEventsDetail.getLatitude());
-        if (location.latitude > 0 && location.longitude > 0) {
-            place = LocationUtil.getPlaceFromLocation(getActivity(),
-                    location);
-        }
-        return place;
     }
 
 }
-

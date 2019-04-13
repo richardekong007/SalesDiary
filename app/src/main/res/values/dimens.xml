@@ -3,7 +3,7 @@
     <dimen name="text_size_large">30sp</dimen>
     <dimen name="text_size_medium">20sp</dimen>
     <dimen name="icon_large">188dp</dimen>
-    <dimen name="icon_small">30dp</dimen>
+    <dimen name="icon_small">20dp</dimen>
     <dimen name="icon_medium">50dp</dimen>
     <dimen name="elevation_higher">8dp</dimen>
     <dimen name="dimen_medium">20dp</dimen>

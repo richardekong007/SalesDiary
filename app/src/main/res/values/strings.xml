@@ -103,5 +103,6 @@
     <string name="product_details">Product Details</string>
     <string name="customer_details">Customer Details</string>
     <string name="location_icon">LocationIcon</string>
+    <string name="saies_event_details">Sales Event Details</string>
 
 </resources>
