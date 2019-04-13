@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.daveace.salesdiary.Adapter.SalesReportAdapter;
 import com.daveace.salesdiary.R;
-import com.daveace.salesdiary.dialog.SalesEventDetailsDialog;
 import com.daveace.salesdiary.entity.Customer;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
@@ -77,8 +76,9 @@ public class PeriodicReportFragment extends BaseFragment
         bundle.putParcelable(SALES_EVENTS_REPORT, event);
         bundle.putParcelable(EVENT_RELATED_PRODUCT, relatedProduct);
         bundle.putParcelable(EVENTS_RELATED_CUSTOMER, relatedCustomer);
-        SalesEventDetailsDialog.getInstance(bundle)
-                .show(getFragmentManager(), TAG);
+//        SalesEventDetailsDialog.getInstance(bundle)
+//                .show(getFragmentManager(), TAG);
+        replaceFragment(new SalesEventDetailsFragment(),false,bundle);
     }
 
     private void initUI() {

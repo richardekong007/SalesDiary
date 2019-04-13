@@ -18,12 +18,13 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 
-import com.google.type.LatLng;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.IntStream;
 
 import androidx.core.app.ActivityCompat;
 
@@ -58,7 +59,8 @@ public class LocationUtil {
 
             @Override
             public void onProviderDisabled(String provider) {
-                Intent locationSettingIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                Intent locationSettingIntent =
+                        new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 ctx.startActivity(locationSettingIntent);
             }
 
@@ -80,62 +82,67 @@ public class LocationUtil {
         }
     }
 
-    public static void stopLocationUpdate(LocationManager locationManager){
+    public static void stopLocationUpdate(LocationManager locationManager) {
         locationManager.removeUpdates(locationListener);
     }
 
-    public static double getLatitude(){
+    public static double getLatitude() {
         return latitude;
     }
 
-    public static double getLongitude(){
+    public static double getLongitude() {
         return longitude;
     }
 
-    public static String getPlaceFromLocation(Context ctx, LatLng location){
+    public static String getPlaceFromLocation(Context ctx, LatLng location) {
         String place = "";
-        try{
+        try {
             place = (new ReverseGeoCodingTask(ctx)).execute(location).get();
-        }catch (Exception e){
-           Log.e("Exception", e.getMessage());
+        } catch (Exception e) {
+            Log.e("Exception", e.getMessage());
         }
         return place;
     }
 
-    public static class ReverseGeoCodingTask extends AsyncTask<LatLng, Void, String>{
+    public static class ReverseGeoCodingTask extends AsyncTask<LatLng, Void, String> {
 
         @SuppressLint("StaticFieldLeak")
         Context ctx;
         private String place;
 
-        ReverseGeoCodingTask(Context ctx){
+        ReverseGeoCodingTask(Context ctx) {
             super();
             this.ctx = ctx;
         }
 
         @Override
-        protected String doInBackground(LatLng ... locations) {
+        protected String doInBackground(LatLng... locations) {
             LatLng location = locations[0];
             Geocoder geocoder = new Geocoder(ctx, Locale.getDefault());
             List<Address> addresses = new ArrayList<>();
             try {
-                addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
-            }catch (IOException e){
+                addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1);
+            } catch (IOException e) {
                 Log.e("IOException", e.getMessage());
             }
-            if (addresses != null && addresses.size() > 0){
+            if (addresses != null && addresses.size() > 0) {
                 Address address = addresses.get(0);
-                String ADDRESS_FORMAT = "%s, %s, %s";
-                setPlace(String.format(ADDRESS_FORMAT,
-                        address.getMaxAddressLineIndex() > 0 ? address.getAddressLine(0):"",
+                StringBuilder stringBuilder = new StringBuilder();
+                IntStream.range(0, address.getMaxAddressLineIndex())
+                        .forEach(index -> stringBuilder
+                                .append(address.getAddressLine(index))
+                                .append(",%s"));
+                String ADDRESS_FORMAT = "%s, %s";
+                stringBuilder.append(String.format(ADDRESS_FORMAT,
                         address.getLocality(),
                         address.getCountryName()));
+                setPlace(stringBuilder.toString());
 
             }
             return place;
         }
 
-        private void setPlace(String thePlace){
+        private void setPlace(String thePlace) {
             this.place = thePlace;
         }
     }

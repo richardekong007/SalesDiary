@@ -22,7 +22,8 @@ public class SalesEvent implements ObjectMapper, Parcelable {
     private double left;
     @ServerTimestamp
     private Date date;
-    private GeoPoint location;
+    private Double latitude;
+    private Double longitude;
 
     public final static Parcelable.Creator CREATOR = new Parcelable.Creator() {
         @Override
@@ -51,8 +52,8 @@ public class SalesEvent implements ObjectMapper, Parcelable {
         dest.writeDouble(this.sales);
         dest.writeDouble(this.left);
         dest.writeLong(this.date.getTime());
-        dest.writeDouble(this.location.getLatitude());
-        dest.writeDouble(this.location.getLongitude());
+        dest.writeDouble(this.latitude);
+        dest.writeDouble(this.longitude);
     }
 
     private SalesEvent() {
@@ -66,14 +67,13 @@ public class SalesEvent implements ObjectMapper, Parcelable {
         this.sales = source.readDouble();
         this.left = source.readDouble();
         this.date = new Date(source.readLong());
-        //may not work
-        this.location = new GeoPoint(source.readDouble()
-                , source.readDouble());
+        this.latitude = source.readDouble();
+        this.longitude = source.readDouble();
 
     }
 
     private SalesEvent(String productId, String traderId, String customerId,
-                       Double price, double sales, double left, Date date, GeoPoint location) {
+                       Double price, double sales, double left, Date date) {
 
         this.productId = productId;
         this.traderId = traderId;
@@ -82,7 +82,6 @@ public class SalesEvent implements ObjectMapper, Parcelable {
         this.sales = sales;
         this.left = left;
         this.date = date;
-        this.location = location;
         setId(UUID.randomUUID().toString());
     }
 
@@ -92,10 +91,10 @@ public class SalesEvent implements ObjectMapper, Parcelable {
 
     public static SalesEvent getInstance(String productId, String traderId, String customerId,
                                          double price, double sales, double left,
-                                         Date date, GeoPoint location) {
+                                         Date date) {
 
         return new SalesEvent(productId, traderId,
-                customerId, price, sales, left, date, location);
+                customerId, price, sales, left, date);
 
     }
 
@@ -163,11 +162,19 @@ public class SalesEvent implements ObjectMapper, Parcelable {
         this.date = date;
     }
 
-    public GeoPoint getLocation() {
-        return location;
+    public Double getLatitude() {
+        return latitude;
     }
 
-    public void setLocation(GeoPoint location) {
-        this.location = location;
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 }

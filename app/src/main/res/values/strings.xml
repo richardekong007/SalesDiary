@@ -102,5 +102,6 @@
     <string name="more_btn_label">more</string>
     <string name="product_details">Product Details</string>
     <string name="customer_details">Customer Details</string>
+    <string name="location_icon">LocationIcon</string>
 
 </resources>

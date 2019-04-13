@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=73:CE:94:28:E2:C3:E6:BC:B9:50:1A:B7:9F:AD:A9:DE:C6:E4:4E:A9%3Bcom.example.dev.googlemap-->
+
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyBkUHcHof0Kj0ykCdlgcMdOtjMQCd3gsMU
+    </string>
+
+</resources>

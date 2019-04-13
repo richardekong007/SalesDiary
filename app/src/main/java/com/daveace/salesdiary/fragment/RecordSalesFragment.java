@@ -15,13 +15,13 @@ import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
 import com.daveace.salesdiary.store.FireStoreHelper;
 import com.daveace.salesdiary.util.LocationUtil;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -137,7 +137,9 @@ public class RecordSalesFragment extends BaseFragment
         }
         selectedProduct.setStock(quantityLeft);
         SalesEvent salesEvent = SalesEvent.getInstance(productId, userId, customerId, recordedPrice,
-                recordedQuantity, quantityLeft, new Date(), null);
+                recordedQuantity, quantityLeft, new Date());
+        salesEvent.setLatitude(LocationUtil.getLatitude());
+        salesEvent.setLongitude(LocationUtil.getLongitude());
 
         DocumentReference productRef = fireStoreHelper
                 .getSubDocumentReference(USERS, userId, PRODUCTS, productId);
@@ -152,7 +154,7 @@ public class RecordSalesFragment extends BaseFragment
             Snackbar.make(rootView, selectedProduct.getName() + getString(R.string.out_of_stock), Snackbar.LENGTH_LONG)
                     .show();
         }
-
+        setLoading(false);
     }
 
     private void setupContentView() {
