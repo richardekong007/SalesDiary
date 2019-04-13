@@ -13,6 +13,7 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -32,6 +33,8 @@ public abstract class BaseFragment extends Fragment {
         View view = createWithLoadingIndicator(getLayout(), container);
         showOrHideActionBar(this);
         reConfigureDrawerLayoutSwipe(this.getActivity(), this);
+        reconfigureActionbar(this.getActivity(), this);
+        setHasOptionsMenu(true);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -129,6 +132,17 @@ public abstract class BaseFragment extends Fragment {
             } else {
                 ((BaseActivity) activity).getDrawerLayout()
                         .setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            }
+        }
+    }
+
+    private void reconfigureActionbar(FragmentActivity activity, Fragment fragment) {
+        if (activity instanceof BaseActivity) {
+            ActionBar actionBar = ((BaseActivity) activity).getSupportActionBar();
+            if (fragment instanceof SalesEventDetailsFragment) {
+                actionBar.setHomeAsUpIndicator(R.drawable.ic_back_white);
+            } else {
+                actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
             }
         }
     }

@@ -51,8 +51,8 @@ public class PeriodicReportFragment extends BaseFragment
 
     @Override
     public CharSequence getTitle() {
-        if (reportHeader != null && reportHeader.length() > 0){
-            return  reportHeader;
+        if (reportHeader != null && reportHeader.length() > 0) {
+            return reportHeader;
         }
         return getString(R.string.periodic_report_title);
     }
@@ -78,7 +78,7 @@ public class PeriodicReportFragment extends BaseFragment
         bundle.putParcelable(EVENTS_RELATED_CUSTOMER, relatedCustomer);
 //        SalesEventDetailsDialog.getInstance(bundle)
 //                .show(getFragmentManager(), TAG);
-        replaceFragment(new SalesEventDetailsFragment(),false,bundle);
+        replaceFragment(new SalesEventDetailsFragment(), true, bundle);
     }
 
     private void initUI() {

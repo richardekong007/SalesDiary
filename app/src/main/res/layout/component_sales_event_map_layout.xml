@@ -7,9 +7,10 @@
     android:orientation="vertical"
     app:cardCornerRadius="@dimen/dimen_tiny">
 
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/map"
-            android:layout_width="match_parent"
-            android:layout_height="700dp" />
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="700dp"
+        android:padding="@dimen/dimen_medium" />
 
 </androidx.cardview.widget.CardView>

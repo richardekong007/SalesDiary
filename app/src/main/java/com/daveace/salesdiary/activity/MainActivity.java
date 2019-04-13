@@ -11,6 +11,7 @@ import com.daveace.salesdiary.fragment.LoginFragment;
 import com.daveace.salesdiary.fragment.ProductCatalogFragment;
 import com.daveace.salesdiary.fragment.RecordSalesFragment;
 import com.daveace.salesdiary.fragment.ReportPickerFragment;
+import com.daveace.salesdiary.fragment.SalesEventDetailsFragment;
 import com.daveace.salesdiary.fragment.SignUpFragment;
 import com.daveace.salesdiary.util.FragmentUtil;
 import com.google.android.material.navigation.NavigationView;
@@ -21,6 +22,7 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 
 public class MainActivity extends BaseActivity {
@@ -38,7 +40,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         setupNavigationHeader();
         setNavigationItemSelectedListener();
         init();
@@ -63,7 +64,14 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
+                Fragment currentFragment =
+                        getSupportFragmentManager()
+                                .findFragmentById(R.id.content_layout);
+                if (currentFragment instanceof SalesEventDetailsFragment) {
+                    getSupportFragmentManager().popBackStackImmediate();
+                } else {
+                    drawerLayout.openDrawer(GravityCompat.START);
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);

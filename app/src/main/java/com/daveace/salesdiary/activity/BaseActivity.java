@@ -32,6 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         setStatusBarColor(R.color.colorPrimary);
+
     }
 
     @Override
@@ -65,5 +66,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     abstract Toolbar getToolbar();
 
-    public abstract DrawerLayout getDrawerLayout();
+    abstract DrawerLayout getDrawerLayout();
+
 }

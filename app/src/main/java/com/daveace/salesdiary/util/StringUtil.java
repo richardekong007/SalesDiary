@@ -2,11 +2,19 @@ package com.daveace.salesdiary.util;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alespero.expandablecardview.ExpandableCardView;
 import com.daveace.salesdiary.R;
 
 import java.util.List;
+
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
 public class StringUtil {
 
@@ -52,7 +60,7 @@ public class StringUtil {
     }
 
     @SafeVarargs
-    public static <T extends TextView> void clear(T ... editTexts) {
+    public static <T extends TextView> void clear(T... editTexts) {
         for (T editText : editTexts) {
             editText.setText("");
         }
@@ -63,5 +71,4 @@ public class StringUtil {
             text = "";
         }
     }
-
 }
