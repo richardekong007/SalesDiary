@@ -96,6 +96,7 @@ public class RecordCustomerDialog extends BaseDialog {
                 CUSTOMERS,
                 customer.getId(),
                 customer);
+
         FireStoreHelper.getInstance().addDocumentToSubCollection(metaData, rootView);
         onDoneClickListener.passCustomerId(customer.getId());
         dismiss();

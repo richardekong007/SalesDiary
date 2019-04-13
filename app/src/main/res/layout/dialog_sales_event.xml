@@ -1,237 +1,289 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_margin="@dimen/dimen_tiny"
-    android:elevation="@dimen/elevation_higher"
-    app:cardCornerRadius="@dimen/dimen_tiny">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    android:padding="@dimen/dimen_medium">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/sales_event_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dimen_medium">
+        android:elevation="@dimen/elevation_lower"
+        app:cardCornerRadius="@dimen/dimen_tiny">
 
-        <TextView
-            android:id="@+id/salesDate"
-            style="@style/CustomAppThemeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sample_text"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/section_header1"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/salesDate">
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="2dp"
-                android:layout_gravity="center"
-                android:layout_weight="2"
-                android:background="@color/colorPrimary" />
+            android:layout_height="match_parent">
 
             <TextView
-                style="@style/CustomAppThemeText.Medium"
+                android:id="@+id/salesDate"
+                style="@style/CustomAppThemeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:padding="@dimen/dimen_tiny"
-                android:text="@string/product_details"
-                android:textAlignment="center"
-                android:textStyle="bold" />
+                android:text="@string/sample_text"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="2dp"
-                android:layout_gravity="center"
-                android:layout_weight="2"
-                android:background="@color/colorPrimary" />
+            <LinearLayout
+                android:id="@+id/section_header1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/salesDate">
 
-        </LinearLayout>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:background="@color/colorPrimary" />
 
-        <ImageView
-            android:id="@+id/productImage"
-            android:layout_width="@dimen/icon_small"
-            android:layout_height="@dimen/icon_small"
-            android:contentDescription="@string/product_image"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/section_header1" />
+                <TextView
+                    style="@style/CustomAppThemeText.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:padding="@dimen/dimen_tiny"
+                    android:text="@string/product_details"
+                    android:textAlignment="center"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/productName"
-            style="@style/CustomAppThemeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_medium"
-            android:layout_marginTop="@dimen/dimen_medium"
-            android:text="@string/sample_text"
-            app:layout_constraintBottom_toBottomOf="@+id/productImage"
-            app:layout_constraintStart_toEndOf="@id/productImage" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:background="@color/colorPrimary" />
 
-        <ImageView
-            android:id="@+id/productCodeIcon"
-            android:layout_width="@dimen/icon_small"
-            android:layout_height="@dimen/icon_small"
-            android:layout_marginTop="@dimen/dimen_tiny"
-            android:contentDescription="@string/product_code"
-            app:layout_constraintTop_toBottomOf="@+id/productImage"
-            app:srcCompat="@mipmap/barcode" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/productCode"
-            style="@style/CustomAppThemeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_medium"
-            android:layout_marginTop="@dimen/dimen_medium"
-            android:text="@string/sample_text"
-            app:layout_constraintBottom_toBottomOf="@+id/productCodeIcon"
-            app:layout_constraintStart_toEndOf="@id/productCodeIcon" />
-
-        <ImageView
-            android:id="@+id/priceIcon"
-            style="@style/CustomAppThemeText"
-            android:layout_width="@dimen/icon_small"
-            android:layout_height="@dimen/icon_small"
-            android:layout_marginTop="@dimen/dimen_tiny"
-            android:contentDescription="@string/price_icon"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cartIcon"
-            app:srcCompat="@mipmap/diamond" />
-
-        <TextView
-            android:id="@+id/price"
-            style="@style/CustomAppThemeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_medium"
-            android:layout_marginTop="@dimen/dimen_medium"
-            android:text="@string/sample_text"
-            app:layout_constraintBottom_toBottomOf="@id/priceIcon"
-            app:layout_constraintStart_toEndOf="@id/priceIcon" />
-
-        <ImageView
-            android:id="@+id/cartIcon"
-            android:layout_width="@dimen/icon_small"
-            android:layout_height="@dimen/icon_small"
-            android:layout_margin="@dimen/dimen_tiny"
-            android:contentDescription="@string/cart_icon"
-            app:layout_constraintTop_toBottomOf="@+id/productCodeIcon"
-            app:srcCompat="@drawable/ic_shopping_cart_black" />
-
-        <TextView
-            android:id="@+id/quantitySold"
-            style="@style/CustomAppThemeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_medium"
-            android:layout_marginTop="@dimen/dimen_medium"
-            android:text="@string/sample_text"
-            app:layout_constraintBottom_toBottomOf="@id/cartIcon"
-            app:layout_constraintStart_toEndOf="@id/cartIcon" />
-
-        <ImageView
-            android:id="@+id/stockIcon"
-            android:layout_width="@dimen/icon_small"
-            android:layout_height="@dimen/icon_small"
-            android:layout_marginTop="@dimen/dimen_tiny"
-            android:contentDescription="@string/inventory_image"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/priceIcon"
-            app:srcCompat="@mipmap/inventory2" />
-
-        <TextView
-            android:id="@+id/leftOver"
-            style="@style/CustomAppThemeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_medium"
-            android:layout_marginTop="@dimen/dimen_medium"
-            android:text="@string/sample_text"
-            app:layout_constraintBottom_toBottomOf="@id/stockIcon"
-            app:layout_constraintStart_toEndOf="@id/stockIcon" />
-
-        <LinearLayout
-            android:id="@+id/section_header2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/stockIcon">
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="2dp"
-                android:layout_gravity="center"
-                android:layout_weight="2"
-                android:background="@color/colorPrimary" />
+            <ImageView
+                android:id="@+id/productImage"
+                android:layout_width="@dimen/icon_small"
+                android:layout_height="@dimen/icon_small"
+                android:contentDescription="@string/product_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/section_header1" />
 
             <TextView
-                style="@style/CustomAppThemeText.Medium"
+                android:id="@+id/productName"
+                style="@style/CustomAppThemeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:padding="@dimen/dimen_tiny"
-                android:text="@string/customer_details"
-                android:textAlignment="center"
-                android:textStyle="bold" />
+                android:layout_marginStart="@dimen/dimen_medium"
+                android:layout_marginTop="@dimen/dimen_medium"
+                android:text="@string/sample_text"
+                app:layout_constraintBottom_toBottomOf="@+id/productImage"
+                app:layout_constraintStart_toEndOf="@id/productImage" />
+
+            <ImageView
+                android:id="@+id/productCodeIcon"
+                android:layout_width="@dimen/icon_small"
+                android:layout_height="@dimen/icon_small"
+                android:layout_marginTop="@dimen/dimen_tiny"
+                android:contentDescription="@string/product_code"
+                app:layout_constraintTop_toBottomOf="@+id/productImage"
+                app:srcCompat="@mipmap/barcode" />
+
+            <TextView
+                android:id="@+id/productCode"
+                style="@style/CustomAppThemeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_medium"
+                android:layout_marginTop="@dimen/dimen_medium"
+                android:text="@string/sample_text"
+                app:layout_constraintBottom_toBottomOf="@+id/productCodeIcon"
+                app:layout_constraintStart_toEndOf="@id/productCodeIcon" />
+
+            <ImageView
+                android:id="@+id/priceIcon"
+                style="@style/CustomAppThemeText"
+                android:layout_width="@dimen/icon_small"
+                android:layout_height="@dimen/icon_small"
+                android:layout_marginTop="@dimen/dimen_tiny"
+                android:contentDescription="@string/price_icon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cartIcon"
+                app:srcCompat="@mipmap/diamond" />
+
+            <TextView
+                android:id="@+id/price"
+                style="@style/CustomAppThemeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_medium"
+                android:layout_marginTop="@dimen/dimen_medium"
+                android:text="@string/sample_text"
+                app:layout_constraintBottom_toBottomOf="@id/priceIcon"
+                app:layout_constraintStart_toEndOf="@id/priceIcon" />
+
+            <ImageView
+                android:id="@+id/cartIcon"
+                android:layout_width="@dimen/icon_small"
+                android:layout_height="@dimen/icon_small"
+                android:layout_margin="@dimen/dimen_tiny"
+                android:contentDescription="@string/cart_icon"
+                app:layout_constraintTop_toBottomOf="@+id/productCodeIcon"
+                app:srcCompat="@drawable/ic_shopping_cart_black" />
+
+            <TextView
+                android:id="@+id/quantitySold"
+                style="@style/CustomAppThemeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_medium"
+                android:layout_marginTop="@dimen/dimen_medium"
+                android:text="@string/sample_text"
+                app:layout_constraintBottom_toBottomOf="@id/cartIcon"
+                app:layout_constraintStart_toEndOf="@id/cartIcon" />
+
+            <ImageView
+                android:id="@+id/stockIcon"
+                android:layout_width="@dimen/icon_small"
+                android:layout_height="@dimen/icon_small"
+                android:layout_marginTop="@dimen/dimen_tiny"
+                android:contentDescription="@string/inventory_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/priceIcon"
+                app:srcCompat="@mipmap/inventory2" />
+
+            <TextView
+                android:id="@+id/leftOver"
+                style="@style/CustomAppThemeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_medium"
+                android:layout_marginTop="@dimen/dimen_medium"
+                android:text="@string/sample_text"
+                app:layout_constraintBottom_toBottomOf="@id/stockIcon"
+                app:layout_constraintStart_toEndOf="@id/stockIcon" />
+
+            <LinearLayout
+                android:id="@+id/section_header2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/stockIcon">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:background="@color/colorPrimary" />
+
+                <TextView
+                    style="@style/CustomAppThemeText.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:padding="@dimen/dimen_tiny"
+                    android:text="@string/customer_details"
+                    android:textAlignment="center"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:background="@color/colorPrimary" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/customerIcon"
+                android:layout_width="@dimen/icon_small"
+                android:layout_height="@dimen/icon_small"
+                android:layout_marginTop="@dimen/dimen_tiny"
+                android:layout_marginEnd="@dimen/dimen_tiny"
+                android:contentDescription="@string/product_image"
+                android:src="@drawable/ic_account_box_black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/section_header2" />
+
+            <TextView
+                android:id="@+id/customerName"
+                style="@style/CustomAppThemeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/text_size_small"
+                android:text="@string/sample_text"
+                app:layout_constraintBottom_toBottomOf="@id/customerIcon"
+                app:layout_constraintStart_toEndOf="@id/customerIcon" />
+
+            <ImageView
+                android:id="@+id/emailIcon"
+                android:layout_width="@dimen/icon_small"
+                android:layout_height="@dimen/icon_small"
+                android:layout_marginTop="@dimen/dimen_tiny"
+                android:layout_marginEnd="@dimen/dimen_tiny"
+                android:contentDescription="@string/product_image"
+                android:src="@drawable/ic_email_black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/customerIcon" />
+
+            <TextView
+                android:id="@+id/customerEmail"
+                style="@style/CustomAppThemeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/text_size_small"
+                android:text="@string/sample_text"
+                app:layout_constraintBottom_toBottomOf="@id/emailIcon"
+                app:layout_constraintStart_toEndOf="@id/emailIcon" />
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="2dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dimen_medium"
+                android:layout_marginBottom="@dimen/dimen_medium"
                 android:layout_weight="2"
-                android:background="@color/colorPrimary" />
+                android:background="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@id/emailIcon" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
-            android:id="@+id/customerIcon"
-            android:layout_width="@dimen/icon_small"
-            android:layout_height="@dimen/icon_small"
-            android:layout_marginTop="@dimen/dimen_tiny"
-            android:layout_marginEnd="@dimen/dimen_tiny"
-            android:contentDescription="@string/product_image"
-            android:src="@drawable/ic_account_box_black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/section_header2" />
+            <!--<ImageView-->
+                <!--android:id="@+id/locationIcon"-->
+                <!--android:layout_width="@dimen/icon_small"-->
+                <!--android:layout_height="@dimen/icon_small"-->
+                <!--android:layout_marginTop="@dimen/dimen_large"-->
+                <!--android:contentDescription="@string/location_icon"-->
+                <!--android:src="@drawable/ic_location_black"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@id/emailIcon" />-->
 
-        <TextView
-            android:id="@+id/customerName"
-            style="@style/CustomAppThemeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/text_size_small"
-            android:text="@string/sample_text"
-            app:layout_constraintBottom_toBottomOf="@id/customerIcon"
-            app:layout_constraintStart_toEndOf="@id/customerIcon" />
+            <!--<TextView-->
+                <!--android:id="@+id/place_text"-->
+                <!--style="@style/CustomAppThemeText"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="@dimen/text_size_small"-->
+                <!--android:text="@string/sample_text"-->
+                <!--app:layout_constraintBottom_toBottomOf="@id/locationIcon"-->
+                <!--app:layout_constraintStart_toEndOf="@id/locationIcon" />-->
 
-        <ImageView
-            android:id="@+id/emailIcon"
-            android:layout_width="@dimen/icon_small"
-            android:layout_height="@dimen/icon_small"
-            android:layout_marginTop="@dimen/dimen_tiny"
-            android:layout_marginEnd="@dimen/dimen_tiny"
-            android:contentDescription="@string/product_image"
-            android:src="@drawable/ic_email_black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/customerIcon" />
-
-        <TextView
-            android:id="@+id/customerEmail"
-            style="@style/CustomAppThemeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/text_size_small"
-            android:text="@string/sample_text"
-            app:layout_constraintBottom_toBottomOf="@id/emailIcon"
-            app:layout_constraintStart_toEndOf="@id/emailIcon" />
+    </androidx.cardview.widget.CardView>
+    <com.alespero.expandablecardview.ExpandableCardView
+        android:id="@+id/map_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_tiny"
+        app:title="Location"
+        app:icon="@drawable/ic_location_black"
+        app:inner_view="@layout/component_sales_event_map_layout"
+        app:expandOnClick="true"
+        app:animationDuration="300"
+        app:startExpanded="false"
+        app:layout_constraintTop_toBottomOf="@id/sales_event_holder"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>

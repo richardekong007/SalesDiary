@@ -1,5 +1,7 @@
 package com.daveace.salesdiary.fragment;
 
+import android.content.Context;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,6 +14,7 @@ import com.daveace.salesdiary.dialog.RecordCustomerDialog;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
 import com.daveace.salesdiary.store.FireStoreHelper;
+import com.daveace.salesdiary.util.LocationUtil;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -36,7 +39,8 @@ import static com.daveace.salesdiary.interfaces.Constant.SALESEVENTS;
 import static com.daveace.salesdiary.interfaces.Constant.USERS;
 import static com.daveace.salesdiary.util.StringUtil.fieldsAreValid;
 
-public class RecordSalesFragment extends BaseFragment implements RecordCustomerDialog.OnDoneClickListener {
+public class RecordSalesFragment extends BaseFragment
+        implements RecordCustomerDialog.OnDoneClickListener {
 
     @BindView(R.id.rootView)
     ConstraintLayout rootView;
@@ -69,12 +73,14 @@ public class RecordSalesFragment extends BaseFragment implements RecordCustomerD
     private int selectedProductIndex;
     private double recordedQuantity;
     private double recordedPrice;
+    private LocationManager locationManager;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         fbAuth = FirebaseAuth.getInstance();
         fireStoreHelper = FireStoreHelper.getInstance();
+        initiateLocationService();
         setupContentView();
     }
 
@@ -93,9 +99,20 @@ public class RecordSalesFragment extends BaseFragment implements RecordCustomerD
         customerId = id;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        LocationUtil.stopLocationUpdate(locationManager);
+    }
+
+    private void initiateLocationService() {
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        LocationUtil.requestLocationUpdate(getActivity(), locationManager);
+    }
 
     private void recordSalesEvent() {
         //save sales record and customer details to the database
+
         setLoading(true);
         if (selectedProduct == null){
             Snackbar.make(rootView,getString(R.string.select_product),Snackbar.LENGTH_LONG).show();
@@ -120,7 +137,9 @@ public class RecordSalesFragment extends BaseFragment implements RecordCustomerD
         }
         selectedProduct.setStock(quantityLeft);
         SalesEvent salesEvent = SalesEvent.getInstance(productId, userId, customerId, recordedPrice,
-                recordedQuantity, quantityLeft, new Date(), null);
+                recordedQuantity, quantityLeft, new Date());
+        salesEvent.setLatitude(LocationUtil.getLatitude());
+        salesEvent.setLongitude(LocationUtil.getLongitude());
 
         DocumentReference productRef = fireStoreHelper
                 .getSubDocumentReference(USERS, userId, PRODUCTS, productId);
@@ -135,7 +154,7 @@ public class RecordSalesFragment extends BaseFragment implements RecordCustomerD
             Snackbar.make(rootView, selectedProduct.getName() + getString(R.string.out_of_stock), Snackbar.LENGTH_LONG)
                     .show();
         }
-
+        setLoading(false);
     }
 
     private void setupContentView() {
@@ -195,8 +214,7 @@ public class RecordSalesFragment extends BaseFragment implements RecordCustomerD
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-            }
+            public void afterTextChanged(Editable s) { }
         });
 
         customerChip.setOnClickListener(view -> {
