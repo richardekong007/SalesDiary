@@ -13,12 +13,10 @@ import com.daveace.salesdiary.R;
 import com.daveace.salesdiary.dialog.RecordCustomerDialog;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
-import com.daveace.salesdiary.store.FireStoreHelper;
 import com.daveace.salesdiary.util.LocationUtil;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -63,8 +61,6 @@ public class RecordSalesFragment extends BaseFragment
     @BindView(R.id.recordButton)
     AppCompatButton recordButton;
 
-    private FirebaseAuth fbAuth;
-    private FireStoreHelper fireStoreHelper;
     private PopupMenu productMenu;
     private List<Product> products;
     private Product selectedProduct;
@@ -78,8 +74,6 @@ public class RecordSalesFragment extends BaseFragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fbAuth = FirebaseAuth.getInstance();
-        fireStoreHelper = FireStoreHelper.getInstance();
         initiateLocationService();
         setupContentView();
     }
@@ -114,8 +108,8 @@ public class RecordSalesFragment extends BaseFragment
         //save sales record and customer details to the database
 
         setLoading(true);
-        if (selectedProduct == null){
-            Snackbar.make(rootView,getString(R.string.select_product),Snackbar.LENGTH_LONG).show();
+        if (selectedProduct == null) {
+            Snackbar.make(rootView, getString(R.string.select_product), Snackbar.LENGTH_LONG).show();
             return;
         }
 
@@ -141,16 +135,16 @@ public class RecordSalesFragment extends BaseFragment
         salesEvent.setLatitude(LocationUtil.getLatitude());
         salesEvent.setLongitude(LocationUtil.getLongitude());
 
-        DocumentReference productRef = fireStoreHelper
+        DocumentReference productRef = getFireStoreHelper()
                 .getSubDocumentReference(USERS, userId, PRODUCTS, productId);
-        DocumentReference salesEventRef = fireStoreHelper
+        DocumentReference salesEventRef = getFireStoreHelper()
                 .getSubDocumentReference(USERS, userId, SALESEVENTS, salesEvent.getId());
 
-        fireStoreHelper.update(productRef, selectedProduct);
-        fireStoreHelper.addDocumentToSubCollection(salesEventRef,salesEvent);
+        getFireStoreHelper().update(productRef, selectedProduct);
+        getFireStoreHelper().addDocumentToSubCollection(salesEventRef, salesEvent);
         if (selectedProduct.getStock() < 1.0) {
             selectedProduct.setAvailable(false);
-            fireStoreHelper.update(productRef,selectedProduct);
+            getFireStoreHelper().update(productRef, selectedProduct);
             Snackbar.make(rootView, selectedProduct.getName() + getString(R.string.out_of_stock), Snackbar.LENGTH_LONG)
                     .show();
         }
@@ -214,7 +208,8 @@ public class RecordSalesFragment extends BaseFragment
             }
 
             @Override
-            public void afterTextChanged(Editable s) { }
+            public void afterTextChanged(Editable s) {
+            }
         });
 
         customerChip.setOnClickListener(view -> {
@@ -228,10 +223,10 @@ public class RecordSalesFragment extends BaseFragment
     }
 
     private void setupProductMenu() {
-        userId = fbAuth.getCurrentUser().getUid();
+        userId = getUserId();
         productMenu = new PopupMenu(getActivity(), productInputText);
         products = new ArrayList<>();
-        fireStoreHelper.readDocsFromSubCollection(USERS, userId, PRODUCTS)
+        getFireStoreHelper().readDocsFromSubCollection(USERS, userId, PRODUCTS)
                 .get()
                 .addOnCompleteListener(task -> {
                     int index = 0;

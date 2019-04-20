@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 
 import com.daveace.salesdiary.R;
 import com.daveace.salesdiary.activity.BaseActivity;
+import com.daveace.salesdiary.store.FireStoreHelper;
 import com.daveace.salesdiary.util.FragmentUtil;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
@@ -26,11 +28,15 @@ public abstract class BaseFragment extends Fragment {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private Unbinder unbinder;
+    private FirebaseAuth fbAuth;
+    private FireStoreHelper fireStoreHelper;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = createWithLoadingIndicator(getLayout(), container);
+        fbAuth = FirebaseAuth.getInstance();
+        fireStoreHelper = FireStoreHelper.getInstance();
         showOrHideActionBar(this);
         reConfigureDrawerLayoutSwipe(this.getActivity(), this);
         reconfigureActionbar(this.getActivity(), this);
@@ -145,6 +151,18 @@ public abstract class BaseFragment extends Fragment {
                 actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
             }
         }
+    }
+
+    protected FirebaseAuth getFirebaseAuth(){
+        return fbAuth;
+    }
+
+    protected String getUserId(){
+            return fbAuth.getCurrentUser().getUid();
+    }
+
+    protected FireStoreHelper getFireStoreHelper(){
+        return fireStoreHelper;
     }
 
     public abstract int getLayout();

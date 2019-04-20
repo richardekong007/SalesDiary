@@ -12,9 +12,7 @@ import android.widget.ImageView;
 import com.daveace.salesdiary.Adapter.ProductsAdapter;
 import com.daveace.salesdiary.R;
 import com.daveace.salesdiary.entity.Product;
-import com.daveace.salesdiary.store.FireStoreHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -39,9 +37,6 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
     RecyclerView productsRecyclerView;
     @BindView(R.id.addButton)
     FloatingActionButton addButton;
-
-    private FirebaseAuth fbAuth;
-    private FireStoreHelper fireStoreHelper;
     private ProductsAdapter adapter;
 
     static final String PRODUCT_BUNDLE = "PRODUCT_BUNDLE";
@@ -49,8 +44,6 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fbAuth = FirebaseAuth.getInstance();
-        fireStoreHelper = FireStoreHelper.getInstance();
         setHasOptionsMenu(true);
         initUI();
     }
@@ -119,8 +112,8 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
 
     private void loadProducts() {
         setLoading(true);
-        String userId = fbAuth.getCurrentUser().getUid();
-        CollectionReference reference = fireStoreHelper.readDocsFromSubCollection(USERS, userId, PRODUCTS);
+        String userId = getUserId();
+        CollectionReference reference = getFireStoreHelper().readDocsFromSubCollection(USERS, userId, PRODUCTS);
         reference
                 .get()
                 .addOnCompleteListener(task -> {
@@ -128,7 +121,7 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot doc : task.getResult()) {
                             Product product = doc.toObject(Product.class);
-                            if (Objects.requireNonNull(product).isAvailable()){
+                            if (Objects.requireNonNull(product).isAvailable()) {
                                 products.add(product);
                             }
                         }
