@@ -15,7 +15,6 @@ import com.daveace.salesdiary.store.FireStoreHelper;
 import com.daveace.salesdiary.util.MediaUtil;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
@@ -55,12 +54,10 @@ public class EditProductFragment extends BaseFragment {
 
     private String productImagePath;
     private Product product;
-    private FirebaseAuth fbAuth;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fbAuth = FirebaseAuth.getInstance();
         initView();
     }
 
@@ -120,9 +117,8 @@ public class EditProductFragment extends BaseFragment {
                     .toString()));
             product.setCost(Double.parseDouble(costInput.getText()
                     .toString()));
-            String userId = fbAuth.getCurrentUser().getUid();
             FireStoreHelper.getInstance()
-                    .update(USERS, userId, PRODUCTS, product.getId(), product);
+                    .update(USERS, getUserId(), PRODUCTS, product.getId(), product);
             setLoading(false);
         }
     }

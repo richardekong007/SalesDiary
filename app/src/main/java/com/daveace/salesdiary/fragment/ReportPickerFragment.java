@@ -11,16 +11,11 @@ import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
 import com.daveace.salesdiary.store.FireStoreHelper;
 import com.daveace.salesdiary.util.ReportUtil;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,8 +54,6 @@ public class ReportPickerFragment extends BaseFragment {
     CardView yearlyReportCardView;
     @BindView(R.id.generalReportAction)
     LinearLayout generalReportLayout;
-
-    private String userId;
     private final List<SalesEvent> salesEvents = new ArrayList<>();
     private final List<Product> relatedProducts = new ArrayList<>();
     private final List<Customer> relatedCustomers = new ArrayList<>();
@@ -68,8 +61,6 @@ public class ReportPickerFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FirebaseAuth fbAuth = FirebaseAuth.getInstance();
-        userId = fbAuth.getCurrentUser().getUid();
         loadData(SALESEVENTS, salesEvents, SalesEvent.class);
         loadData(PRODUCTS, relatedProducts, Product.class);
         loadData(CUSTOMERS, relatedCustomers, Customer.class);
@@ -106,7 +97,7 @@ public class ReportPickerFragment extends BaseFragment {
 
     private <T> void loadData(String subCollection, List<T> docs, Class<T> entityClass) {
         CollectionReference reference = FireStoreHelper.getInstance()
-                .readDocsFromSubCollection(USERS, userId, subCollection);
+                .readDocsFromSubCollection(USERS, getUserId(), subCollection);
         reference.get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

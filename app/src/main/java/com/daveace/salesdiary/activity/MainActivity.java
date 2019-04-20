@@ -64,8 +64,7 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Fragment currentFragment =
-                        getSupportFragmentManager()
+                Fragment currentFragment = getSupportFragmentManager()
                                 .findFragmentById(R.id.content_layout);
                 if (currentFragment instanceof SalesEventDetailsFragment) {
                     getSupportFragmentManager().popBackStackImmediate();
@@ -121,8 +120,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void signOut() {
-        FirebaseAuth.getInstance()
-                .signOut();
+        FirebaseAuth.getInstance().signOut();
         FragmentUtil.replaceFragment(getSupportFragmentManager(), new LoginFragment(), null, false);
     }
 

@@ -71,13 +71,10 @@ public class PeriodicReportFragment extends BaseFragment
     @Override
     public void onClick(SalesEvent event, Product relatedProduct,
                         Customer relatedCustomer) {
-        final String TAG = "SALES_EVENT_DETAILS_DIALOG";
         Bundle bundle = new Bundle();
         bundle.putParcelable(SALES_EVENTS_REPORT, event);
         bundle.putParcelable(EVENT_RELATED_PRODUCT, relatedProduct);
         bundle.putParcelable(EVENTS_RELATED_CUSTOMER, relatedCustomer);
-//        SalesEventDetailsDialog.getInstance(bundle)
-//                .show(getFragmentManager(), TAG);
         replaceFragment(new SalesEventDetailsFragment(), true, bundle);
     }
 

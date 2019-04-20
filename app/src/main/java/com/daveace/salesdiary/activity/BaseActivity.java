@@ -66,6 +66,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     abstract Toolbar getToolbar();
 
-    abstract DrawerLayout getDrawerLayout();
+    public abstract DrawerLayout getDrawerLayout();
 
 }

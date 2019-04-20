@@ -12,12 +12,10 @@ import com.daveace.salesdiary.R;
 import com.daveace.salesdiary.SubCollectionPath;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.interfaces.Constant;
-import com.daveace.salesdiary.store.FireStoreHelper;
 import com.daveace.salesdiary.util.MediaUtil;
 import com.daveace.salesdiary.util.StringUtil;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Date;
 import java.util.Objects;
@@ -56,16 +54,12 @@ public class InventoryFragment extends BaseFragment {
     private String imageFilePath;
     private Bitmap imageBitmap;
     private static final String PRODUCT_PARCELABLE = "PRODUCT_PARCELABLE";
-    private FireStoreHelper fireStoreHelper;
-    private FirebaseAuth fbAuth;
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViews();
-        setRetainInstance(true);
-        fbAuth = FirebaseAuth.getInstance();
-        fireStoreHelper = FireStoreHelper.getInstance();
     }
 
     @Override
@@ -127,9 +121,9 @@ public class InventoryFragment extends BaseFragment {
         String imgPath = !(TextUtils.isEmpty(imageFilePath)) ? imageFilePath : "";
         Date date = new Date();
         Product product = Product.getInstance(name, quantity, cost, code, imgPath, date);
-        String userId = fbAuth.getCurrentUser().getUid();
+        String userId = getUserId();
         SubCollectionPath metaData = new SubCollectionPath(USERS, userId, PRODUCTS, product.getId(), product);
-        fireStoreHelper.addDocumentToSubCollection(metaData, rootView);
+        getFireStoreHelper().addDocumentToSubCollection(metaData, rootView);
         setLoading(false);
         StringUtil.clear(productNameInput, quantityInput, productCode, costInput);
     }

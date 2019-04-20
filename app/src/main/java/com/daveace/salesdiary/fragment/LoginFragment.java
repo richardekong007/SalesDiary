@@ -9,7 +9,6 @@ import com.daveace.salesdiary.R;
 import com.daveace.salesdiary.store.FireStoreHelper;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,12 +37,9 @@ public class LoginFragment extends BaseFragment {
     @BindView(R.id.sign_up_text)
     TextView signUpText;
 
-    private FirebaseAuth fbAuth;
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fbAuth = FirebaseAuth.getInstance();
         initUI();
     }
 
@@ -84,7 +80,7 @@ public class LoginFragment extends BaseFragment {
         logInButton.setEnabled(false);
         String email = emailInput.getText().toString();
         String password = passwordInput.getText().toString();
-        fbAuth.signInWithEmailAndPassword(email, password)
+        getFirebaseAuth().signInWithEmailAndPassword(email, password)
                 .addOnFailureListener(error -> {
                     setLoading(false);
                     Snackbar.make(rootView, error.getMessage(), Snackbar.LENGTH_LONG)
@@ -103,7 +99,7 @@ public class LoginFragment extends BaseFragment {
     }
 
     private void checkProductCatalog() {
-        String userId = fbAuth.getCurrentUser().getUid();
+        String userId = getUserId();
         FireStoreHelper.getInstance().readDocsFromSubCollection(USERS, userId, PRODUCTS)
                 .get()
                 .addOnCompleteListener(task -> {

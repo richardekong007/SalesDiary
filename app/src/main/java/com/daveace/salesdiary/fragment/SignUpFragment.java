@@ -8,10 +8,8 @@ import android.widget.TextView;
 
 import com.daveace.salesdiary.R;
 import com.daveace.salesdiary.entity.User;
-import com.daveace.salesdiary.store.FireStoreHelper;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
@@ -40,14 +38,10 @@ public class SignUpFragment extends BaseFragment {
     AppCompatButton signUpButton;
     @BindView(R.id.logInText)
     TextView logInText;
-    private FireStoreHelper fireStoreHelper;
-    private FirebaseAuth fbAuth;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fbAuth = FirebaseAuth.getInstance();
-        fireStoreHelper = FireStoreHelper.getInstance();
         initUI();
     }
 
@@ -87,10 +81,14 @@ public class SignUpFragment extends BaseFragment {
         }
 
         User user = createUser();
-        user.setId(fbAuth.getCurrentUser().getUid());
+        user.setId(getUserId());
         setLoading(true);
         signUpButton.setEnabled(false);
-        fbAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
+        getFirebaseAuth()
+                .createUserWithEmailAndPassword(
+                        user.getEmail(),
+                        user.getPassword()
+                )
                 .addOnFailureListener(error -> {
                     setLoading(false);
                     signUpButton.setEnabled(true);
@@ -101,7 +99,7 @@ public class SignUpFragment extends BaseFragment {
                     setLoading(false);
                     if (task.isSuccessful()) {
                         updateUserProfile(user);
-                        addUser(fbAuth.getCurrentUser().getUid(), user);
+                        addUser(getUserId(), user);
                         Snackbar.make(rootView, getString(R.string.auth_successful), Snackbar.LENGTH_LONG)
                                 .show();
                         replaceFragment(new InventoryFragment(), false, null);
@@ -111,7 +109,7 @@ public class SignUpFragment extends BaseFragment {
     }
 
     private void updateUserProfile(User user) {
-        FirebaseUser firebaseUser = fbAuth.getCurrentUser();
+        FirebaseUser firebaseUser = getFirebaseAuth().getCurrentUser();
         UserProfileChangeRequest profile = new UserProfileChangeRequest
                 .Builder()
                 .setDisplayName(user.getName())
@@ -136,7 +134,7 @@ public class SignUpFragment extends BaseFragment {
 
     private void addUser(String userId, User user) {
         user.setId(userId);
-        fireStoreHelper.addDocument(USERS, userId, user);
+        getFireStoreHelper().addDocument(USERS, userId, user);
     }
 
 }
