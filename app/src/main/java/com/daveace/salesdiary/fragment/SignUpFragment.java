@@ -10,6 +10,7 @@ import com.daveace.salesdiary.R;
 import com.daveace.salesdiary.entity.User;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
@@ -79,7 +80,6 @@ public class SignUpFragment extends BaseFragment {
         if (!fieldsAreValid(getActivity(), userName, email, password)) {
             return;
         }
-
         User user = createUser();
         user.setId(getUserId());
         setLoading(true);

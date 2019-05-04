@@ -11,7 +11,7 @@
         <item name="android:iconTint" tools:ignore="NewApi">@android:color/white</item>
     </style>
 
-    <style name = "CustomAppThemeTitle" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+    <style name="CustomAppThemeTitle" parent="@style/ThemeOverlay.AppCompat.ActionBar">
         <item name="android:color">@android:color/white</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -41,7 +41,6 @@
     </style>
 
 
-
     <style name="CustomAppThemeText.calendar">
         <item name="android:textStyle">bold</item>
     </style>
@@ -55,6 +54,10 @@
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:elevation">@dimen/elevation_lower</item>
+    </style>
+
+    <style name="CustomAppThemeButton.small" parent="CustomAppThemeButton">
+        <item name="android:textSize">@dimen/text_size_small</item>
     </style>
 
     <style name="AnimatedDialog">

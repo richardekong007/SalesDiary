@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/dimen_medium">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/inflow_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_small"
+            android:text="@string/total_inflow"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/colorPrimary"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/CustomAppThemeText.Medium"/>
+
+        <TextView android:id = "@+id/inflowText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_medium"
+            android:text="@string/sample_text"
+            app:layout_constraintStart_toEndOf="@id/inflow_chip"
+            app:layout_constraintBaseline_toBaselineOf="@id/inflow_chip"
+            style="@style/CustomAppThemeText"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/outflow_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_small"
+            android:text="@string/total_outflow"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/colorPrimary"
+            app:layout_constraintTop_toBottomOf="@id/inflow_chip"
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/CustomAppThemeText.Medium"/>
+
+        <TextView android:id="@+id/outflowText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_small"
+            android:text="@string/sample_text"
+            app:layout_constraintStart_toEndOf="@id/outflow_chip"
+            app:layout_constraintBaseline_toBaselineOf="@id/outflow_chip"
+            style="@style/CustomAppThemeText"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

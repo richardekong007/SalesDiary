@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/dimen_small"
-            android:text="@string/price" />
+            android:text="@string/salesPrice" />
 
         <TextView
             android:id="@+id/stockElement"

@@ -34,7 +34,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/totalProfit"
+                android:id="@+id/totalCost"
                 style="@style/CustomAppThemeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                 android:layout_marginTop="@dimen/dimen_small"
                 android:drawableStart="@drawable/ic_add_white"
                 android:text="@string/more_text"
-                app:layout_constraintTop_toBottomOf="@+id/totalProfit" />
+                app:layout_constraintTop_toBottomOf="@+id/totalCost" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

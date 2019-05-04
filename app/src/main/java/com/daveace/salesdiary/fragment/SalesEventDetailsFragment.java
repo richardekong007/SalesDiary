@@ -13,6 +13,7 @@ import com.daveace.salesdiary.R;
 import com.daveace.salesdiary.entity.Customer;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
+import com.daveace.salesdiary.interfaces.BackIconActionBarMarker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -39,7 +40,8 @@ import static com.daveace.salesdiary.interfaces.Constant.SALES_EVENT_DATE_FORMAT
 import static com.daveace.salesdiary.interfaces.Constant.TILT_ANGLE;
 import static com.daveace.salesdiary.interfaces.Constant.ZOOM_LEVEL;
 
-public class SalesEventDetailsFragment extends BaseFragment implements OnMapReadyCallback {
+public class SalesEventDetailsFragment extends BaseFragment implements OnMapReadyCallback,
+        BackIconActionBarMarker {
 
     @BindView(R.id.productName)
     TextView productNameTextView;
@@ -47,7 +49,7 @@ public class SalesEventDetailsFragment extends BaseFragment implements OnMapRead
     TextView productCodeTextView;
     @BindView(R.id.salesDate)
     TextView salesDateTextView;
-    @BindView(R.id.price)
+    @BindView(R.id.salesPrice)
     TextView priceTextView;
     @BindView(R.id.quantitySold)
     TextView quantityTextView;
@@ -96,7 +98,6 @@ public class SalesEventDetailsFragment extends BaseFragment implements OnMapRead
         initUI(savedInstanceState);
         return view;
     }
-
 
     @Override
     public int getLayout() {
@@ -175,7 +176,7 @@ public class SalesEventDetailsFragment extends BaseFragment implements OnMapRead
             productCodeTextView.setText(Objects.requireNonNull(relatedProduct)
                     .getCode());
             priceTextView.setText(String.valueOf(salesEventsDetail
-                    .getPrice()));
+                    .getSalesPrice()));
             quantityTextView.setText(String.valueOf(salesEventsDetail
                     .getSales()));
             leftOverTextView.setText(String.valueOf(salesEventsDetail
