@@ -17,4 +17,5 @@
     <dimen name="text_size_tiny">12sp</dimen>
     <dimen name="dimen_giant">120dp</dimen>
     <dimen name="surface_view_height">400dp</dimen>
+    <dimen name="pie_radius">200dp</dimen>
 </resources>

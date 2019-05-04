@@ -4,9 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.daveace.salesdiary.interfaces.ObjectMapper;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.IgnoreExtraProperties;
-import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.ServerTimestamp;
 import java.util.Date;
 import java.util.UUID;
@@ -17,7 +15,8 @@ public class SalesEvent implements ObjectMapper, Parcelable {
     private String productId;
     private String traderId;
     private String customerId;
-    private double price;
+    private double salesPrice;
+    private double costPrice;
     private double sales;
     private double left;
     @ServerTimestamp
@@ -48,7 +47,8 @@ public class SalesEvent implements ObjectMapper, Parcelable {
         dest.writeString(this.productId);
         dest.writeString(this.traderId);
         dest.writeString(this.customerId);
-        dest.writeDouble(this.price);
+        dest.writeDouble(this.salesPrice);
+        dest.writeDouble(this.costPrice);
         dest.writeDouble(this.sales);
         dest.writeDouble(this.left);
         dest.writeLong(this.date.getTime());
@@ -63,7 +63,8 @@ public class SalesEvent implements ObjectMapper, Parcelable {
         this.productId = source.readString();
         this.traderId = source.readString();
         this.customerId = source.readString();
-        this.price = source.readDouble();
+        this.salesPrice = source.readDouble();
+        this.costPrice = source.readDouble();
         this.sales = source.readDouble();
         this.left = source.readDouble();
         this.date = new Date(source.readLong());
@@ -72,13 +73,14 @@ public class SalesEvent implements ObjectMapper, Parcelable {
 
     }
 
-    private SalesEvent(String productId, String traderId, String customerId,
-                       Double price, double sales, double left, Date date) {
+    private SalesEvent(String productId, String traderId, String customerId, Double costPrice,
+                       Double salesPrice, double sales, double left, Date date) {
 
         this.productId = productId;
         this.traderId = traderId;
         this.customerId = customerId;
-        this.price = price;
+        this.costPrice = costPrice;
+        this.salesPrice = salesPrice;
         this.sales = sales;
         this.left = left;
         this.date = date;
@@ -90,11 +92,11 @@ public class SalesEvent implements ObjectMapper, Parcelable {
     }
 
     public static SalesEvent getInstance(String productId, String traderId, String customerId,
-                                         double price, double sales, double left,
+                                         double costPrice, double salesPrice, double sales, double left,
                                          Date date) {
 
         return new SalesEvent(productId, traderId,
-                customerId, price, sales, left, date);
+                customerId, costPrice, salesPrice, sales, left, date);
 
     }
 
@@ -130,12 +132,20 @@ public class SalesEvent implements ObjectMapper, Parcelable {
         this.customerId = customerId;
     }
 
-    public double getPrice() {
-        return price;
+    public double getSalesPrice() {
+        return salesPrice;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setSalesPrice(double salesPrice) {
+        this.salesPrice = salesPrice;
+    }
+
+    public double getCostPrice(){
+        return this.costPrice;
+    }
+
+    public void setCostPrice(double costPrice){
+        this.costPrice = costPrice;
     }
 
     public double getSales() {

@@ -61,9 +61,7 @@ public class ReportPickerFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadData(SALESEVENTS, salesEvents, SalesEvent.class);
-        loadData(PRODUCTS, relatedProducts, Product.class);
-        loadData(CUSTOMERS, relatedCustomers, Customer.class);
+        loadData();
         initUI();
     }
 
@@ -102,11 +100,21 @@ public class ReportPickerFragment extends BaseFragment {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot doc : task.getResult()) {
-                            if (doc.exists())
+                            if (doc.exists()) {
                                 docs.add(doc.toObject(entityClass));
+                            }
                         }
                     }
                 });
+    }
+
+    private void loadData() {
+        if (salesEvents.isEmpty() && relatedCustomers.isEmpty()
+                && relatedProducts.isEmpty()) {
+            loadData(SALESEVENTS, salesEvents, SalesEvent.class);
+            loadData(PRODUCTS, relatedProducts, Product.class);
+            loadData(CUSTOMERS, relatedCustomers, Customer.class);
+        }
     }
 
     private void transferSaleReports(List<SalesEvent> theSalesEvents, String reportType) {
@@ -115,7 +123,7 @@ public class ReportPickerFragment extends BaseFragment {
         salesEventBundle.putParcelableArrayList(SALES_EVENTS_REPORTS, (ArrayList<? extends Parcelable>) theSalesEvents);
         salesEventBundle.putParcelableArrayList(EVENT_RELATED_PRODUCTS, (ArrayList<? extends Parcelable>) relatedProducts);
         salesEventBundle.putParcelableArrayList(EVENTS_RELATED_CUSTOMERS, (ArrayList<? extends Parcelable>) relatedCustomers);
-        replaceFragment(new PeriodicReportFragment(), false, salesEventBundle);
+        replaceFragment(new PeriodicReportFragment(), true, salesEventBundle);
     }
 
 }

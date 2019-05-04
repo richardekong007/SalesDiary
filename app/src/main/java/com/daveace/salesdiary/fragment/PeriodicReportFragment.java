@@ -1,6 +1,9 @@
 package com.daveace.salesdiary.fragment;
 
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -9,7 +12,7 @@ import com.daveace.salesdiary.R;
 import com.daveace.salesdiary.entity.Customer;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
-import com.daveace.salesdiary.util.FragmentUtil;
+import com.daveace.salesdiary.interfaces.BackIconActionBarMarker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,18 +33,22 @@ import static com.daveace.salesdiary.interfaces.Constant.SALES_EVENTS_REPORT;
 import static com.daveace.salesdiary.interfaces.Constant.SALES_EVENTS_REPORTS;
 
 public class PeriodicReportFragment extends BaseFragment
-        implements SalesReportAdapter.MoreClickListener {
+        implements SalesReportAdapter.MoreClickListener, BackIconActionBarMarker {
 
     @BindView(R.id.periodicReports)
     RecyclerView periodicReportRecyclerView;
 
     private String reportHeader;
+    private List<SalesEvent> salesEvents = new ArrayList<>();
+    private List<Product> relatedProducts = new ArrayList<>();
+    private List<Customer> relatedCustomers = new ArrayList<>();
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(true);
+        loadData();
         initUI();
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -58,12 +65,24 @@ public class PeriodicReportFragment extends BaseFragment
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_cash_flow_report_, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.summaryItem:
-                FragmentUtil.replaceFragment((getActivity()).getSupportFragmentManager(),
-                        new SummaryFragment(), null, false);
+            case R.id.cashFlowItem:
+                Bundle args = new Bundle();
+                args.putParcelableArrayList(SALES_EVENTS_REPORTS,
+                        (ArrayList<? extends Parcelable>) salesEvents);
+                args.putParcelableArrayList(EVENT_RELATED_PRODUCTS,
+                        (ArrayList<? extends Parcelable>) relatedProducts);
+                args.putParcelableArrayList(EVENTS_RELATED_CUSTOMERS,
+                        (ArrayList<? extends Parcelable>) relatedCustomers);
+                args.putString(REPORT_TYPE, reportHeader);
+                replaceFragment(new CashFlowFragment(), true, args);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -79,15 +98,8 @@ public class PeriodicReportFragment extends BaseFragment
     }
 
     private void initUI() {
-        List<SalesEvent> salesEvents = new ArrayList<>();
-        List<Product> relatedProducts = new ArrayList<>();
-        List<Customer> relatedCustomers = new ArrayList<>();
-        if (getArguments() != null) {
-            salesEvents = getArguments().getParcelableArrayList(SALES_EVENTS_REPORTS);
-            relatedProducts = getArguments().getParcelableArrayList(EVENT_RELATED_PRODUCTS);
-            relatedCustomers = getArguments().getParcelableArrayList(EVENTS_RELATED_CUSTOMERS);
-            reportHeader = (getArguments().getString(REPORT_TYPE));
-        }
+        if (!isDataLoaded())
+            return;
         SalesReportAdapter adapter = new SalesReportAdapter(salesEvents);
         adapter.setRelatedProducts(relatedProducts);
         adapter.setRelatedCustomer(relatedCustomers);
@@ -98,5 +110,21 @@ public class PeriodicReportFragment extends BaseFragment
         periodicReportRecyclerView.setLayoutManager(linearLayoutManager);
         periodicReportRecyclerView.setAdapter(adapter);
 
+    }
+
+    private void loadData() {
+        if (getArguments() == null)
+            return;
+        salesEvents = getArguments().getParcelableArrayList(SALES_EVENTS_REPORTS);
+        relatedProducts = getArguments().getParcelableArrayList(EVENT_RELATED_PRODUCTS);
+        relatedCustomers = getArguments().getParcelableArrayList(EVENTS_RELATED_CUSTOMERS);
+        reportHeader = (getArguments().getString(REPORT_TYPE));
+
+    }
+
+    private boolean isDataLoaded() {
+        return (salesEvents.size() > 0
+                && relatedProducts.size() > 0
+                && relatedCustomers.size() > 0);
     }
 }

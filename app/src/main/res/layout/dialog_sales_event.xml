@@ -112,7 +112,7 @@
                 app:srcCompat="@mipmap/diamond" />
 
             <TextView
-                android:id="@+id/price"
+                android:id="@+id/salesPrice"
                 style="@style/CustomAppThemeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

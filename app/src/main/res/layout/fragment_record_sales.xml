@@ -200,13 +200,13 @@
                     app:layout_constraintTop_toBottomOf="@+id/quantityInputLayout">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/price"
+                        android:id="@+id/salesPrice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableStart="@mipmap/price"
                         android:drawablePadding="@dimen/dimen_small"
                         android:inputType="numberDecimal"
-                        android:hint="@string/price" />
+                        android:hint="@string/salesPrice" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 

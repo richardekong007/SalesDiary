@@ -54,7 +54,7 @@ public class RecordSalesFragment extends BaseFragment
     TextInputEditText productCodeInputText;
     @BindView(R.id.quantity)
     TextInputEditText quantityInputText;
-    @BindView(R.id.price)
+    @BindView(R.id.salesPrice)
     TextInputEditText priceInputText;
     @BindView(R.id.customerInfoChip)
     Chip customerChip;
@@ -67,7 +67,7 @@ public class RecordSalesFragment extends BaseFragment
     private String userId;
     private String customerId;
     private int selectedProductIndex;
-    private double recordedQuantity;
+    private double recordedQuantitySold;
     private double recordedPrice;
     private LocationManager locationManager;
 
@@ -114,13 +114,15 @@ public class RecordSalesFragment extends BaseFragment
         }
 
         double quantityLeft = selectedProduct.getStock();
+        double totalCost = getTotalCost(recordedQuantitySold, selectedProduct.getCost());
+        double totalSales = getTotalSales(recordedQuantitySold, recordedPrice);
         String productId = selectedProduct.getId();
 
         if (!fieldsAreValid(getActivity(), priceInputText, quantityInputText))
             return;
 
-        if (selectedProduct.getStock() >= recordedQuantity && recordedQuantity > 0) {
-            quantityLeft -= recordedQuantity;
+        if (selectedProduct.getStock() >= recordedQuantitySold && recordedQuantitySold > 0) {
+            quantityLeft -= recordedQuantitySold;
         } else {
             Snackbar.make(rootView, getString(R.string.invalid_sales_quantity), Snackbar.LENGTH_LONG).show();
             return;
@@ -130,8 +132,9 @@ public class RecordSalesFragment extends BaseFragment
             return;
         }
         selectedProduct.setStock(quantityLeft);
-        SalesEvent salesEvent = SalesEvent.getInstance(productId, userId, customerId, recordedPrice,
-                recordedQuantity, quantityLeft, new Date());
+        SalesEvent salesEvent = SalesEvent.getInstance(productId, userId, customerId,
+                totalCost, totalSales,
+                recordedQuantitySold, quantityLeft, new Date());
         salesEvent.setLatitude(LocationUtil.getLatitude());
         salesEvent.setLongitude(LocationUtil.getLongitude());
 
@@ -163,7 +166,7 @@ public class RecordSalesFragment extends BaseFragment
             quantityLeftTextView.setText(String.valueOf(selectedProduct.getStock()));
             costTextView.setText(String.valueOf(selectedProduct.getCost()));
             productCodeInputText.setText(products.get(selectedProductIndex).getCode());
-            displayFigures(getTotalSales(recordedQuantity, recordedPrice), quantitySoldTextView);
+            displayFigures(getTotalSales(recordedQuantitySold, recordedPrice), quantitySoldTextView);
             return true;
         });
         quantityInputText.addTextChangedListener(new TextWatcher() {
@@ -175,9 +178,9 @@ public class RecordSalesFragment extends BaseFragment
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
                 try {
-                    recordedQuantity = Double.parseDouble(text.toString());
-                    double remainingStock = selectedProduct.getStock() - recordedQuantity;
-                    displayFigures(getTotalSales(recordedQuantity, recordedPrice), quantitySoldTextView);
+                    recordedQuantitySold = Double.parseDouble(text.toString());
+                    double remainingStock = selectedProduct.getStock() - recordedQuantitySold;
+                    displayFigures(getTotalSales(recordedQuantitySold, recordedPrice), quantitySoldTextView);
                     displayFigures(remainingStock, quantityLeftTextView);
                 } catch (NumberFormatException e) {
                     final String TAG = "Quantity Text changed";
@@ -199,7 +202,7 @@ public class RecordSalesFragment extends BaseFragment
             public void onTextChanged(CharSequence text, int start, int before, int count) {
                 try {
                     recordedPrice = Double.parseDouble(text.toString());
-                    displayFigures(getTotalSales(recordedQuantity, recordedPrice), quantitySoldTextView);
+                    displayFigures(getTotalSales(recordedQuantitySold, recordedPrice), quantitySoldTextView);
                 } catch (NumberFormatException e) {
                     final String TAG = "Price text changed";
                     displayFigures(0.0, quantitySoldTextView);
@@ -243,8 +246,12 @@ public class RecordSalesFragment extends BaseFragment
                 });
     }
 
-    private double getTotalSales(double stock, double price) {
-        return stock * price;
+    private double getTotalSales(double quantitySold, double price) {
+        return quantitySold * price;
+    }
+
+    private double getTotalCost(double quantitySold, double cost) {
+        return quantitySold * cost;
     }
 
     private <T extends View> void displayFigures(double figure, T display) {

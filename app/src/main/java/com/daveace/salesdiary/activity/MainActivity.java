@@ -11,8 +11,8 @@ import com.daveace.salesdiary.fragment.LoginFragment;
 import com.daveace.salesdiary.fragment.ProductCatalogFragment;
 import com.daveace.salesdiary.fragment.RecordSalesFragment;
 import com.daveace.salesdiary.fragment.ReportPickerFragment;
-import com.daveace.salesdiary.fragment.SalesEventDetailsFragment;
 import com.daveace.salesdiary.fragment.SignUpFragment;
+import com.daveace.salesdiary.interfaces.BackIconActionBarMarker;
 import com.daveace.salesdiary.util.FragmentUtil;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -66,7 +66,7 @@ public class MainActivity extends BaseActivity {
             case android.R.id.home:
                 Fragment currentFragment = getSupportFragmentManager()
                                 .findFragmentById(R.id.content_layout);
-                if (currentFragment instanceof SalesEventDetailsFragment) {
+                if (currentFragment instanceof BackIconActionBarMarker) {
                     getSupportFragmentManager().popBackStackImmediate();
                 } else {
                     drawerLayout.openDrawer(GravityCompat.START);

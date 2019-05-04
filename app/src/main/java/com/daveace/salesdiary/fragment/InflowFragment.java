@@ -19,7 +19,7 @@ import butterknife.OnClick;
 
 public class InflowFragment extends BaseFragment {
 
-    @BindViews({R.id.totalSales,R.id.totalProfit})
+    @BindViews({R.id.totalSales,R.id.totalCost})
     List<TextView> textViews;
 
     @BindView(R.id.moreButton)

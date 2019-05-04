@@ -165,7 +165,7 @@
 //            productCodeTextView.setText(Objects.requireNonNull(relatedProduct)
 //                    .getCode());
 //            priceTextView.setText(String.valueOf(salesEventsDetail
-//                    .getPrice()));
+//                    .getSalesPrice()));
 //            quantityTextView.setText(String.valueOf(salesEventsDetail
 //                    .getSales()));
 //            leftOverTextView.setText(String.valueOf(salesEventsDetail

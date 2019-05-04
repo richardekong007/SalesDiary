@@ -2,10 +2,13 @@ package com.daveace.salesdiary.util;
 
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
 import com.daveace.salesdiary.R;
+import com.daveace.salesdiary.fragment.BaseFragment;
 
 public class FragmentUtil {
 
@@ -42,12 +45,20 @@ public class FragmentUtil {
         }
     }
 
-    public static void retainFragmentInstance(FragmentManager fManager, Fragment fragment){
-        if (fragmentIsNotNull(fragment) && fManager.getFragments().contains(fragment)){
+    public static void retainFragmentInstance(FragmentManager fManager, Fragment fragment) {
+        if (fragmentIsNotNull(fragment) && fManager.getFragments().contains(fragment)) {
             fragment.setRetainInstance(true);
         }
     }
 
+
+    public static Fragment getCurrentFragment(FragmentManager fManager) {
+        BaseFragment fragment = (BaseFragment) new Fragment();
+        if (fManager != null) {
+           fragment = (BaseFragment) fManager.findFragmentById(R.id.content_layout);
+        }
+        return fragment;
+    }
 
     private static boolean fragmentManagerIsNotNull(FragmentManager fManager) {
         return fManager != null;

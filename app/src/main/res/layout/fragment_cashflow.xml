@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/dimen_medium"
+    android:orientation="vertical">
+
+    <include layout="@layout/component_inflow_outflow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_medium"/>
+
+    <com.alespero.expandablecardview.ExpandableCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:animationDuration="300"
+        app:expandOnClick="true"
+        app:icon="@drawable/ic_compare_arrows_black"
+        app:inner_view="@layout/component_profit_loss"
+        app:startExpanded="false"
+        app:title="@string/profit_loss" />
+
+    <com.alespero.expandablecardview.ExpandableCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:animationDuration="300"
+        app:expandOnClick="true"
+        app:icon="@drawable/ic_compare_arrows_black"
+        app:inner_view="@layout/component_cost_sales"
+        app:startExpanded="false"
+        app:title="@string/sales_cost" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/moreButton"
+        style="@style/CustomAppThemeButton.small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/dimen_small"
+        android:drawableStart="@drawable/ic_add_white"
+        android:text="@string/more_text" />
+
+
+</LinearLayout>
