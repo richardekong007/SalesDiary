@@ -169,7 +169,7 @@ public class CashFlowFragment extends BaseFragment implements BackIconActionBarM
     }
 
     private double getTotalInflow(List<SalesEvent> salesEvents) {
-        return getTotalProfit(salesEvents) + getTotalSalesAmount(salesEvents);
+        return getTotalSalesAmount(salesEvents) - getTotalLoss(salesEvents);
     }
 
     private float getPercentage(double amount, double quotient) {
