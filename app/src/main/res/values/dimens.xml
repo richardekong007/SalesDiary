@@ -18,4 +18,6 @@
     <dimen name="dimen_giant">120dp</dimen>
     <dimen name="surface_view_height">400dp</dimen>
     <dimen name="pie_radius">200dp</dimen>
+    <dimen name="pie_radius_small">150dp</dimen>
+    <dimen name="bar_height">350dp</dimen>
 </resources>

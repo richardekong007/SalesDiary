@@ -51,7 +51,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         holder.productName.setText(product.getName());
         holder.priceElement.setText(String.valueOf(product.getCost()));
         holder.stockElement.setText(String.valueOf(product.getStock()));
-        Glide.with(ctx).load(ctx.getResources().getDrawable(R.mipmap.stock))
+        Glide.with(ctx).load(ctx.getResources().getDrawable(R.mipmap.stock, null))
                 .into(holder.productImageElement);
         holder.itemLayout.setOnClickListener(view ->
                 productLongClickListener.onProductClick(product, holder.itemLayout));
@@ -101,7 +101,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         this.productLongClickListener = listener;
     }
 
-    public class ProductAdapterViewHolder extends RecyclerView.ViewHolder {
+    class ProductAdapterViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.itemLayout)
         LinearLayout itemLayout;
         @BindView(R.id.productImageElement)
@@ -113,7 +113,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         @BindView(R.id.stockElement)
         TextView stockElement;
 
-        public ProductAdapterViewHolder(@NonNull View itemView) {
+        ProductAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

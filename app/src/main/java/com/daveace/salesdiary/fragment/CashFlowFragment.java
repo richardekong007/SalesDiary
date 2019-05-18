@@ -117,24 +117,41 @@ public class CashFlowFragment extends BaseFragment implements BackIconActionBarM
         costText.setText(String.valueOf(totalCost));
         profitText.setText(String.valueOf(totalProfit));
         lossText.setText(String.valueOf(totalLoss));
+
+        moreButton.setOnClickListener(view->
+            replaceFragment(new SummaryFragment(),true, args));
+
     }
 
 
     private void constructPieChart(PieChart pieChart, List<PieEntry> entries, String dataSetLabel, int... colors) {
         PieDataSet pieDataSet = new PieDataSet(entries, dataSetLabel);
         Description desc = new Description();
+        pieChart.setDescription(desc);
         desc.setText(dataSetLabel);
+        Legend pieChartLegend = pieChart.getLegend();
         pieDataSet.setValueFormatter(new PercentFormatter());
         PieData data = new PieData(pieDataSet);
         pieChart.setData(data);
-        pieChart.setDescription(desc);
-        Legend pieChartLegend = pieChart.getLegend();
-        pieChartLegend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        styleDescription(desc);
+        pieChart.setCenterTextColor(getResources().getColor(R.color.colorPrimary, null));
+        styleLegend(pieChartLegend);
         if (colors.length > 0) {
             pieDataSet.setColors(colors, getActivity());
         }
         pieChart.invalidate();
 
+    }
+
+    private void styleDescription(Description desc){
+        desc.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+    }
+
+    private void styleLegend(Legend pieChartLegend) {
+        pieChartLegend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        pieChartLegend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
+        pieChartLegend.setOrientation(Legend.LegendOrientation.VERTICAL);
+        pieChartLegend.setTextColor(getResources().getColor(R.color.colorPrimary, null));
     }
 
     private double getTotalProfit(List<SalesEvent> salesEvents) {

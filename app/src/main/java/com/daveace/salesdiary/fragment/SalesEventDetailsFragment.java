@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.alespero.expandablecardview.ExpandableCardView;
 import com.bumptech.glide.Glide;
 import com.daveace.salesdiary.R;
+import com.daveace.salesdiary.customview.CustomExpandableCardView;
 import com.daveace.salesdiary.entity.Customer;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
@@ -27,6 +28,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.OptionalInt;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -84,11 +86,11 @@ public class SalesEventDetailsFragment extends BaseFragment implements OnMapRead
     @BindView(R.id.map)
     MapView map;
     @BindView(R.id.location_detail_card)
-    ExpandableCardView locationDetailContainer;
+    CustomExpandableCardView locationDetailContainer;
     @BindView(R.id.product_detail_card)
-    ExpandableCardView productDetailContainer;
+    CustomExpandableCardView productDetailContainer;
     @BindView(R.id.customer_detail_card)
-    ExpandableCardView customerDetailContainer;
+    CustomExpandableCardView customerDetailContainer;
 
 
     @Nullable

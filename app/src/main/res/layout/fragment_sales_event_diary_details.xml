@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
 
-    <com.alespero.expandablecardview.ExpandableCardView
+    <com.daveace.salesdiary.customview.CustomExpandableCardView
         android:id="@+id/product_detail_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
         app:startExpanded="false"
         app:title="@string/product_details" />
 
-    <com.alespero.expandablecardview.ExpandableCardView
+    <com.daveace.salesdiary.customview.CustomExpandableCardView
         android:id="@+id/customer_detail_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         app:startExpanded="false"
         app:title="@string/customer_details" />
 
-    <com.alespero.expandablecardview.ExpandableCardView
+    <com.daveace.salesdiary.customview.CustomExpandableCardView
         android:id="@+id/location_detail_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
