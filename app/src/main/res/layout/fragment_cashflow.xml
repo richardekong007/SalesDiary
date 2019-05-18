@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dimen_medium"/>
 
-    <com.alespero.expandablecardview.ExpandableCardView
+    <com.daveace.salesdiary.customview.CustomExpandableCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:animationDuration="300"
@@ -21,7 +21,7 @@
         app:startExpanded="false"
         app:title="@string/profit_loss" />
 
-    <com.alespero.expandablecardview.ExpandableCardView
+    <com.daveace.salesdiary.customview.CustomExpandableCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:animationDuration="300"

@@ -128,4 +128,6 @@ public interface Constant {
 
     String SALES_EVENT_DATE_FORMAT = "MMM d, y";
 
+    String SALES_EVENT_INTERPRETATION = "SALES_EVENT_INTERPRETATION";
+
 }

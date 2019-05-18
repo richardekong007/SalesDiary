@@ -118,5 +118,17 @@
     <string name="sales_and_cost"><![CDATA[Sales & Cost]]></string>
     <string name="total_inflow">Total Inflow:</string>
     <string name="total_outflow">Total OutFlow:</string>
+    <string name="periodic_sales_summary">Periodic Sales Summary</string>
+    <string name="product_availability_status">Availability Status</string>
+    <string name="status">Status:</string>
+    <string name="sales_summary">Sales Summary</string>
+    <string name="interpret_template">
+        %s introduced a %s of %.2f from sales of %.1f unit(s)
+        for %.2f, after incurring a cost of %.2f.
+    </string>
+    <string name = "loss_statement">loss</string>
+    <string name="profit_statement">profit</string>
+    <string name="sales_event_interpretation_title">Interpretation</string>
+    <string name="image_drawable">image drawable</string>
 
 </resources>
