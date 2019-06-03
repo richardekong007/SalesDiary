@@ -10,11 +10,11 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.daveace.salesdiary.R;
 import com.daveace.salesdiary.SubCollectionPath;
+import com.daveace.salesdiary.alert.InformationAlert;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.interfaces.Constant;
 import com.daveace.salesdiary.util.MediaUtil;
 import com.daveace.salesdiary.util.StringUtil;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Date;
@@ -104,7 +104,11 @@ public class InventoryFragment extends BaseFragment {
         }
         if (resultCode == RESULT_CANCELED) {
             Glide.with(getActivity()).load(imageBitmap).into(inventoryImage);
-            Snackbar.make(rootView, getString(R.string.cam_capture_cancelled), Snackbar.LENGTH_LONG)
+            InformationAlert.Builder()
+                    .setContext(getActivity())
+                    .setRootView(rootView)
+                    .setMessage(getString(R.string.cam_capture_cancelled))
+                    .build()
                     .show();
         }
     }
@@ -122,7 +126,14 @@ public class InventoryFragment extends BaseFragment {
         Date date = new Date();
         Product product = Product.getInstance(name, quantity, cost, code, imgPath, date);
         String userId = getUserId();
-        SubCollectionPath metaData = new SubCollectionPath(USERS, userId, PRODUCTS, product.getId(), product);
+        SubCollectionPath metaData = new SubCollectionPath
+                .Builder()
+                .setCollection(USERS)
+                .setDoc(userId)
+                .setSubCollection(PRODUCTS)
+                .setSubDocId(product.getId())
+                .setSubDoc(product)
+                .build();
         getFireStoreHelper().addDocumentToSubCollection(metaData, rootView);
         setLoading(false);
         StringUtil.clear(productNameInput, quantityInput, productCode, costInput);

@@ -63,6 +63,7 @@
     <string name="summary">summary</string>
     <string name="required">Required.</string>
     <string name="auth_successful">Authentication successful.</string>
+    <string name="Login_successful">Login successful</string>
     <string name="auth_failed">Authentication Failed!</string>
     <string name="inventory_title">Inventory</string>
     <string name="about_title">About</string>
@@ -130,5 +131,9 @@
     <string name="profit_statement">profit</string>
     <string name="sales_event_interpretation_title">Interpretation</string>
     <string name="image_drawable">image drawable</string>
+    <string name="no_report">%s is not available. Try again</string>
+    <string name="record_success">Sales Recorded Successful</string>
+    <string name="scanner_start_message">Scanner Started.</string>
+    <string name="scanner_stop_message">Scanner stopped to prevent memory leaks</string>
 
 </resources>

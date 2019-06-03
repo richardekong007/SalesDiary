@@ -90,12 +90,21 @@ public class RecordCustomerDialog extends BaseDialog {
         String signaturePath = signatureDrawer.save();
         customer.setSignaturePath(signaturePath);
         String userId = fbAuth.getCurrentUser().getUid();
-        SubCollectionPath metaData = new SubCollectionPath(
+        /*SubCollectionPath metaData = new SubCollectionPath(
                 USERS,
                 userId,
                 CUSTOMERS,
                 customer.getId(),
-                customer);
+                customer);*/
+
+        SubCollectionPath metaData = new SubCollectionPath
+                .Builder()
+                .setCollection(USERS)
+                .setDoc(userId)
+                .setSubCollection(CUSTOMERS)
+                .setSubDocId(customer.getId())
+                .setSubDoc(customer)
+                .build();
 
         FireStoreHelper.getInstance().addDocumentToSubCollection(metaData, rootView);
         onDoneClickListener.passCustomerId(customer.getId());

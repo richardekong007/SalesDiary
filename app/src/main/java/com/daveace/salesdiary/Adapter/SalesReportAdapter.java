@@ -26,7 +26,8 @@ import butterknife.ButterKnife;
 
 import static com.daveace.salesdiary.interfaces.Constant.SALES_EVENT_DATE_FORMAT;
 
-public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.SalesReportViewHolder> {
+public class SalesReportAdapter extends
+        RecyclerView.Adapter<SalesReportAdapter.SalesReportViewHolder> {
 
 
     private List<SalesEvent> salesEvents;

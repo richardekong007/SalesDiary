@@ -6,9 +6,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.daveace.salesdiary.Adapter.SalesReportAdapter;
 import com.daveace.salesdiary.R;
+import com.daveace.salesdiary.alert.ErrorAlert;
 import com.daveace.salesdiary.entity.Customer;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
@@ -35,6 +37,8 @@ import static com.daveace.salesdiary.interfaces.Constant.SALES_EVENTS_REPORTS;
 public class PeriodicReportFragment extends BaseFragment
         implements SalesReportAdapter.MoreClickListener, BackIconActionBarMarker {
 
+    @BindView(R.id.rootView)
+    LinearLayout rootView;
     @BindView(R.id.periodicReports)
     RecyclerView periodicReportRecyclerView;
 
@@ -98,8 +102,17 @@ public class PeriodicReportFragment extends BaseFragment
     }
 
     private void initUI() {
-        if (!isDataLoaded())
+        if (!isDataLoaded()) {
+            ErrorAlert.Builder()
+                    .setContext(getContext())
+                    .setRootView(rootView)
+                    .setMessage(String.format(getString(R.string.no_report), reportHeader))
+                    .setActionCommand("Retry")
+                    .setAction(view -> getFragmentManager().popBackStackImmediate())
+                    .build()
+                    .show();
             return;
+        }
         SalesReportAdapter adapter = new SalesReportAdapter(salesEvents);
         adapter.setRelatedProducts(relatedProducts);
         adapter.setRelatedCustomer(relatedCustomers);

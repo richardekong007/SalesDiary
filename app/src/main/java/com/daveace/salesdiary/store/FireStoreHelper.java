@@ -4,6 +4,8 @@ import android.util.Log;
 import android.view.ViewGroup;
 
 import com.daveace.salesdiary.SubCollectionPath;
+import com.daveace.salesdiary.alert.ErrorAlert;
+import com.daveace.salesdiary.alert.InformationAlert;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -56,10 +58,21 @@ public class FireStoreHelper {
                 .addOnSuccessListener(docRef -> {
                     String msg = "Added successfully.";
                     Log.d(TAG, msg);
-                    Snackbar.make(container, msg, Snackbar.LENGTH_LONG).show();
+                    InformationAlert.Builder()
+                            .setContext(container.getContext())
+                            .setRootView(container)
+                            .setMessage(msg)
+                            .build()
+                            .show();
                 })
                 .addOnFailureListener(exception -> {
                     String msg = exception.getMessage();
+                    ErrorAlert.Builder()
+                            .setContext(container.getContext())
+                            .setRootView(container)
+                            .setMessage(msg)
+                            .build()
+                            .show();
                     Log.e(TAG, msg);
                 });
     }
@@ -103,7 +116,11 @@ public class FireStoreHelper {
             String msg = "Document Read Successfully";
             snapshot = documentSnapshot;
             Log.d(TAG, msg);
-            Snackbar.make(container, msg, Snackbar.LENGTH_LONG)
+            InformationAlert.Builder()
+                    .setContext(container.getContext())
+                    .setRootView(container)
+                    .setMessage(msg)
+                    .build()
                     .show();
         }).addOnFailureListener(exception -> {
             String msg = exception.getMessage();
@@ -139,7 +156,12 @@ public class FireStoreHelper {
                 .addOnSuccessListener(aVoid -> {
                     String msg = "Record Deleted";
                     Log.d(TAG, msg);
-                    Snackbar.make(container, msg, Snackbar.LENGTH_LONG);
+                    InformationAlert.Builder()
+                            .setContext(container.getContext())
+                            .setRootView(container)
+                            .setMessage(msg)
+                            .build()
+                            .show();
                 })
                 .addOnFailureListener(exception -> {
                     String msg = exception.getMessage();

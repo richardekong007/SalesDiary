@@ -10,15 +10,18 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.daveace.salesdiary.R;
+import com.daveace.salesdiary.alert.ErrorAlert;
+import com.daveace.salesdiary.alert.InformationAlert;
 import com.daveace.salesdiary.dialog.RecordCustomerDialog;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
 import com.daveace.salesdiary.util.LocationUtil;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.Transaction;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,6 +38,7 @@ import butterknife.BindView;
 import static com.daveace.salesdiary.interfaces.Constant.PRODUCTS;
 import static com.daveace.salesdiary.interfaces.Constant.SALESEVENTS;
 import static com.daveace.salesdiary.interfaces.Constant.USERS;
+import static com.daveace.salesdiary.util.StringUtil.clear;
 import static com.daveace.salesdiary.util.StringUtil.fieldsAreValid;
 
 public class RecordSalesFragment extends BaseFragment
@@ -106,10 +110,13 @@ public class RecordSalesFragment extends BaseFragment
 
     private void recordSalesEvent() {
         //save sales record and customer details to the database
-
         setLoading(true);
         if (selectedProduct == null) {
-            Snackbar.make(rootView, getString(R.string.select_product), Snackbar.LENGTH_LONG).show();
+            ErrorAlert.Builder().setContext(getActivity())
+                    .setRootView(rootView)
+                    .setMessage(getString(R.string.select_product))
+                    .build()
+                    .show();
             return;
         }
 
@@ -124,11 +131,19 @@ public class RecordSalesFragment extends BaseFragment
         if (selectedProduct.getStock() >= recordedQuantitySold && recordedQuantitySold > 0) {
             quantityLeft -= recordedQuantitySold;
         } else {
-            Snackbar.make(rootView, getString(R.string.invalid_sales_quantity), Snackbar.LENGTH_LONG).show();
+            ErrorAlert.Builder().setContext(getActivity())
+                    .setRootView(rootView)
+                    .setMessage(getString(R.string.invalid_sales_quantity))
+                    .build()
+                    .show();
             return;
         }
         if (customerId == null) {
-            Snackbar.make(rootView, getString(R.string.no_customer_flag), Snackbar.LENGTH_LONG).show();
+            ErrorAlert.Builder().setContext(getActivity())
+                    .setRootView(rootView)
+                    .setMessage(getString(R.string.no_customer_flag))
+                    .build()
+                    .show();
             return;
         }
         selectedProduct.setStock(quantityLeft);
@@ -138,19 +153,45 @@ public class RecordSalesFragment extends BaseFragment
         salesEvent.setLatitude(LocationUtil.getLatitude());
         salesEvent.setLongitude(LocationUtil.getLongitude());
 
-        DocumentReference productRef = getFireStoreHelper()
+        final DocumentReference productRef = getFireStoreHelper()
                 .getSubDocumentReference(USERS, userId, PRODUCTS, productId);
-        DocumentReference salesEventRef = getFireStoreHelper()
+        final DocumentReference salesEventRef = getFireStoreHelper()
                 .getSubDocumentReference(USERS, userId, SALESEVENTS, salesEvent.getId());
 
-        getFireStoreHelper().update(productRef, selectedProduct);
-        getFireStoreHelper().addDocumentToSubCollection(salesEventRef, salesEvent);
-        if (selectedProduct.getStock() < 1.0) {
-            selectedProduct.setAvailable(false);
-            getFireStoreHelper().update(productRef, selectedProduct);
-            Snackbar.make(rootView, selectedProduct.getName() + getString(R.string.out_of_stock), Snackbar.LENGTH_LONG)
-                    .show();
-        }
+        FirebaseFirestore
+                .getInstance()
+                .runTransaction((Transaction.Function<Void>) transaction -> {
+                    transaction.set(productRef, selectedProduct);
+                    transaction.set(salesEventRef, salesEvent);
+                    if (selectedProduct.getStock() < 1.0) {
+                        selectedProduct.setAvailable(false);
+                        transaction.set(productRef, selectedProduct);
+                        InformationAlert.Builder().setContext(getActivity())
+                                .setRootView(rootView)
+                                .setMessage(selectedProduct.getName() + getString(R.string.out_of_stock))
+                                .build()
+                                .show();
+                    }
+                    return null;
+                })
+                .addOnSuccessListener(aVoid -> {
+                            InformationAlert.Builder().setContext(getActivity())
+                                    .setRootView(rootView)
+                                    .setMessage(getString(R.string.record_success))
+                                    .build()
+                                    .show();
+                            clear(productInputText, productCodeInputText,
+                                    quantityInputText, priceInputText);
+                        }
+                )
+                .addOnFailureListener(e ->
+                        ErrorAlert.Builder().setContext(getActivity())
+                                .setRootView(rootView)
+                                .setMessage(e.getMessage())
+                                .build()
+                                .show()
+                );
+
         setLoading(false);
     }
 

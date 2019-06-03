@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.daveace.salesdiary.R;
+import com.daveace.salesdiary.alert.InformationAlert;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -88,8 +89,13 @@ public class ScannerFragment extends BaseFragment {
     }
 
     private void setupScanner() {
-        Snackbar.make(rootView, "Scanner Started.", Snackbar.LENGTH_LONG)
+        InformationAlert.Builder()
+                .setContext(getActivity())
+                .setRootView(rootView)
+                .setMessage(getString(R.string.scanner_start_message))
+                .build()
                 .show();
+
         BarcodeDetector detector = new BarcodeDetector.Builder(getActivity())
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
                 .build();
@@ -126,7 +132,11 @@ public class ScannerFragment extends BaseFragment {
         detector.setProcessor(new Detector.Processor<Barcode>() {
             @Override
             public void release() {
-                Snackbar.make(rootView, "Scanner stopped to prevent memory leaks", Snackbar.LENGTH_LONG)
+                InformationAlert.Builder()
+                        .setContext(getActivity())
+                        .setRootView(rootView)
+                        .setMessage(getString(R.string.scanner_stop_message))
+                        .build()
                         .show();
             }
 
