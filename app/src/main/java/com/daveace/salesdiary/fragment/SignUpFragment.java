@@ -7,10 +7,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.daveace.salesdiary.R;
+import com.daveace.salesdiary.alert.ErrorAlert;
+import com.daveace.salesdiary.alert.InformationAlert;
 import com.daveace.salesdiary.entity.User;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
@@ -92,7 +92,12 @@ public class SignUpFragment extends BaseFragment {
                 .addOnFailureListener(error -> {
                     setLoading(false);
                     signUpButton.setEnabled(true);
-                    Snackbar.make(rootView, error.getMessage(), Snackbar.LENGTH_LONG)
+                    ErrorAlert
+                            .Builder()
+                            .setContext(getActivity())
+                            .setRootView(rootView)
+                            .setMessage(error.getMessage())
+                            .build()
                             .show();
                 })
                 .addOnCompleteListener(task -> {
@@ -100,7 +105,12 @@ public class SignUpFragment extends BaseFragment {
                     if (task.isSuccessful()) {
                         updateUserProfile(user);
                         addUser(getUserId(), user);
-                        Snackbar.make(rootView, getString(R.string.auth_successful), Snackbar.LENGTH_LONG)
+                        InformationAlert
+                                .Builder()
+                                .setContext(getActivity())
+                                .setRootView(rootView)
+                                .setMessage(getString(R.string.auth_successful))
+                                .build()
                                 .show();
                         replaceFragment(new InventoryFragment(), false, null);
                         clear(userName, email, password);

@@ -10,6 +10,7 @@ import android.widget.ScrollView;
 
 import com.bumptech.glide.Glide;
 import com.daveace.salesdiary.R;
+import com.daveace.salesdiary.alert.InformationAlert;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.store.FireStoreHelper;
 import com.daveace.salesdiary.util.MediaUtil;
@@ -79,7 +80,11 @@ public class EditProductFragment extends BaseFragment {
         }
         if (resultCode == RESULT_CANCELED) {
             Glide.with(getActivity()).load(imageBitmap).into(productImageView);
-            Snackbar.make(rootView, getString(R.string.cam_capture_cancelled), Snackbar.LENGTH_LONG)
+            InformationAlert.Builder()
+                    .setContext(getActivity())
+                    .setRootView(rootView)
+                    .setMessage(getString(R.string.cam_capture_cancelled))
+                    .build()
                     .show();
         }
     }

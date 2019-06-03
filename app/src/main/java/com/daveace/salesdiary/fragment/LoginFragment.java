@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.daveace.salesdiary.R;
+import com.daveace.salesdiary.alert.ErrorAlert;
+import com.daveace.salesdiary.alert.InformationAlert;
 import com.daveace.salesdiary.store.FireStoreHelper;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -65,7 +67,6 @@ public class LoginFragment extends BaseFragment {
 
     private void initUI() {
         logInButton.setOnClickListener(view -> logInUser());
-
         signUpText.setOnClickListener(view ->
                 replaceFragment(new SignUpFragment(), false, null)
         );
@@ -83,15 +84,25 @@ public class LoginFragment extends BaseFragment {
         getFirebaseAuth().signInWithEmailAndPassword(email, password)
                 .addOnFailureListener(error -> {
                     setLoading(false);
-                    Snackbar.make(rootView, error.getMessage(), Snackbar.LENGTH_LONG)
+                    ErrorAlert.Builder()
+                            .setContext(getActivity())
+                            .setRootView(rootView)
+                            .setMessage(error.getMessage())
+                            .build()
                             .show();
                 })
                 .addOnCompleteListener(task -> {
                     setLoading(false);
                     logInButton.setEnabled(true);
                     if (task.isSuccessful()) {
-                        Snackbar.make(rootView, getString(R.string.auth_successful), Snackbar.LENGTH_LONG)
+                        InformationAlert
+                                .Builder()
+                                .setContext(getActivity())
+                                .setRootView(rootView)
+                                .setMessage(getString(R.string.Login_successful))
+                                .build()
                                 .show();
+
                         checkProductCatalog();
                         clear(emailInput, passwordInput);
                     }
