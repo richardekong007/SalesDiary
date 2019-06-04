@@ -5,11 +5,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -77,5 +81,22 @@ public class MediaUtil {
 
     public static <T extends ImageView> Bitmap createBitmap(T source) {
         return ((BitmapDrawable) source.getDrawable()).getBitmap();
+    }
+
+    public static Bitmap createBitmap(View source) throws Exception {
+        Bitmap bitmap = Bitmap.createBitmap(
+                source.getWidth(),
+                source.getHeight(),
+                Bitmap.Config.ARGB_8888
+        );
+        Canvas canvas = new Canvas(bitmap);
+        Drawable background = source.getBackground();
+        if (background != null) {
+            background.draw(canvas);
+        } else {
+            canvas.drawColor(Color.WHITE);
+        }
+        source.draw(canvas);
+        return bitmap;
     }
 }
