@@ -2,6 +2,9 @@ package com.daveace.salesdiary.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -64,7 +67,23 @@ public class SummaryFragment extends BaseFragment implements
         View view = super.onCreateView(inflater, container, savedInstanceState);
         args = getArguments();
         initUI(view);
+        setHasOptionsMenu(true);
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_report_preview, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.previewItem:
+                //display the preview report fragment
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
