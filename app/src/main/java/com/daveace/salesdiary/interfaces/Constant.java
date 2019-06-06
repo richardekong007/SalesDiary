@@ -58,6 +58,8 @@ public interface Constant {
 
     String IMAGE_FILE_TYPE = ".jpg";
 
+    String PDF_FILE = ".pdf";
+
     String ONLINE_QUOTE = "ONLINE_QUOTE";
 
     String LOCAL_LOCATION = "LOCAL_LOCATION";

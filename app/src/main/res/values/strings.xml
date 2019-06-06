@@ -135,5 +135,6 @@
     <string name="record_success">Sales Recorded Successful</string>
     <string name="scanner_start_message">Scanner Started.</string>
     <string name="scanner_stop_message">Scanner stopped to prevent memory leaks</string>
+    <string name="preview_content">preview_content</string>
 
 </resources>

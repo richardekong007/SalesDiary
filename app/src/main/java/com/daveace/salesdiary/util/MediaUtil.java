@@ -1,36 +1,36 @@
 package com.daveace.salesdiary.util;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.daveace.salesdiary.R;
 import com.daveace.salesdiary.fragment.BaseFragment;
 import com.daveace.salesdiary.interfaces.Constant;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 
 public class MediaUtil {
@@ -83,10 +83,18 @@ public class MediaUtil {
         return ((BitmapDrawable) source.getDrawable()).getBitmap();
     }
 
-    public static Bitmap createBitmap(View source) throws Exception {
+    public static Bitmap createBitmap(View source, Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y/3;
+        source.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        source.layout(0, 0, source.getMeasuredWidth(), source.getMeasuredHeight());
         Bitmap bitmap = Bitmap.createBitmap(
-                source.getWidth(),
-                source.getHeight(),
+                width,
+                height,
                 Bitmap.Config.ARGB_8888
         );
         Canvas canvas = new Canvas(bitmap);
@@ -96,6 +104,7 @@ public class MediaUtil {
         } else {
             canvas.drawColor(Color.WHITE);
         }
+        source.layout(source.getLeft(), source.getTop(), source.getRight(), source.getBottom());
         source.draw(canvas);
         return bitmap;
     }

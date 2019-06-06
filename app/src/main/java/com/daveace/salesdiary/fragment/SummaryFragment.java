@@ -1,5 +1,6 @@
 package com.daveace.salesdiary.fragment;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import com.daveace.salesdiary.dialog.SalesEventInterpretationDialog;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
 import com.daveace.salesdiary.interfaces.BackIconActionBarMarker;
+import com.daveace.salesdiary.util.MediaUtil;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -58,6 +60,8 @@ public class SummaryFragment extends BaseFragment implements
     private static final float LABEL_ANGLE = 60f;
     private static final float Y_INTERVAL = 1000f;
 
+    public static final String SUMMARY_CHART = "SUMMARY_CHART";
+
     private Bundle args;
 
     @Nullable
@@ -82,6 +86,8 @@ public class SummaryFragment extends BaseFragment implements
         switch(item.getItemId()){
             case R.id.previewItem:
                 //display the preview report fragment
+                replaceFragment(new PreviewReportFragment(),true,args);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -194,7 +200,8 @@ public class SummaryFragment extends BaseFragment implements
         summaryBarChart.setFitBars(true);
         summaryBarChart.setDescription(desc);
         summaryBarChart.invalidate();
-
+        Bitmap chartBitmap = MediaUtil.createBitmap(summaryBarChart,getActivity());
+        args.putParcelable(SUMMARY_CHART,chartBitmap);
         setupRecyclerView(events, products);
     }
 
