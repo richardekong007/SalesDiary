@@ -2,12 +2,14 @@ package com.daveace.salesdiary.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alespero.expandablecardview.ExpandableCardView;
 import com.bumptech.glide.Glide;
 import com.daveace.salesdiary.R;
 import com.daveace.salesdiary.customview.CustomExpandableCardView;
@@ -28,10 +30,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.OptionalInt;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import butterknife.BindView;
 
 import static com.daveace.salesdiary.interfaces.Constant.BEARING;
@@ -91,6 +93,8 @@ public class SalesEventDetailsFragment extends BaseFragment implements OnMapRead
     CustomExpandableCardView productDetailContainer;
     @BindView(R.id.customer_detail_card)
     CustomExpandableCardView customerDetailContainer;
+    @BindView(R.id.productStats)
+    AppCompatButton productStats;
 
 
     @Nullable
@@ -98,7 +102,25 @@ public class SalesEventDetailsFragment extends BaseFragment implements OnMapRead
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         initUI(savedInstanceState);
+        setHasOptionsMenu(true);
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_sales_stats,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.salesStatItem:
+                Bundle bundle = getArguments();
+                replaceFragment(new StatsInterpretationFragment(), true, bundle);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -219,6 +241,10 @@ public class SalesEventDetailsFragment extends BaseFragment implements OnMapRead
             Glide.with(getActivity()).load(getActivity()
                     .getResources().getDrawable(R.drawable.ic_phone_black, null))
                     .into(customerPhoneImageView);
+
+            productStats.setOnClickListener(view ->{
+                replaceFragment(new StatsInterpretationFragment(), true, bundle);
+            });
 
         } catch (NullPointerException e) {
             e.printStackTrace();
