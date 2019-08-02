@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/dimen_small"
+    >
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/salesInterpretationTitle"
+        style="@style/CustomAppThemeText.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/sales_statistics_and_availability_status"
+        android:textAlignment="center"
+        android:textColor="@color/white" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/salesBars"
+        android:layout_width="@dimen/chart_width"
+        android:layout_height="@dimen/chart_height"
+        android:layout_marginTop="@dimen/dimen_medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/salesInterpretationTitle" />
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/salesPie"
+        android:layout_width="@dimen/pie_radius_small"
+        android:layout_height="@dimen/pie_radius_small"
+        android:layout_marginTop="@dimen/dimen_medium"
+        app:layout_constraintStart_toEndOf="@+id/salesBars"
+        app:layout_constraintTop_toBottomOf="@+id/salesInterpretationTitle" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/statusChip"
+        style="@style/CustomAppThemeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/status"
+        android:textColor="@color/white"
+        app:layout_constraintHorizontal_bias="0.65"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/salesPie" />
+
+    <TextView
+        android:id="@+id/status"
+        style="@style/CustomAppThemeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_tiny"
+        android:text="@string/sample_text"
+        app:layout_constraintBaseline_toBaselineOf="@id/statusChip"
+        app:layout_constraintLeft_toRightOf="@id/statusChip"
+        app:layout_constraintTop_toBottomOf="@id/salesBars" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/interpretationTitle"
+        style="@style/CustomAppThemeText.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_medium"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/sales_interpretation"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/statusChip" />
+
+    <TextView
+        android:id="@+id/interpretation"
+        style="@style/CustomAppThemeText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/curved_rect"
+        android:backgroundTint="@color/colorPrimaryHue"
+        android:lineSpacingExtra="2dp"
+        android:elevation="@dimen/elevation_lower"
+        android:padding="@dimen/dimen_medium"
+        android:text="@string/interpret_template"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@id/interpretationTitle" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

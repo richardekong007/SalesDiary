@@ -12,7 +12,7 @@ import com.daveace.salesdiary.dialog.SalesEventInterpretationDialog;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
 import com.daveace.salesdiary.interfaces.BackIconActionBarMarker;
-import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -48,12 +48,12 @@ public class SummaryFragment extends BaseFragment implements
     @BindView(R.id.analysis_contents)
     RecyclerView analysisContentsRecyclerView;
 
-    private static final float GROUP_SPACE = 0.06f;
+    private static final float GROUP_SPACE = 0.10f;
     private static final float BAR_SPACE = 0.02f;
     private static final float BAR_WIDTH = 0.25f;
     private static final float FROM_X = -0.015f;
-    private static final float LABEL_ANGLE = 60f;
-    private static final float Y_INTERVAL = 1000f;
+    private static final float LABEL_ANGLE = 0f;
+    private static final float Y_INTERVAL = 100f;
 
     private Bundle args;
 
@@ -105,7 +105,7 @@ public class SummaryFragment extends BaseFragment implements
 
     private void initUI(View view) {
         if (args == null) return;
-        BarChart summaryBarChart = view.findViewById(R.id.summaryChart);
+        HorizontalBarChart summaryBarChart = view.findViewById(R.id.summaryChart);
         String chartDescription = args.getString(REPORT_TYPE);
         List<Product> products = Objects.requireNonNull
                 (args.getParcelableArrayList(EVENT_RELATED_PRODUCTS));
@@ -119,7 +119,9 @@ public class SummaryFragment extends BaseFragment implements
         List<BarEntry> salesEntries = new ArrayList<>();
         List<BarEntry> profitEntries = new ArrayList<>();
 
-        for (int i = 0; i < costFigures.size(); i++) {
+        float bars = productNames.size();
+
+        for (int i = 0; i < productNames.size(); i++) {
             salesEntries.add(new BarEntry((float) i, Float
                     .valueOf(String.valueOf(salesFigures.get(i)))));
             costEntries.add(new BarEntry((float) i, Float
@@ -153,6 +155,7 @@ public class SummaryFragment extends BaseFragment implements
         YAxis axisLeft = summaryBarChart.getAxisLeft();
         YAxis axisRight = summaryBarChart.getAxisRight();
         xAxis.setLabelRotationAngle(LABEL_ANGLE);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         axisLeft.setGranularity(Y_INTERVAL);
 
         IAxisValueFormatter productFormatter = createProductFormatter(productNames);
@@ -174,6 +177,7 @@ public class SummaryFragment extends BaseFragment implements
         desc.setTextColor(getResources().getColor(R.color.colorPrimary, null));
         summaryBarChart.setFitBars(true);
         summaryBarChart.setDescription(desc);
+        summaryBarChart.setVisibleXRangeMaximum(bars);
         summaryBarChart.invalidate();
 
         setupRecyclerView(events, products);
