@@ -127,6 +127,10 @@
         %s introduced a %s of %.2f from sales of %.1f unit(s)
         for %.2f, after incurring a cost of %.2f.
     </string>
+    <string name="available_status_interpretation_template">
+        Significant demand will ensure subsequent sales of the
+        remaining %.1f unit(s) at an amount of %.2f to break-even.
+    </string>
     <string name = "loss_statement">loss</string>
     <string name="profit_statement">profit</string>
     <string name="sales_event_interpretation_title">Interpretation</string>
@@ -136,5 +140,10 @@
     <string name="scanner_start_message">Scanner Started.</string>
     <string name="scanner_stop_message">Scanner stopped to prevent memory leaks</string>
     <string name="preview_content">preview_content</string>
+    <string name="sales_statistics_and_availability_status">Sales Statistics and Availability status</string>
+    <string name="sales_interpretation">Sales Interpretation</string>
+    <string name="stats_interpretationTitle"><![CDATA[Statistics & Interpretation]]></string>
+    <string name="product_sales_statistics">Product Sales Statistics</string>
+    <string name="sale_statistics">sale statistics</string>
 
 </resources>

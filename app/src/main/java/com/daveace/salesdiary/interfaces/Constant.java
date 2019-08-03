@@ -132,4 +132,5 @@ public interface Constant {
 
     String SALES_EVENT_INTERPRETATION = "SALES_EVENT_INTERPRETATION";
 
+    String SPACE = "\u0020";
 }

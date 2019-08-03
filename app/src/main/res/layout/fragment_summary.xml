@@ -28,7 +28,7 @@
         app:cardCornerRadius="@dimen/dimen_small"
         android:padding="@dimen/dimen_medium">
 
-        <com.github.mikephil.charting.charts.BarChart
+        <com.github.mikephil.charting.charts.HorizontalBarChart
             android:id="@+id/summaryChart"
             android:layout_width="match_parent"
             android:layout_height="@dimen/bar_height"

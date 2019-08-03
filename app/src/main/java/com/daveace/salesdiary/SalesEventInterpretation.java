@@ -4,9 +4,12 @@ import android.content.Context;
 
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
+import com.daveace.salesdiary.interfaces.Constant;
+
+import static com.daveace.salesdiary.interfaces.Constant.SPACE;
 
 
-public class SalesEventInterpretation  {
+public class SalesEventInterpretation {
 
     private Context ctx;
     private String interpretation;
@@ -39,18 +42,27 @@ public class SalesEventInterpretation  {
         return this.product;
     }
 
-    public void interpret() {
+    public SalesEventInterpretation interpret() {
         double profit = salesEvent.getSalesPrice() - salesEvent.getCostPrice();
-        setInterpretation(
-                String.format(
-                        this.ctx.getString(R.string.interpret_template),
-                        product.getName(),
-                        profit < 0 ? LOSS : PROFIT,
-                        profit < 0 ? -(profit):profit,
-                        salesEvent.getSales(),
-                        salesEvent.getSalesPrice(),
-                        salesEvent.getCostPrice()
-                ));
+        double projectedSales = product.getCost() * salesEvent.getLeft();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(String.format(
+                this.ctx.getString(R.string.interpret_template),
+                product.getName(),
+                profit < 0 ? LOSS : PROFIT,
+                profit < 0 ? -(profit) : profit,
+                salesEvent.getSales(),
+                salesEvent.getSalesPrice(),
+                salesEvent.getCostPrice()));
+        if (salesEvent.getLeft() > 0) {
+            stringBuilder.append(SPACE)
+                    .append(String.format(
+                    this.ctx.getString(R.string.available_status_interpretation_template),
+                    salesEvent.getLeft(),
+                    projectedSales));
+        }
+        setInterpretation(stringBuilder.toString());
+        return this;
     }
 
     public static class Builder {

@@ -31,6 +31,7 @@ import butterknife.BindView;
 
 import static com.daveace.salesdiary.interfaces.Constant.REPORT_TYPE;
 import static com.daveace.salesdiary.interfaces.Constant.SALES_EVENTS_REPORTS;
+import static com.daveace.salesdiary.interfaces.Constant.SPACE;
 
 public class CashFlowFragment extends BaseFragment implements BackIconActionBarMarker {
 
@@ -54,7 +55,6 @@ public class CashFlowFragment extends BaseFragment implements BackIconActionBarM
     private Bundle args;
     private String reportHeader;
 
-    private static final String SPACE = "\u0020";
 
     public static final String TOTAL_INFLOW = "TOTAL_INFLOW";
     public static final String TOTAL_OUTFLOW = "TOTAL_OUTFLOW";

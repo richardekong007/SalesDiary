@@ -83,7 +83,6 @@ public class SalesEventInterpretationDialog extends BaseDialog {
                 .findViewById(R.id.productAvailabilityChart);
         setupChart(productAvailabilityChart, Objects.requireNonNull(event));
         setProductAvailabilityStatus(statusTextView, event.getLeft());
-
     }
 
     private void setupChart(PieChart chart, SalesEvent salesEvent) {
@@ -111,7 +110,6 @@ public class SalesEventInterpretationDialog extends BaseDialog {
         chart.setCenterText(desc.getText());
         chart.setCenterTextColor(getResources().getColor(R.color.colorPrimary, null));
         chart.invalidate();
-
     }
 
     private void paintChart(PieDataSet dataSet) {
