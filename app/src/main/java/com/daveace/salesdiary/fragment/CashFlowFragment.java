@@ -1,5 +1,6 @@
 package com.daveace.salesdiary.fragment;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import com.daveace.salesdiary.R;
 import com.daveace.salesdiary.entity.SalesEvent;
 import com.daveace.salesdiary.interfaces.BackIconActionBarMarker;
+import com.daveace.salesdiary.util.MediaUtil;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -53,6 +55,17 @@ public class CashFlowFragment extends BaseFragment implements BackIconActionBarM
     private Bundle args;
     private String reportHeader;
 
+
+    public static final String TOTAL_INFLOW = "TOTAL_INFLOW";
+    public static final String TOTAL_OUTFLOW = "TOTAL_OUTFLOW";
+    public static final String TOTAL_PROFIT = "TOTAL_PROFIT";
+    public static final String TOTAL_LOSS = "TOTAL_LOSS";
+    public static final String TOTAL_COST = "TOTAL_COST";
+    public static final String TOTAL_SALES = "TOTAL_SALES";
+    public static final String PROFIT_LOSS_CHART = "PROFIT_LOSS_CHART";
+    public static final String SALES_COST_CHART = "SALES_COST_CHART";
+    public static final String PROFIT_LOSS_CHART_TITLE = "PROFIT_LOSS_CHART_TITLE";
+    public static final String SALES_COST_CHART_TITLE = "SALES_COST_CHART_TITLE";
 
 
     @Nullable
@@ -118,8 +131,28 @@ public class CashFlowFragment extends BaseFragment implements BackIconActionBarM
         profitText.setText(String.valueOf(totalProfit));
         lossText.setText(String.valueOf(totalLoss));
 
-        moreButton.setOnClickListener(view->
-            replaceFragment(new SummaryFragment(),true, args));
+        moreButton.setOnClickListener(view -> {
+            Bitmap profitLossPie = MediaUtil.createBitmap(
+                    profitLossPieChart,
+                    profitLossPieChart.getWidth(),
+                    profitLossPieChart.getHeight());
+            Bitmap salesCostPie = MediaUtil.createBitmap(
+                    saleCostPieChart,
+                    saleCostPieChart.getWidth(),
+                    saleCostPieChart.getHeight());
+            args.putDouble(TOTAL_INFLOW, totalInflow);
+            args.putDouble(TOTAL_OUTFLOW, totalOutFlow);
+            args.putFloat(TOTAL_COST, totalCost);
+            args.putFloat(TOTAL_LOSS, totalLoss);
+            args.putFloat(TOTAL_PROFIT, totalProfit);
+            args.putFloat(TOTAL_SALES, totalSales);
+            args.putString(PROFIT_LOSS_CHART_TITLE, profitLossPieChart.getDescription().getText());
+            args.putString(SALES_COST_CHART_TITLE, saleCostPieChart.getDescription().getText());
+            args.putParcelable(PROFIT_LOSS_CHART, profitLossPie);
+            args.putParcelable(SALES_COST_CHART, salesCostPie);
+            replaceFragment(new SummaryFragment(), true, args);
+        });
+
 
     }
 
@@ -140,10 +173,9 @@ public class CashFlowFragment extends BaseFragment implements BackIconActionBarM
             pieDataSet.setColors(colors, getActivity());
         }
         pieChart.invalidate();
-
     }
 
-    private void styleDescription(Description desc){
+    private void styleDescription(Description desc) {
         desc.setTextColor(getResources().getColor(R.color.colorPrimary, null));
     }
 

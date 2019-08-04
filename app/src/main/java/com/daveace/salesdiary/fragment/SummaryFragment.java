@@ -1,7 +1,11 @@
 package com.daveace.salesdiary.fragment;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -12,6 +16,7 @@ import com.daveace.salesdiary.dialog.SalesEventInterpretationDialog;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
 import com.daveace.salesdiary.interfaces.BackIconActionBarMarker;
+import com.daveace.salesdiary.util.MediaUtil;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -48,12 +53,18 @@ public class SummaryFragment extends BaseFragment implements
     @BindView(R.id.analysis_contents)
     RecyclerView analysisContentsRecyclerView;
 
+    private HorizontalBarChart summaryBarChart;
+
     private static final float GROUP_SPACE = 0.10f;
     private static final float BAR_SPACE = 0.02f;
     private static final float BAR_WIDTH = 0.25f;
     private static final float FROM_X = -0.015f;
     private static final float LABEL_ANGLE = 0f;
     private static final float Y_INTERVAL = 100f;
+
+
+    public static final String SUMMARY_CHART = "SUMMARY_CHART";
+    public static final String SUMMARY_CHART_TITLE = "TITLE";
 
     private Bundle args;
 
@@ -64,7 +75,29 @@ public class SummaryFragment extends BaseFragment implements
         View view = super.onCreateView(inflater, container, savedInstanceState);
         args = getArguments();
         initUI(view);
+        setHasOptionsMenu(true);
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_report_preview, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.previewItem:
+                Bitmap chartBitmap = MediaUtil.createBitmap(summaryBarChart,
+                        summaryBarChart.getWidth(),
+                        summaryBarChart.getHeight());
+                args.putParcelable(SUMMARY_CHART, chartBitmap);
+                args.putString(SUMMARY_CHART_TITLE, summaryBarChart.getDescription().getText());
+                replaceFragment(new PreviewReportFragment(), true, args);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -80,8 +113,8 @@ public class SummaryFragment extends BaseFragment implements
     @Override
     public void onProductClick(SalesEventInterpretation eventInterpretation) {
         Bundle bundle = new Bundle();
-        bundle.putString(SALES_EVENT_INTERPRETATION
-                , eventInterpretation.getInterpretation());
+        bundle.putString(SALES_EVENT_INTERPRETATION,
+                eventInterpretation.getInterpretation());
         bundle.putParcelable(SALES_EVENTS_REPORT,
                 eventInterpretation.getSalesEvent());
         bundle.putParcelable(EVENT_RELATED_PRODUCT,
@@ -105,7 +138,7 @@ public class SummaryFragment extends BaseFragment implements
 
     private void initUI(View view) {
         if (args == null) return;
-        HorizontalBarChart summaryBarChart = view.findViewById(R.id.summaryChart);
+        summaryBarChart = view.findViewById(R.id.summaryChart);
         String chartDescription = args.getString(REPORT_TYPE);
         List<Product> products = Objects.requireNonNull
                 (args.getParcelableArrayList(EVENT_RELATED_PRODUCTS));
@@ -128,7 +161,6 @@ public class SummaryFragment extends BaseFragment implements
                     .valueOf(String.valueOf(costFigures.get(i)))));
             profitEntries.add(new BarEntry((float) i, Float
                     .valueOf(String.valueOf(profitFigures.get(i)))));
-
         }
 
         BarDataSet costDataSet = new BarDataSet(costEntries, getString(R.string.costLabel));
@@ -179,7 +211,6 @@ public class SummaryFragment extends BaseFragment implements
         summaryBarChart.setDescription(desc);
         summaryBarChart.setVisibleXRangeMaximum(bars);
         summaryBarChart.invalidate();
-
         setupRecyclerView(events, products);
     }
 

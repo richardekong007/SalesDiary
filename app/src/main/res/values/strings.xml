@@ -139,6 +139,7 @@
     <string name="record_success">Sales Recorded Successful</string>
     <string name="scanner_start_message">Scanner Started.</string>
     <string name="scanner_stop_message">Scanner stopped to prevent memory leaks</string>
+    <string name="preview_content">preview_content</string>
     <string name="sales_statistics_and_availability_status">Sales Statistics and Availability status</string>
     <string name="sales_interpretation">Sales Interpretation</string>
     <string name="stats_interpretationTitle"><![CDATA[Statistics & Interpretation]]></string>
