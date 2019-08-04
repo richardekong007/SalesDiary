@@ -64,6 +64,8 @@ public class CashFlowFragment extends BaseFragment implements BackIconActionBarM
     public static final String TOTAL_SALES = "TOTAL_SALES";
     public static final String PROFIT_LOSS_CHART = "PROFIT_LOSS_CHART";
     public static final String SALES_COST_CHART = "SALES_COST_CHART";
+    public static final String PROFIT_LOSS_CHART_TITLE = "PROFIT_LOSS_CHART_TITLE";
+    public static final String SALES_COST_CHART_TITLE = "SALES_COST_CHART_TITLE";
 
 
     @Nullable
@@ -129,15 +131,23 @@ public class CashFlowFragment extends BaseFragment implements BackIconActionBarM
         profitText.setText(String.valueOf(totalProfit));
         lossText.setText(String.valueOf(totalLoss));
 
-        Bitmap profitLossPie = MediaUtil.createBitmap(profitLossPieChart, getActivity());
-        Bitmap salesCostPie = MediaUtil.createBitmap(saleCostPieChart,getActivity());
         moreButton.setOnClickListener(view -> {
+            Bitmap profitLossPie = MediaUtil.createBitmap(
+                    profitLossPieChart,
+                    profitLossPieChart.getWidth(),
+                    profitLossPieChart.getHeight());
+            Bitmap salesCostPie = MediaUtil.createBitmap(
+                    saleCostPieChart,
+                    saleCostPieChart.getWidth(),
+                    saleCostPieChart.getHeight());
             args.putDouble(TOTAL_INFLOW, totalInflow);
             args.putDouble(TOTAL_OUTFLOW, totalOutFlow);
             args.putFloat(TOTAL_COST, totalCost);
             args.putFloat(TOTAL_LOSS, totalLoss);
             args.putFloat(TOTAL_PROFIT, totalProfit);
             args.putFloat(TOTAL_SALES, totalSales);
+            args.putString(PROFIT_LOSS_CHART_TITLE, profitLossPieChart.getDescription().getText());
+            args.putString(SALES_COST_CHART_TITLE, saleCostPieChart.getDescription().getText());
             args.putParcelable(PROFIT_LOSS_CHART, profitLossPie);
             args.putParcelable(SALES_COST_CHART, salesCostPie);
             replaceFragment(new SummaryFragment(), true, args);

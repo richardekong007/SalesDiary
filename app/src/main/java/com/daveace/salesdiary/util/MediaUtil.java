@@ -83,29 +83,11 @@ public class MediaUtil {
         return ((BitmapDrawable) source.getDrawable()).getBitmap();
     }
 
-    public static Bitmap createBitmap(View source, Activity activity) {
-        Display display = activity.getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        int height = size.y/3;
-        source.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-        source.layout(0, 0, source.getMeasuredWidth(), source.getMeasuredHeight());
-        Bitmap bitmap = Bitmap.createBitmap(
-                width,
-                height,
-                Bitmap.Config.ARGB_8888
-        );
+    public static Bitmap createBitmap(View view, int width, int height){
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
-        Drawable background = source.getBackground();
-        if (background != null) {
-            background.draw(canvas);
-        } else {
-            canvas.drawColor(Color.WHITE);
-        }
-        source.layout(source.getLeft(), source.getTop(), source.getRight(), source.getBottom());
-        source.draw(canvas);
+        view.draw(canvas);
         return bitmap;
     }
+
 }

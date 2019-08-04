@@ -7,12 +7,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="@dimen/dimen_medium">
 
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
     <ImageView
         android:id="@+id/documentRenderer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:contentDescription="@string/preview_content"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title"
         />
 
     <LinearLayout

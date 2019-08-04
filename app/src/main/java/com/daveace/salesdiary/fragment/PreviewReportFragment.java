@@ -1,40 +1,33 @@
 package com.daveace.salesdiary.fragment;
 
 import android.graphics.Bitmap;
-import android.graphics.Rect;
-import android.graphics.pdf.PdfDocument;
-import android.graphics.pdf.PdfRenderer;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.ParcelFileDescriptor;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.daveace.salesdiary.R;
-import com.daveace.salesdiary.alert.ErrorAlert;
-import com.daveace.salesdiary.interfaces.Constant;
-import com.github.mikephil.charting.charts.PieChart;
+import com.daveace.salesdiary.util.MediaUtil;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 
+import static com.daveace.salesdiary.interfaces.Constant.SPACE;
+
 public class PreviewReportFragment extends BaseFragment {
 
     @BindView(R.id.rootView)
     ConstraintLayout rootView;
+
+    @BindView(R.id.title)
+    Chip titleChip;
 
     @BindView(R.id.documentRenderer)
     ImageView documentRenderer;
@@ -42,10 +35,17 @@ public class PreviewReportFragment extends BaseFragment {
     @BindView(R.id.previous)
     FloatingActionButton previous;
 
+    @BindView(R.id.page)
+    TextView page;
+
     @BindView(R.id.next)
     FloatingActionButton next;
 
     private Bundle args;
+
+    private int figureIndex;
+
+    private final Map<String, Bitmap> previewFigures = new HashMap<>();
 
     private String fileName;
 
@@ -67,64 +67,43 @@ public class PreviewReportFragment extends BaseFragment {
     }
 
     private void initUI() {
-        try {
-            createPDFDocument();
-            renderDocument();
-        } catch (IOException e) {
-            ErrorAlert.Builder()
-                    .setContext(getActivity())
-                    .setRootView(rootView)
-                    .setMessage(e.getMessage())
-                    .build()
-                    .show();
-            documentRenderer.setImageBitmap(args.getParcelable(SummaryFragment.SUMMARY_CHART));
+        if (args == null) return;
+        addPreviewFigures(args.getString(SummaryFragment.SUMMARY_CHART_TITLE),
+                args.getParcelable(SummaryFragment.SUMMARY_CHART));
+        addPreviewFigures(args.getString(CashFlowFragment.PROFIT_LOSS_CHART_TITLE),
+                args.getParcelable(CashFlowFragment.PROFIT_LOSS_CHART));
+        addPreviewFigures(args.getString(CashFlowFragment.SALES_COST_CHART_TITLE),
+                args.getParcelable(CashFlowFragment.SALES_COST_CHART));
+        showFigure(figureIndex);
+        next.setOnClickListener(view -> flipForward());
+        previous.setOnClickListener(view -> flipBackward());
+    }
+
+    private void flipForward() {
+        int size = previewFigures.size();
+        if (figureIndex < size) {
+            showFigure(figureIndex++);
+            if (figureIndex > (size - 1)) figureIndex %= size;
         }
     }
 
-    private PdfDocument createPDFDocument() throws IOException {
-        PdfDocument document = new PdfDocument();
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo
-                .Builder(100, 100, 1)
-                .create();
-        PdfDocument.Page page = document.startPage(pageInfo);
-        Bitmap bitmap = args.getParcelable(CashFlowFragment.PROFIT_LOSS_CHART);
-        page.getCanvas().drawBitmap(Objects.requireNonNull(bitmap),0,0,null);
-        document.finishPage(page);
-        document.writeTo(getOutputStream());
-        document.close();
-        return document;
+    private void flipBackward() {
+        int size = previewFigures.size();
+        if (figureIndex >= 0) {
+            if (figureIndex == 0) figureIndex = size;
+            showFigure(--figureIndex);
+        }
     }
 
-    private void renderDocument() throws IOException {
-        File pdfDocument = new File(fileName);
-        ParcelFileDescriptor fileDescriptor =
-                ParcelFileDescriptor.open(pdfDocument, ParcelFileDescriptor.MODE_READ_ONLY);
-        PdfRenderer renderer = new PdfRenderer(fileDescriptor);
-        PdfRenderer.Page renderPage = renderer.openPage(0);
-        int pageWidth = renderPage.getWidth();
-        int pageHeight = renderPage.getHeight();
-        Bitmap bitmap = Bitmap.createBitmap(pageWidth, pageHeight, Bitmap.Config.ARGB_8888);
-        renderPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
-        documentRenderer.setImageBitmap(bitmap);
-        renderPage.close();
-        fileDescriptor.close();
-
+    private void showFigure(int index) {
+        final String pageInfo = "Page";
+        String title = String.valueOf(previewFigures.keySet().toArray()[index]);
+        titleChip.setText(title);
+        MediaUtil.displayImage(documentRenderer, previewFigures.get(title));
+        page.setText(String.format("%s%s%s", pageInfo, SPACE, (index + 1)));
     }
 
-    private OutputStream getOutputStream() throws IOException {
-        SimpleDateFormat dateFormat =
-                new SimpleDateFormat(
-                        "dd-mm-yyyy HH:mm:ss",
-                        Locale.getDefault());
-        fileName = dateFormat.format(new Date());
-        File documentFile =
-                new File(Objects
-                        .requireNonNull(getContext()
-                                .getExternalFilesDir(Environment.DIRECTORY_PICTURES))
-                        .getAbsolutePath()
-                        + File.separator
-                        + fileName
-                        + Constant.PDF_FILE);
-        return new FileOutputStream(documentFile);
+    private void addPreviewFigures(String description, Bitmap figure) {
+        previewFigures.put(description, figure);
     }
 }

@@ -53,6 +53,8 @@ public class SummaryFragment extends BaseFragment implements
     @BindView(R.id.analysis_contents)
     RecyclerView analysisContentsRecyclerView;
 
+    private HorizontalBarChart summaryBarChart;
+
     private static final float GROUP_SPACE = 0.10f;
     private static final float BAR_SPACE = 0.02f;
     private static final float BAR_WIDTH = 0.25f;
@@ -60,7 +62,9 @@ public class SummaryFragment extends BaseFragment implements
     private static final float LABEL_ANGLE = 0f;
     private static final float Y_INTERVAL = 100f;
 
+
     public static final String SUMMARY_CHART = "SUMMARY_CHART";
+    public static final String SUMMARY_CHART_TITLE = "TITLE";
 
     private Bundle args;
 
@@ -83,10 +87,14 @@ public class SummaryFragment extends BaseFragment implements
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.previewItem:
-                //display the preview report fragment
-                replaceFragment(new PreviewReportFragment(),true,args);
+                Bitmap chartBitmap = MediaUtil.createBitmap(summaryBarChart,
+                        summaryBarChart.getWidth(),
+                        summaryBarChart.getHeight());
+                args.putParcelable(SUMMARY_CHART, chartBitmap);
+                args.putString(SUMMARY_CHART_TITLE, summaryBarChart.getDescription().getText());
+                replaceFragment(new PreviewReportFragment(), true, args);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -105,8 +113,8 @@ public class SummaryFragment extends BaseFragment implements
     @Override
     public void onProductClick(SalesEventInterpretation eventInterpretation) {
         Bundle bundle = new Bundle();
-        bundle.putString(SALES_EVENT_INTERPRETATION
-                , eventInterpretation.getInterpretation());
+        bundle.putString(SALES_EVENT_INTERPRETATION,
+                eventInterpretation.getInterpretation());
         bundle.putParcelable(SALES_EVENTS_REPORT,
                 eventInterpretation.getSalesEvent());
         bundle.putParcelable(EVENT_RELATED_PRODUCT,
@@ -130,7 +138,7 @@ public class SummaryFragment extends BaseFragment implements
 
     private void initUI(View view) {
         if (args == null) return;
-        HorizontalBarChart summaryBarChart = view.findViewById(R.id.summaryChart);
+        summaryBarChart = view.findViewById(R.id.summaryChart);
         String chartDescription = args.getString(REPORT_TYPE);
         List<Product> products = Objects.requireNonNull
                 (args.getParcelableArrayList(EVENT_RELATED_PRODUCTS));
@@ -153,7 +161,6 @@ public class SummaryFragment extends BaseFragment implements
                     .valueOf(String.valueOf(costFigures.get(i)))));
             profitEntries.add(new BarEntry((float) i, Float
                     .valueOf(String.valueOf(profitFigures.get(i)))));
-
         }
 
         BarDataSet costDataSet = new BarDataSet(costEntries, getString(R.string.costLabel));
@@ -204,8 +211,6 @@ public class SummaryFragment extends BaseFragment implements
         summaryBarChart.setDescription(desc);
         summaryBarChart.setVisibleXRangeMaximum(bars);
         summaryBarChart.invalidate();
-        Bitmap chartBitmap = MediaUtil.createBitmap(summaryBarChart,getActivity());
-        args.putParcelable(SUMMARY_CHART,chartBitmap);
         setupRecyclerView(events, products);
     }
 
