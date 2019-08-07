@@ -1,50 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-<LinearLayout
-    android:orientation="vertical"
-    android:padding="@dimen/dimen_medium"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.google.android.material.chip.Chip
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dimen_small"
-        android:text="@string/periodic_sales_summary"
-        android:textColor="@color/white"
-        android:textAlignment="center"
-        android:backgroundTint="@color/colorPrimary"
-        android:elevation="@dimen/elevation_lower"
-        style="@style/CustomAppThemeText.Medium"/>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dimen_small"
-        app:cardElevation= "@dimen/elevation_lower"
-        app:cardCornerRadius="@dimen/dimen_small"
+        android:orientation="vertical"
         android:padding="@dimen/dimen_medium">
 
-        <com.github.mikephil.charting.charts.HorizontalBarChart
-            android:id="@+id/summaryChart"
+        <com.google.android.material.chip.Chip
+            style="@style/CustomAppThemeText.Medium"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/bar_height"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_small"
+            android:backgroundTint="@color/colorPrimary"
+            android:elevation="@dimen/elevation_lower"
+            android:text="@string/periodic_sales_summary"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_small"
             android:padding="@dimen/dimen_medium"
-            />
+            app:cardCornerRadius="@dimen/dimen_small"
+            app:cardElevation="@dimen/elevation_lower">
 
-    </androidx.cardview.widget.CardView>
+            <com.github.mikephil.charting.charts.HorizontalBarChart
+                android:id="@+id/summaryChart"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bar_height"
+                android:padding="@dimen/dimen_medium" />
 
-    <com.daveace.salesdiary.customview.CustomExpandableCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:title="Interpret Summary"
-        app:icon="@drawable/ic_down_black_24dp"
-        app:animationDuration="300"
-        app:inner_view="@layout/component_products_analysis"
-        app:expandOnClick="true"/>
+        </androidx.cardview.widget.CardView>
 
-</LinearLayout>
+        <com.google.android.material.chip.Chip
+            style="@style/CustomAppThemeText.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_small"
+            android:backgroundTint="@color/colorPrimary"
+            android:elevation="@dimen/elevation_lower"
+            android:text="@string/Periodic_sales_chart_summary"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dimen_small"
+            android:padding="@dimen/dimen_medium"
+            app:cardCornerRadius="@dimen/dimen_small"
+            app:cardElevation="@dimen/elevation_lower">
+
+            <de.codecrafters.tableview.TableView
+                android:id="@+id/summaryTable"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bar_height"
+                android:nestedScrollingEnabled="true" />
+
+        </androidx.cardview.widget.CardView>
+
+        <com.daveace.salesdiary.customview.CustomExpandableCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:animationDuration="300"
+            app:expandOnClick="true"
+            app:icon="@drawable/ic_down_black_24dp"
+            app:inner_view="@layout/component_products_analysis"
+            app:title="Interpret Summary" />
+    </LinearLayout>
 </ScrollView>

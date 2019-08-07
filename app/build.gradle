@@ -46,6 +46,7 @@ dependencies {
     implementation 'com.jakewharton:butterknife:9.0.0-rc2'
     implementation 'com.alespero:expandable-cardview:0.8'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
+    implementation 'de.codecrafters.tableview:tableview:2.8.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 

@@ -120,6 +120,7 @@
     <string name="total_inflow">Total Inflow:</string>
     <string name="total_outflow">Total OutFlow:</string>
     <string name="periodic_sales_summary">Periodic Sales Summary</string>
+    <string name="Periodic_sales_chart_summary">Chart Summary</string>
     <string name="product_availability_status">Availability Status</string>
     <string name="status">Status:</string>
     <string name="sales_summary">Sales Summary</string>

@@ -2,6 +2,7 @@ package com.daveace.salesdiary.fragment;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +17,9 @@ import com.daveace.salesdiary.dialog.SalesEventInterpretationDialog;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
 import com.daveace.salesdiary.interfaces.BackIconActionBarMarker;
+import com.daveace.salesdiary.model.SalesFigureTableData;
 import com.daveace.salesdiary.util.MediaUtil;
+import com.daveace.salesdiary.util.TableUtil;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -38,6 +41,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
+import de.codecrafters.tableview.TableView;
 
 import static com.daveace.salesdiary.interfaces.Constant.EVENT_RELATED_PRODUCT;
 import static com.daveace.salesdiary.interfaces.Constant.EVENT_RELATED_PRODUCTS;
@@ -54,6 +58,7 @@ public class SummaryFragment extends BaseFragment implements
     RecyclerView analysisContentsRecyclerView;
 
     private HorizontalBarChart summaryBarChart;
+    private TableView summaryTable;
 
     private static final float GROUP_SPACE = 0.10f;
     private static final float BAR_SPACE = 0.02f;
@@ -64,7 +69,9 @@ public class SummaryFragment extends BaseFragment implements
 
 
     public static final String SUMMARY_CHART = "SUMMARY_CHART";
+    public static final String SUMMARY_TABLE = "SUMMARY_TABLE";
     public static final String SUMMARY_CHART_TITLE = "TITLE";
+    public static final String SUMMARY_TABLE_TITLE = "Chart Summary";
 
     private Bundle args;
 
@@ -92,8 +99,13 @@ public class SummaryFragment extends BaseFragment implements
                 Bitmap chartBitmap = MediaUtil.createBitmap(summaryBarChart,
                         summaryBarChart.getWidth(),
                         summaryBarChart.getHeight());
+                Bitmap tableBitmap = MediaUtil.createBitmap(summaryTable,
+                        summaryTable.getWidth(),
+                        summaryTable.getHeight());
                 args.putParcelable(SUMMARY_CHART, chartBitmap);
+                args.putParcelable(SUMMARY_TABLE,tableBitmap);
                 args.putString(SUMMARY_CHART_TITLE, summaryBarChart.getDescription().getText());
+                args.putString(SUMMARY_TABLE_TITLE, SUMMARY_TABLE_TITLE);
                 replaceFragment(new PreviewReportFragment(), true, args);
                 break;
         }
@@ -122,6 +134,13 @@ public class SummaryFragment extends BaseFragment implements
         SalesEventInterpretationDialog.getInstance(getFragmentManager(), bundle);
     }
 
+    private void setupTableData(TableView<SalesFigureTableData> tableView,
+                                ArrayList<SalesFigureTableData> tableData) {
+        TableUtil.prepare(getActivity(), tableView,
+                new String[] {"Id","Product","Profit","Sales","Cost"},
+                tableData);
+    }
+
     private void setupRecyclerView(List<SalesEvent> events, List<Product> products) {
         List<SalesEventInterpretation> eventInterpretations =
                 getSalesEventInterpretations(events, products);
@@ -139,11 +158,16 @@ public class SummaryFragment extends BaseFragment implements
     private void initUI(View view) {
         if (args == null) return;
         summaryBarChart = view.findViewById(R.id.summaryChart);
+        summaryTable = view.findViewById(R.id.summaryTable);
         String chartDescription = args.getString(REPORT_TYPE);
         List<Product> products = Objects.requireNonNull
                 (args.getParcelableArrayList(EVENT_RELATED_PRODUCTS));
         List<SalesEvent> events = Objects.requireNonNull
                 (args.getParcelableArrayList(SALES_EVENTS_REPORTS));
+        ArrayList<SalesFigureTableData> tableData = createTableData(
+                Objects.requireNonNull(args.getParcelableArrayList(SALES_EVENTS_REPORTS)),
+                args.getParcelableArrayList(EVENT_RELATED_PRODUCTS)
+        );
         List<String> productNames = getProductNames(events, products);
         List<Double> costFigures = getCostFigures(events);
         List<Double> salesFigures = getSalesFigures(events);
@@ -151,7 +175,6 @@ public class SummaryFragment extends BaseFragment implements
         List<BarEntry> costEntries = new ArrayList<>();
         List<BarEntry> salesEntries = new ArrayList<>();
         List<BarEntry> profitEntries = new ArrayList<>();
-
         float bars = productNames.size();
 
         for (int i = 0; i < productNames.size(); i++) {
@@ -211,6 +234,8 @@ public class SummaryFragment extends BaseFragment implements
         summaryBarChart.setDescription(desc);
         summaryBarChart.setVisibleXRangeMaximum(bars);
         summaryBarChart.invalidate();
+        setupTableData(summaryTable,tableData);
+        Log.d("Tabular Data",tableData.toString());
         setupRecyclerView(events, products);
     }
 
@@ -262,6 +287,24 @@ public class SummaryFragment extends BaseFragment implements
         return salesEvents.stream()
                 .map(event -> event.getSalesPrice() - event.getCostPrice())
                 .collect(toList());
+    }
+
+    private ArrayList<SalesFigureTableData> createTableData(ArrayList<SalesEvent>events,
+                                                            ArrayList<Product> products){
+        ArrayList<SalesFigureTableData> data = new ArrayList<>();
+        events.forEach(event -> products.forEach(product ->{
+            if (event.getProductId().equals(product.getId())){
+                SalesFigureTableData tableData = new SalesFigureTableData.Builder()
+                        .setId(events.indexOf(event)+1)
+                        .setProduct(product.getName())
+                        .setProfit(event.getSalesPrice()-event.getCostPrice())
+                        .setSalesPrice(event.getSalesPrice())
+                        .setCostPrice(event.getCostPrice())
+                        .build();
+                data.add(tableData);
+            }
+        }));
+        return data;
     }
 
     private IAxisValueFormatter createProductFormatter(List<String> productNames) {

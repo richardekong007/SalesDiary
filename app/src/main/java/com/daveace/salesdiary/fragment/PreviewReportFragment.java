@@ -70,6 +70,8 @@ public class PreviewReportFragment extends BaseFragment {
         if (args == null) return;
         addPreviewFigures(args.getString(SummaryFragment.SUMMARY_CHART_TITLE),
                 args.getParcelable(SummaryFragment.SUMMARY_CHART));
+        addPreviewFigures(args.getString(SummaryFragment.SUMMARY_TABLE_TITLE),
+                args.getParcelable(SummaryFragment.SUMMARY_TABLE));
         addPreviewFigures(args.getString(CashFlowFragment.PROFIT_LOSS_CHART_TITLE),
                 args.getParcelable(CashFlowFragment.PROFIT_LOSS_CHART));
         addPreviewFigures(args.getString(CashFlowFragment.SALES_COST_CHART_TITLE),
