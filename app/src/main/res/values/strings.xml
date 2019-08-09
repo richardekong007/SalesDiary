@@ -146,5 +146,6 @@
     <string name="stats_interpretationTitle"><![CDATA[Statistics & Interpretation]]></string>
     <string name="product_sales_statistics">Product Sales Statistics</string>
     <string name="sale_statistics">sale statistics</string>
+    <string name="report_generate_msg">Report Generated</string>
 
 </resources>
