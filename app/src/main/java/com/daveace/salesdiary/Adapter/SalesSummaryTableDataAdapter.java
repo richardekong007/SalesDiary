@@ -61,6 +61,7 @@ public class SalesSummaryTableDataAdapter extends TableDataAdapter<SalesFigureTa
                     view.setBackground(new ColorDrawable(getContext()
                             .getResources().getColor(R.color.black, null)));
                     break;
+
             }
             return true;
         });
