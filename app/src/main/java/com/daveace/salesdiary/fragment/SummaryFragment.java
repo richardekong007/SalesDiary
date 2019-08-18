@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.daveace.salesdiary.Adapter.ProductAnalysisAdapter;
 import com.daveace.salesdiary.R;
@@ -63,10 +64,9 @@ public class SummaryFragment extends BaseFragment implements
     private static final float GROUP_SPACE = 0.10f;
     private static final float BAR_SPACE = 0.02f;
     private static final float BAR_WIDTH = 0.25f;
-    private static final float FROM_X = -0.015f;
+    private static final float FROM_X = 0f;
     private static final float LABEL_ANGLE = 0f;
     private static final float Y_INTERVAL = 100f;
-
 
     public static final String SUMMARY_CHART = "SUMMARY_CHART";
     public static final String SUMMARY_TABLE = "SUMMARY_TABLE";
@@ -103,7 +103,7 @@ public class SummaryFragment extends BaseFragment implements
                         summaryTable.getWidth(),
                         summaryTable.getHeight());
                 args.putParcelable(SUMMARY_CHART, chartBitmap);
-                args.putParcelable(SUMMARY_TABLE,tableBitmap);
+                args.putParcelable(SUMMARY_TABLE, tableBitmap);
                 args.putString(SUMMARY_CHART_TITLE, summaryBarChart.getDescription().getText());
                 args.putString(SUMMARY_TABLE_TITLE, SUMMARY_TABLE_TITLE);
                 replaceFragment(new PreviewReportFragment(), true, args);
@@ -137,7 +137,7 @@ public class SummaryFragment extends BaseFragment implements
     private void setupTableData(TableView<SalesFigureTableData> tableView,
                                 ArrayList<SalesFigureTableData> tableData) {
         TableUtil.prepare(getActivity(), tableView,
-                new String[] {"Id","Product","Profit","Sales","Cost"},
+                new String[]{"Id", "Product", "Profit", "Sales", "Cost"},
                 tableData);
     }
 
@@ -168,6 +168,7 @@ public class SummaryFragment extends BaseFragment implements
                 Objects.requireNonNull(args.getParcelableArrayList(SALES_EVENTS_REPORTS)),
                 args.getParcelableArrayList(EVENT_RELATED_PRODUCTS)
         );
+
         List<String> productNames = getProductNames(events, products);
         List<Double> costFigures = getCostFigures(events);
         List<Double> salesFigures = getSalesFigures(events);
@@ -175,6 +176,7 @@ public class SummaryFragment extends BaseFragment implements
         List<BarEntry> costEntries = new ArrayList<>();
         List<BarEntry> salesEntries = new ArrayList<>();
         List<BarEntry> profitEntries = new ArrayList<>();
+
         float bars = productNames.size();
 
         for (int i = 0; i < productNames.size(); i++) {
@@ -191,12 +193,13 @@ public class SummaryFragment extends BaseFragment implements
         BarDataSet profitDataSet = new BarDataSet(profitEntries, getString(R.string.profitLabel));
 
         costDataSet.setColors(new int[]{R.color.orange}, getActivity());
-        saleDataSet.setColors(new int[]{R.color.green}, getActivity());
-        profitDataSet.setColors(new int[]{R.color.blue}, getActivity());
+        saleDataSet.setColors(new int[]{R.color.deep_green}, getActivity());
+        profitDataSet.setColors(new int[]{R.color.bright_blue}, getActivity());
 
         BarData barData = new BarData(costDataSet, saleDataSet, profitDataSet);
         barData.setBarWidth(BAR_WIDTH);
         barData.setDrawValues(false);
+
 
         summaryBarChart.setData(barData);
         summaryBarChart.groupBars(FROM_X, GROUP_SPACE, BAR_SPACE);
@@ -209,14 +212,17 @@ public class SummaryFragment extends BaseFragment implements
         XAxis xAxis = summaryBarChart.getXAxis();
         YAxis axisLeft = summaryBarChart.getAxisLeft();
         YAxis axisRight = summaryBarChart.getAxisRight();
+
         xAxis.setLabelRotationAngle(LABEL_ANGLE);
+        xAxis.setAxisMinimum(0);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         axisLeft.setGranularity(Y_INTERVAL);
 
-        IAxisValueFormatter productFormatter = createProductFormatter(productNames);
+        IAxisValueFormatter productFormatter = getProductAxisFormatter(productNames);
         LargeValueFormatter formatter = new LargeValueFormatter();
         xAxis.setValueFormatter(productFormatter);
         xAxis.setGranularity(1f);
+
         xAxis.setTextColor(getResources().getColor(R.color.colorPrimary, null));
         xAxis.setGridColor(getResources().getColor(R.color.colorPrimary, null));
 
@@ -230,12 +236,17 @@ public class SummaryFragment extends BaseFragment implements
         Description desc = new Description();
         desc.setText(chartDescription);
         desc.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+
         summaryBarChart.setFitBars(true);
         summaryBarChart.setDescription(desc);
         summaryBarChart.setVisibleXRangeMaximum(bars);
+        summaryBarChart.setLayoutParams(new FrameLayout
+                .LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 150 * (int)bars)
+        );
         summaryBarChart.invalidate();
-        setupTableData(summaryTable,tableData);
-        Log.d("Tabular Data",tableData.toString());
+
+        setupTableData(summaryTable, tableData);
+        Log.d("Tabular Data", tableData.toString());
         setupRecyclerView(events, products);
     }
 
@@ -279,7 +290,6 @@ public class SummaryFragment extends BaseFragment implements
     private List<Double> getSalesFigures(List<SalesEvent> salesEvents) {
         return salesEvents.stream()
                 .map(SalesEvent::getSalesPrice)
-                .distinct()
                 .collect(toList());
     }
 
@@ -289,15 +299,15 @@ public class SummaryFragment extends BaseFragment implements
                 .collect(toList());
     }
 
-    private ArrayList<SalesFigureTableData> createTableData(ArrayList<SalesEvent>events,
-                                                            ArrayList<Product> products){
+    private ArrayList<SalesFigureTableData> createTableData(ArrayList<SalesEvent> events,
+                                                            ArrayList<Product> products) {
         ArrayList<SalesFigureTableData> data = new ArrayList<>();
-        events.forEach(event -> products.forEach(product ->{
-            if (event.getProductId().equals(product.getId())){
+        events.forEach(event -> products.forEach(product -> {
+            if (event.getProductId().equals(product.getId())) {
                 SalesFigureTableData tableData = new SalesFigureTableData.Builder()
-                        .setId(events.indexOf(event)+1)
+                        .setId(events.indexOf(event) + 1)
                         .setProduct(product.getName())
-                        .setProfit(event.getSalesPrice()-event.getCostPrice())
+                        .setProfit(event.getSalesPrice() - event.getCostPrice())
                         .setSalesPrice(event.getSalesPrice())
                         .setCostPrice(event.getCostPrice())
                         .build();
@@ -307,7 +317,7 @@ public class SummaryFragment extends BaseFragment implements
         return data;
     }
 
-    private IAxisValueFormatter createProductFormatter(List<String> productNames) {
+    private IAxisValueFormatter getProductAxisFormatter(List<String> productNames) {
         Object[] names = productNames.toArray();
         return (value, axis) -> String.valueOf(names[(int) value]);
     }

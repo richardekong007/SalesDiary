@@ -10,5 +10,6 @@
     <color name="deep_green">#06800A</color>
     <color name="orange">@android:color/holo_orange_light</color>
     <color name="blue">@android:color/holo_blue_dark</color>
+    <color name="bright_blue">#05f</color>
     <color name="black">@android:color/black</color>
 </resources>
