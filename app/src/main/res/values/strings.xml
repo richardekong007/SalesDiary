@@ -95,6 +95,7 @@
     <string name="ok_confirm">OK</string>
     <string name="sign_below_instr">Please Sign Below</string>
     <string name="out_of_stock">is now out of stock!</string>
+    <string name="out_of_stock_hint">Out of stock!</string>
     <string name="invalid_sales_quantity">Invalid Quantity sold</string>
     <string name="no_customer_flag">Provide Customer details</string>
     <string name="select_product">Please, select a product.</string>
@@ -132,6 +133,28 @@
         Significant demand will ensure subsequent sales of the
         remaining %.1f unit(s) at an amount of %.2f to break-even.
     </string>
+
+    <string name="interpretation_template2">
+        Over the financial period, a total %s of %.2f was
+        recorded after receiving %.2f from sales of products
+        which incurred a cost of %.2f.
+        A Significant amount of this profit was introduced from
+        the sales of %.1f unit(s) of %s.
+    </string>
+    <string name="interpretation_remark_on_profit">
+        The sale of %s generated the highest amount of profit,
+        but Profitability level can still be improved.
+    </string>
+    <string name="interpretation_remark_on_least_profit">
+        A formidable strategy should be developed to boost profit
+        level of %s and other products within this profit range.
+    </string>
+    <string name="interpretation_remark_on_losses">
+        Finally, more attention should be diverted to the
+        dismal sales level recorded from the sales of
+    </string>
+
+
     <string name = "loss_statement">loss</string>
     <string name="profit_statement">profit</string>
     <string name="sales_event_interpretation_title">Interpretation</string>
@@ -147,5 +170,25 @@
     <string name="product_sales_statistics">Product Sales Statistics</string>
     <string name="sale_statistics">sale statistics</string>
     <string name="report_generate_msg">Report Generated</string>
+    <string name="share_item">Share</string>
+    <string name="summarize">Summarize</string>
+    <string name="interpret">Interpret</string>
+    <string name="interpretation">Interpretations</string>
+    <string name="profitability_status">Profitability Status</string>
+    <string name="remark">Remark:</string>
+    <string name="interpretation_label">Interpretation:</string>
+    <string name="summary_interpretation">Summary Interpretation</string>
+    <string name="page">Page</string>
+    <string name="page_number_pattern">"Page %d of %d"</string>
+    <string name="product">Product</string>
+    <string name="price">Price</string>
+    <string name="stock">Stock</string>
+    <string name="quantity_left_hint">Quantity Left</string>
+    <string name="amount_sold_hint">Amount Sold</string>
+    <string name="price_hint">Price per item</string>
+    <string name="sold_label">Sold</string>
+    <string name="left_label">Left</string>
+    <string name="product_availability">Product Availability</string>
+    <string name="chart_summary">Chart Summary</string>
 
 </resources>

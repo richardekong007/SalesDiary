@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/summary_title"
+        style="@style/CustomAppThemeText.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_small"
+        android:backgroundTint="@color/colorPrimary"
+        android:elevation="@dimen/elevation_lower"
+        android:textAlignment="center"
+        android:textColor="@color/white" />
+
+    <FrameLayout
+        android:id="@+id/summary_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
+</LinearLayout>

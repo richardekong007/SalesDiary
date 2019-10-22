@@ -3,14 +3,15 @@ package com.daveace.salesdiary.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.daveace.salesdiary.interfaces.ObjectMapper;
+import com.daveace.salesdiary.interfaces.Mappable;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.firestore.ServerTimestamp;
+
 import java.util.Date;
 import java.util.UUID;
 
 @IgnoreExtraProperties
-public class SalesEvent implements ObjectMapper, Parcelable {
+public class SalesEvent implements Mappable, Parcelable {
     private String id;
     private String productId;
     private String traderId;
@@ -140,11 +141,11 @@ public class SalesEvent implements ObjectMapper, Parcelable {
         this.salesPrice = salesPrice;
     }
 
-    public double getCostPrice(){
+    public double getCostPrice() {
         return this.costPrice;
     }
 
-    public void setCostPrice(double costPrice){
+    public void setCostPrice(double costPrice) {
         this.costPrice = costPrice;
     }
 

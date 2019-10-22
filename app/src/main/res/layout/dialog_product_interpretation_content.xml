@@ -2,20 +2,21 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:orientation="vertical">
 
-
     <TextView
-        style="@style/CustomAppThemeHeader"
+        style="@style/CustomAppThemeText"
+        android:id="@+id/product_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@color/colorPrimary"
         android:elevation="@dimen/elevation_lower"
-        android:padding="@dimen/dimen_small"
-        android:text="@string/sales_event_interpretation_title"
+        android:padding="@dimen/dimen_tiny"
         android:textAlignment="center"
         android:textColor="@android:color/white" />
 
@@ -23,14 +24,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/dimen_medium">
+        android:padding="@dimen/dimen_tiny">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimen_small"
+            android:layout_marginBottom="@dimen/dimen_tiny"
             android:padding="@dimen/dimen_small"
-            app:cardCornerRadius="@dimen/dimen_small"
+            app:cardCornerRadius="@dimen/dimen_tiny"
             app:cardElevation="@dimen/elevation_lower">
 
             <TextView
@@ -38,8 +39,9 @@
                 style="@style/CustomAppThemeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/dimen_small"
-                android:textColor="@android:color/black" />
+                android:padding="@dimen/dimen_tiny"
+                android:background="@color/colorPrimaryHue"
+                android:textColor="@color/colorPrimary" />
 
         </androidx.cardview.widget.CardView>
 
@@ -47,12 +49,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="@dimen/elevation_lower"
-            app:cardCornerRadius="@dimen/dimen_small">
+            app:cardCornerRadius="@dimen/dimen_tiny">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/dimen_medium"
+                android:padding="@dimen/dimen_tiny"
+                android:background="@color/colorPrimaryHue"
                 android:elevation="@dimen/elevation_lower">
 
                 <TextView
@@ -60,7 +63,7 @@
                     style="@style/CustomAppThemeText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dimen_small"
+                    android:layout_marginBottom="@dimen/dimen_tiny"
                     android:background="@drawable/curved_rect"
                     android:backgroundTint="@color/colorPrimary"
                     android:drawableStart="@drawable/ic_pie_chart_white_24dp"
@@ -75,7 +78,7 @@
                     android:id="@+id/productAvailabilityChart"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/pie_radius_small"
-                    android:layout_marginBottom="@dimen/dimen_medium"
+                    android:layout_marginBottom="@dimen/dimen_tiny"
                     android:elevation="@dimen/elevation_lower"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

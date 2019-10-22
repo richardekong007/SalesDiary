@@ -43,7 +43,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id ="@+id/moreButton"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="@dimen/button_height_medium"
             android:layout_marginTop="@dimen/dimen_medium"
             android:text="@string/more_btn_label"
             android:drawableStart="@drawable/ic_add"

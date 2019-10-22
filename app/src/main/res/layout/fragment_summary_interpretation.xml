@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="@dimen/dimen_small">
+
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/title_chip"
+        style="@style/CustomAppThemeHeader.small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@color/white" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/interpretation_holder"
+        style="@style/cardTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_tiny"
+        android:layout_weight="1"
+        app:cardBackgroundColor="@color/colorPrimaryHue"
+        app:strokeColor="@color/colorPrimary"
+        app:strokeWidth="@dimen/stroke_width">
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/remark_holder"
+        style="@style/cardTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_tiny"
+        android:layout_weight="1"
+        app:cardBackgroundColor="@color/colorPrimaryHue"
+        app:strokeColor="@color/colorPrimary"
+        app:strokeWidth="@dimen/stroke_width">
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/profitability_status_holder"
+        style="@style/cardTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_tiny"
+        android:layout_weight="1"
+        app:cardBackgroundColor="@color/colorPrimaryHue"
+        app:strokeColor="@color/colorPrimary"
+        app:strokeWidth="@dimen/stroke_width">
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

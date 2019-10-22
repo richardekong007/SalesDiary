@@ -5,25 +5,8 @@ import android.os.Build;
 
 public interface Constant {
 
-    String BASE_URL = "https://api.myjson.com/";
 
     String PHOTO_URI = "PHOTO_URL";
-
-    String STATEMENT = "STATEMENT";
-
-    String BIRTH_PLACE = "BIRTH_PLACE";
-
-    int REQUEST_TIMEOUT = 60;
-
-    String ACCEPT = "Accept";
-
-    String JSON_APPLICATION = "application/json";
-
-    String CONTENT_TYPE = "content_type";
-
-    String AUTHOR = "AUTHOR";
-
-    String LOCATION = "LOCATION";
 
     int ZOOM_LEVEL = 15;
 
@@ -58,7 +41,7 @@ public interface Constant {
 
     String IMAGE_FILE_TYPE = ".jpg";
 
-    String PDF_FILE = ".pdf";
+    String PDF_FILE_EXT = ".pdf";
 
     String ONLINE_QUOTE = "ONLINE_QUOTE";
 
@@ -132,5 +115,23 @@ public interface Constant {
 
     String SALES_EVENT_INTERPRETATION = "SALES_EVENT_INTERPRETATION";
 
+    String SALES_SUMMARY_INTERPRETATION = "SALES_SUMMARY_INTERPRETATION";
+
     String SPACE = "\u0020";
+
+    String TOTAL_INFLOW = "TOTAL_INFLOW";
+
+    String TOTAL_OUTFLOW = "TOTAL_OUTFLOW";
+
+    String TOTAL_PROFIT = "TOTAL_PROFIT";
+
+    String TOTAL_LOSS = "TOTAL_LOSS";
+
+    String TOTAL_COST = "TOTAL_COST";
+
+    String TOTAL_SALES = "TOTAL_SALES";
+
+    String PROFIT_LOSS_CHART_TITLE = "PROFIT_LOSS_CHART_TITLE";
+
+    String SALES_COST_CHART_TITLE = "SALES_COST_CHART_TITLE";
 }

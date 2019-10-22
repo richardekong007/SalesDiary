@@ -20,6 +20,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+
 import butterknife.BindView;
 
 import static com.daveace.salesdiary.interfaces.Constant.CUSTOMERS;
@@ -75,6 +76,12 @@ public class ReportPickerFragment extends BaseFragment {
         return getString(R.string.select_report_title);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        clearImageStrings();
+    }
+
     private void initUI() {
 
         dailyReportCardView.setOnClickListener(view ->
@@ -98,7 +105,7 @@ public class ReportPickerFragment extends BaseFragment {
                 .readDocsFromSubCollection(USERS, getUserId(), subCollection);
         reference.get()
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
+                    if (task.isSuccessful() && task.getResult() != null) {
                         for (QueryDocumentSnapshot doc : task.getResult()) {
                             if (doc.exists()) {
                                 docs.add(doc.toObject(entityClass));

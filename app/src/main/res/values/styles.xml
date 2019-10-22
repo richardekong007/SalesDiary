@@ -19,7 +19,12 @@
     <style name="CustomAppThemeHeader">
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+    <style name="CustomAppThemeHeader.small" parent="CustomAppThemeHeader">
+        <item name="android:textSize">@dimen/text_size_small</item>
     </style>
 
     <style name="CustomAppThemeText">
@@ -58,6 +63,12 @@
 
     <style name="CustomAppThemeButton.small" parent="CustomAppThemeButton">
         <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="cardTheme" parent="Base.CardView">
+        <item name="cardCornerRadius">@dimen/dimen_small</item>
+        <item name="cardElevation">@dimen/elevation_lower</item>
+        <item name="android:padding">@dimen/dimen_tiny</item>
     </style>
 
     <style name="AnimatedDialog">

@@ -2,11 +2,10 @@ package com.daveace.salesdiary.util;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.widget.FrameLayout;
 
 import com.daveace.salesdiary.Adapter.SalesSummaryTableDataAdapter;
 import com.daveace.salesdiary.R;
-import com.daveace.salesdiary.model.SalesFigureTableData;
+import com.daveace.salesdiary.model.SalesSummaryFigureDatum;
 
 import java.util.ArrayList;
 
@@ -15,25 +14,20 @@ import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 
 public class TableUtil {
 
-    public static void prepare(Context ctx, TableView<SalesFigureTableData> tableView,
-                               String[] header, ArrayList<SalesFigureTableData> data) {
+    public static void prepare(Context ctx, TableView<SalesSummaryFigureDatum> tableView,
+                               String[] header, ArrayList<SalesSummaryFigureDatum> data) {
 
         setHeader(ctx, tableView, header);
         setData(ctx, tableView, data);
         setColumnCount(tableView, header.length);
         styleTable(ctx, tableView);
-        tableView.setLayoutParams(new FrameLayout
-                .LayoutParams(FrameLayout
-                .LayoutParams.MATCH_PARENT,
-                100 * (data.size() + 1)));
 
     }
 
-    private static void styleTable(Context ctx, TableView<SalesFigureTableData> tableView) {
+    private static void styleTable(Context ctx, TableView<SalesSummaryFigureDatum> tableView) {
         tableView.setHeaderBackgroundColor(ctx.getResources()
                 .getColor(R.color.colorPrimary, null));
-        tableView.setDataRowBackgroundProvider((rowIndex, rowData)
-                -> new ColorDrawable(ctx.getResources()
+        tableView.setDataRowBackgroundProvider((rowIndex, rowData) -> new ColorDrawable(ctx.getResources()
                 .getColor(R.color.black, null)));
     }
 
@@ -41,7 +35,7 @@ public class TableUtil {
         tableView.setColumnCount(counts);
     }
 
-    private static void setHeader(Context ctx, TableView<SalesFigureTableData> tableView, String... header) {
+    private static void setHeader(Context ctx, TableView<SalesSummaryFigureDatum> tableView, String... header) {
         SimpleTableHeaderAdapter adapter = new SimpleTableHeaderAdapter(ctx, header);
         adapter.setTextColor(ctx.getResources()
                 .getColor(R.color.white, null));
@@ -49,8 +43,8 @@ public class TableUtil {
         tableView.setHeaderAdapter(adapter);
     }
 
-    private static void setData(Context ctx, TableView<SalesFigureTableData> tableView,
-                                ArrayList<SalesFigureTableData> data) {
+    private static void setData(Context ctx, TableView<SalesSummaryFigureDatum> tableView,
+                                ArrayList<SalesSummaryFigureDatum> data) {
         tableView.setDataAdapter(new SalesSummaryTableDataAdapter(ctx, data));
     }
 

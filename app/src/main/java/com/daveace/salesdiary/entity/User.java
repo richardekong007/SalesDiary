@@ -3,11 +3,11 @@ package com.daveace.salesdiary.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.daveace.salesdiary.interfaces.ObjectMapper;
+import com.daveace.salesdiary.interfaces.Mappable;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
-public class User implements ObjectMapper, Parcelable {
+public class User implements Mappable, Parcelable {
 
     private String id;
     private String name;

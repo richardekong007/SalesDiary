@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_tiny"
-            android:background="@drawable/curved_rect"
+            android:background="@drawable/curved_rect_primary_color"
             android:drawableStart="@drawable/ic_account"
             android:drawablePadding="@dimen/dimen_small"
             android:hint="@string/customer_name_hint" />
@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_tiny"
-            android:background="@drawable/curved_rect"
+            android:background="@drawable/curved_rect_primary_color"
             android:drawableStart="@drawable/ic_email_black"
             android:drawablePadding="@dimen/dimen_small"
             android:hint="@string/email"
@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_tiny"
-            android:background="@drawable/curved_rect"
+            android:background="@drawable/curved_rect_primary_color"
             android:drawableStart="@drawable/ic_company_black"
             android:drawablePadding="@dimen/dimen_small"
             android:hint="@string/company" />
@@ -58,20 +58,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_tiny"
-            android:background="@drawable/curved_rect"
+            android:background="@drawable/curved_rect_primary_color"
             android:drawableStart="@drawable/ic_phone_black"
             android:drawablePadding="@dimen/dimen_small"
             android:hint="@string/phone"
             android:inputType="phone" />
 
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_margin="@dimen/dimen_tiny"
             android:background="@drawable/rect"
-            android:elevation="@dimen/elevation_lower"
-            app:cardCornerRadius="@dimen/dimen_small">
+            app:cardElevation="@dimen/elevation_lower"
+            app:cardCornerRadius="@dimen/dimen_small"
+            app:strokeWidth="@dimen/stroke_width"
+            app:strokeColor="@color/colorPrimary">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -82,7 +84,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@color/colorPrimary"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:background="@drawable/curved_rect"
                     android:text="@string/sign_below_instr"
                     android:textAlignment="center"
                     android:textColor="@android:color/white" />
@@ -99,10 +102,11 @@
                 <com.daveace.salesdiary.customview.SignatureDrawer
                     android:id="@+id/signature"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/dimen_small"/>
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/done"

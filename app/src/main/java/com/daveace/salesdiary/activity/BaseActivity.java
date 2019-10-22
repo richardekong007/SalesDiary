@@ -5,14 +5,16 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
-import androidx.appcompat.widget.Toolbar;
-
-import com.daveace.salesdiary.R;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.daveace.salesdiary.R;
+
+import java.util.LinkedHashMap;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -20,6 +22,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private Unbinder unbinder;
     private DrawerLayout drawerLayout;
+    private final LinkedHashMap<String, String> base64ImageStrings = new LinkedHashMap<>();
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,8 +33,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         setDrawerLayout(drawerLayout);
         setSupportActionBar(getToolbar());
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        }
         setStatusBarColor(R.color.colorPrimary);
 
     }
@@ -60,6 +68,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (drawerLayout != null){
             this.drawerLayout = drawerLayout;
         }
+    }
+
+    protected LinkedHashMap<String,String> getBase64ImageStrings(){
+        return base64ImageStrings;
     }
 
     abstract int getLayout();

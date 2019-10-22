@@ -5,15 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.daveace.salesdiary.R;
-import com.daveace.salesdiary.activity.BaseActivity;
-import com.daveace.salesdiary.interfaces.BackIconActionBarMarker;
-import com.daveace.salesdiary.store.FireStoreHelper;
-import com.daveace.salesdiary.util.FragmentUtil;
-import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -22,6 +13,18 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.daveace.salesdiary.R;
+import com.daveace.salesdiary.activity.BaseActivity;
+import com.daveace.salesdiary.activity.MainActivity;
+import com.daveace.salesdiary.interfaces.BackIconActionBarMarker;
+import com.daveace.salesdiary.store.FireStoreHelper;
+import com.daveace.salesdiary.util.FragmentUtil;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.LinkedHashMap;
+import java.util.Objects;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -69,7 +72,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     private View createWithLoadingIndicator(int resId, ViewGroup parent) {
-        swipeRefreshLayout = new SwipeRefreshLayout(getContext());
+        swipeRefreshLayout = new SwipeRefreshLayout(Objects.requireNonNull(getContext()));
         swipeRefreshLayout.setLayoutParams(new ViewGroup.LayoutParams
                 (ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT));
@@ -80,31 +83,27 @@ public abstract class BaseFragment extends Fragment {
         return swipeRefreshLayout;
     }
 
-    protected void setLoading(boolean loading) {
+    public void setLoading(boolean loading) {
         if (loading)
             swipeRefreshLayout.setVisibility(View.VISIBLE);
         swipeRefreshLayout.setRefreshing(loading);
     }
 
-    protected boolean isLoading(boolean loading) {
-        return swipeRefreshLayout.isRefreshing();
-    }
 
     protected void replaceFragment(BaseFragment fragment, boolean addToBackStack, Bundle bundle) {
-        FragmentUtil.replaceFragment(getActivity().getSupportFragmentManager(), fragment, bundle, addToBackStack);
+        FragmentUtil.replaceFragment(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), fragment, bundle, addToBackStack);
     }
 
-    protected void removeFragment(BaseFragment fragment) {
-        FragmentUtil.takeOffBackStack(getActivity().getSupportFragmentManager(), fragment);
-    }
-
-    private void retainInstance() {
-        FragmentUtil.retainFragmentInstance(getActivity().getSupportFragmentManager(), this);
+    void removeFragment(BaseFragment fragment) {
+        FragmentUtil.takeOffBackStack(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), fragment);
     }
 
     private void hideActionBar() {
         try {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+            Objects.requireNonNull(((AppCompatActivity) Objects
+                    .requireNonNull(getActivity()))
+                    .getSupportActionBar())
+                    .hide();
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -113,7 +112,9 @@ public abstract class BaseFragment extends Fragment {
 
     private void showActionBar() {
         try {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+            Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity()))
+                    .getSupportActionBar())
+                    .show();
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -145,24 +146,38 @@ public abstract class BaseFragment extends Fragment {
         if (activity instanceof BaseActivity) {
             ActionBar actionBar = ((BaseActivity) activity).getSupportActionBar();
             if (fragment instanceof BackIconActionBarMarker) {
-                actionBar.setHomeAsUpIndicator(R.drawable.ic_back_white);
+                Objects.requireNonNull(actionBar).setHomeAsUpIndicator(R.drawable.ic_back_white);
             } else {
-                actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+                Objects.requireNonNull(actionBar).setHomeAsUpIndicator(R.drawable.ic_menu);
             }
         }
     }
 
-    protected FirebaseAuth getFirebaseAuth() {
+    FirebaseAuth getFirebaseAuth() {
         return FirebaseAuth.getInstance();
     }
 
-    protected String getUserId() {
-        return getFirebaseAuth()
-                .getCurrentUser().getUid();
+    String getUserId() {
+        return Objects.requireNonNull(getFirebaseAuth()
+                .getCurrentUser()).getUid();
     }
 
-    protected FireStoreHelper getFireStoreHelper() {
+    FireStoreHelper getFireStoreHelper() {
         return fireStoreHelper;
+    }
+
+    LinkedHashMap<String, String> getImageStrings() {
+        LinkedHashMap<String, String> imageStrings = new LinkedHashMap<>();
+        if (getActivity() != null) {
+            imageStrings = ((MainActivity) getActivity()).getImageStrings();
+        }
+        return imageStrings;
+    }
+
+    void clearImageStrings(){
+        if (getActivity() != null){
+            getImageStrings().clear();
+        }
     }
 
     public abstract int getLayout();

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/silver"
+    android:padding="@dimen/dimen_tiny">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_tiny"
+        android:padding="@dimen/dimen_tiny"
+        android:elevation="@dimen/elevation_lower">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/preview_item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sample_text"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/colorPrimary"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="@dimen/dimen_tiny"
+        android:padding="@dimen/dimen_tiny"
+        android:elevation="@dimen/elevation_lower">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/preview_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/dimen_tiny"
+        android:background="@color/white"
+        android:elevation="@dimen/elevation_lower">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:src="@drawable/ic_back_white"
+            app:fabSize="mini"
+            android:elevation="@dimen/elevation_lower"
+            />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/page_chip"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/dimen_tiny"
+            android:textAlignment="center"
+            app:chipBackgroundColor="@color/colorPrimary"
+            android:elevation="@dimen/elevation_lower"
+            android:textColor="@color/white"
+            android:text="@string/sample_text"
+            />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/forward_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            app:fabSize="mini"
+            android:src="@drawable/ic_forward"
+            android:elevation="@dimen/elevation_lower"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

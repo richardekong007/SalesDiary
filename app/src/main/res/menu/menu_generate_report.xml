@@ -6,4 +6,5 @@
         android:icon="@drawable/ic_print_icon_white"
         android:title="@string/print_icon"
         app:showAsAction="always" />
+
 </menu>

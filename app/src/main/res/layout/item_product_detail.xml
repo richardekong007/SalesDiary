@@ -1,56 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/catalog_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/dimen_small"
+    android:layout_marginBottom="1dp"
     android:elevation="@dimen/elevation_lower"
-    app:cardCornerRadius="@dimen/dimen_small">
-
-    <LinearLayout
-        android:id="@+id/itemLayout"
+    app:cardBackgroundColor="@color/colorPrimaryHue"
+    app:cardCornerRadius="@dimen/dimen_tiny"
+    app:strokeWidth="@dimen/stroke_width"
+    app:strokeColor="@color/colorPrimary"
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="@dimen/dimen_small">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/productImageElement"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="@string/product_image" />
+        <LinearLayout
+            android:id="@+id/itemLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/dimen_small"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/productImageElement"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/product_image" />
+
+            <TextView
+                android:id="@+id/productElement"
+                style="@style/CustomAppThemeText"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/dimen_small"
+                android:text="@string/product_name" />
+
+            <TextView
+                android:id="@+id/priceElement"
+                style="@style/CustomAppThemeText"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/dimen_small"
+                android:text="@string/salesPrice" />
+
+            <TextView
+                android:id="@+id/stockElement"
+                style="@style/CustomAppThemeText"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/dimen_small"
+                android:text="@string/stock_text" />
+        </LinearLayout>
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintTop_toBottomOf="@+id/itemLayout"/>
 
         <TextView
-            android:id="@+id/productElement"
-            style="@style/CustomAppThemeText"
-            android:layout_width="100dp"
+            android:id="@+id/status_text"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/dimen_small"
-            android:text="@string/product_name" />
+            android:visibility="gone"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@+id/divider"/>
 
-        <TextView
-            android:id="@+id/priceElement"
-            style="@style/CustomAppThemeText"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/dimen_small"
-            android:text="@string/salesPrice" />
-
-        <TextView
-            android:id="@+id/stockElement"
-            style="@style/CustomAppThemeText"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/dimen_small"
-            android:text="@string/stock_text" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </LinearLayout>
-
-
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

@@ -3,7 +3,7 @@ package com.daveace.salesdiary.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.daveace.salesdiary.interfaces.ObjectMapper;
+import com.daveace.salesdiary.interfaces.Mappable;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.firestore.ServerTimestamp;
 
@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @IgnoreExtraProperties
-public class Product implements ObjectMapper, Parcelable {
+public class Product implements Mappable, Parcelable {
 
     private String id;
     private String name;
@@ -70,7 +70,7 @@ public class Product implements ObjectMapper, Parcelable {
         this.code = code;
         this.imagePath = imagePath;
         this.date = date;
-        this.setAvailable(true);
+        this.available = (this.stock > 1.0);
         setId(UUID.randomUUID().toString());
     }
 
@@ -149,8 +149,8 @@ public class Product implements ObjectMapper, Parcelable {
         this.date = date;
     }
 
-    public void setAvailable(boolean available){
-        this.available = available;
+    public void setAvailability(){
+        this.available = (this.stock >= 1.0);
     }
 
     public boolean isAvailable(){

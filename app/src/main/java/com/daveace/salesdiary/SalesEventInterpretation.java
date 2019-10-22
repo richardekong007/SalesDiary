@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.entity.SalesEvent;
-import com.daveace.salesdiary.interfaces.Constant;
 
 import static com.daveace.salesdiary.interfaces.Constant.SPACE;
 

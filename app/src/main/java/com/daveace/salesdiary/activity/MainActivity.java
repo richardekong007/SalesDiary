@@ -3,8 +3,15 @@ package com.daveace.salesdiary.activity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.daveace.salesdiary.R;
 import com.daveace.salesdiary.fragment.AboutFragment;
+import com.daveace.salesdiary.fragment.BaseFragment;
 import com.daveace.salesdiary.fragment.HelpFragment;
 import com.daveace.salesdiary.fragment.InventoryFragment;
 import com.daveace.salesdiary.fragment.LoginFragment;
@@ -17,12 +24,8 @@ import com.daveace.salesdiary.util.FragmentUtil;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
+import java.util.LinkedHashMap;
+
 import butterknife.BindView;
 
 public class MainActivity extends BaseActivity {
@@ -36,7 +39,6 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.nav_view)
     NavigationView navigationView;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,8 @@ public class MainActivity extends BaseActivity {
         setNavigationItemSelectedListener();
         init();
     }
+
+
 
     @Override
     int getLayout() {
@@ -64,7 +68,7 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Fragment currentFragment = getSupportFragmentManager()
+                BaseFragment currentFragment = (BaseFragment) getSupportFragmentManager()
                                 .findFragmentById(R.id.content_layout);
                 if (currentFragment instanceof BackIconActionBarMarker) {
                     getSupportFragmentManager().popBackStackImmediate();
@@ -113,6 +117,10 @@ public class MainActivity extends BaseActivity {
             }
             return true;
         });
+    }
+
+    public LinkedHashMap<String,String> getImageStrings(){
+        return getBase64ImageStrings();
     }
 
     private void init() {

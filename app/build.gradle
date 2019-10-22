@@ -29,7 +29,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'com.google.android.material:material:1.1.0-alpha05'
+    implementation 'com.google.android.material:material:1.1.0-alpha09'//05
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha4'
     implementation 'com.google.firebase:firebase-core:16.0.8'
@@ -47,8 +47,11 @@ dependencies {
     implementation 'com.alespero:expandable-cardview:0.8'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
     implementation 'de.codecrafters.tableview:tableview:2.8.0'
+    implementation 'com.github.livefront:bridge:v1.2.0'
+    implementation 'frankiesardo:icepick:3.2.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
 
 }
 apply plugin: 'com.google.gms.google-services'

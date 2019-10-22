@@ -37,6 +37,7 @@
                     android:backgroundTint="@color/colorPrimary"
                     android:contentDescription="@string/camera_button"
                     android:elevation="@dimen/elevation_lower"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_photo_camera" />
 
@@ -56,11 +57,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen_extra_large"
                     android:layout_marginTop="@dimen/dimen_medium"
                     android:text="@string/product_update_instr"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_size_medium"
                     android:gravity="center"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/capture" />
