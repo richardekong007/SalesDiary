@@ -4,15 +4,13 @@ package com.daveace.salesdiary.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.daveace.salesdiary.interfaces.ObjectMapper;
-import com.google.android.gms.maps.model.LatLng;
+import com.daveace.salesdiary.interfaces.Mappable;
 import com.google.firebase.database.IgnoreExtraProperties;
-import com.google.firebase.firestore.GeoPoint;
 
 import java.util.UUID;
 
 @IgnoreExtraProperties
-public class Customer implements ObjectMapper, Parcelable {
+public class Customer implements Mappable, Parcelable {
 
     private String id;
     private String name;

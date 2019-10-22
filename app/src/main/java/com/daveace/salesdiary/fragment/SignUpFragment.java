@@ -18,6 +18,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import java.util.Objects;
+
 import butterknife.BindView;
 
 import static com.daveace.salesdiary.interfaces.Constant.USERS;
@@ -48,7 +51,7 @@ public class SignUpFragment extends BaseFragment {
 
 
     @Override
-    public void onAttach(Context ctx) {
+    public void onAttach(@NonNull Context ctx) {
         super.onAttach(ctx);
     }
 
@@ -124,21 +127,23 @@ public class SignUpFragment extends BaseFragment {
                 .Builder()
                 .setDisplayName(user.getName())
                 .build();
-        firebaseUser.updateProfile(profile)
-                .addOnCompleteListener(getActivity(), task -> {
-                    final String TAG = "Update User Profile:";
-                    if (task.isSuccessful())
-                        Log.d(TAG, "User display name updated.");
-                    else
-                        Log.e(TAG, task.getException().getMessage());
-                });
+        if (firebaseUser != null) {
+            firebaseUser.updateProfile(profile)
+                    .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
+                        final String TAG = "Update User Profile:";
+                        if (task.isSuccessful())
+                            Log.d(TAG, "User display name updated.");
+                        else
+                            Log.e(TAG, Objects.requireNonNull(task.getException()).getMessage());
+                    });
+        }
     }
 
     private User createUser() {
         return new User(
-                userName.getText().toString(),
-                email.getText().toString(),
-                password.getText().toString()
+                Objects.requireNonNull(userName.getText()).toString(),
+                Objects.requireNonNull(email.getText()).toString(),
+                Objects.requireNonNull(password.getText()).toString()
         );
     }
 

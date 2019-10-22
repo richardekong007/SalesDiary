@@ -7,27 +7,27 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.daveace.salesdiary.R;
-import com.daveace.salesdiary.model.SalesFigureTableData;
+import com.daveace.salesdiary.model.SalesSummaryFigureDatum;
 
 import java.util.ArrayList;
 
 import de.codecrafters.tableview.TableDataAdapter;
 
-public class SalesSummaryTableDataAdapter extends TableDataAdapter<SalesFigureTableData> {
+public class SalesSummaryTableDataAdapter extends TableDataAdapter<SalesSummaryFigureDatum> {
 
     private final int TEXT_SIZE = 10;
+    private OnRowClickListener onRowClickListener;
 
-    public SalesSummaryTableDataAdapter(Context ctx, ArrayList<SalesFigureTableData> data) {
+    public SalesSummaryTableDataAdapter(Context ctx, ArrayList<SalesSummaryFigureDatum> data) {
         super(ctx, data);
     }
 
 
     @Override
     public View getCellView(int rowIndex, int columnIndex, ViewGroup parentView) {
-        SalesFigureTableData tableData = getRowData(rowIndex);
+        SalesSummaryFigureDatum tableData = getRowData(rowIndex);
         View renderedView = null;
         switch (columnIndex) {
             case 0:
@@ -45,25 +45,32 @@ public class SalesSummaryTableDataAdapter extends TableDataAdapter<SalesFigureTa
             case 4:
                 renderedView = renderString(String.valueOf(tableData.getCostPrice()));
         }
-        interceptRowTouch(parentView);
+        interceptRowTouch(parentView, tableData);
+
         return renderedView;
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void interceptRowTouch(ViewGroup parentView) {
+    private void interceptRowTouch(ViewGroup parentView, SalesSummaryFigureDatum tableData) {
         parentView.setOnTouchListener((view, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     view.setBackground(new ColorDrawable(getContext()
                             .getResources().getColor(R.color.blue, null)));
+                    interceptRowClick(parentView, tableData);
                     break;
                 case MotionEvent.ACTION_UP:
                     view.setBackground(new ColorDrawable(getContext()
                             .getResources().getColor(R.color.black, null)));
                     break;
-
             }
-            return true;
+            return false;
+        });
+    }
+
+    private void interceptRowClick(ViewGroup parentView, SalesSummaryFigureDatum datum) {
+        parentView.setOnClickListener(view -> {
+            if (onRowClickListener != null) onRowClickListener.rowClick(datum);
         });
     }
 
@@ -92,4 +99,14 @@ public class SalesSummaryTableDataAdapter extends TableDataAdapter<SalesFigureTa
         textView.setText(String.valueOf(value));
         return textView;
     }
+
+    public void setOnRowClickListener(OnRowClickListener listener) {
+        if (listener != null)
+            this.onRowClickListener = listener;
+    }
+
+    public interface OnRowClickListener {
+        void rowClick(SalesSummaryFigureDatum datum);
+    }
+
 }

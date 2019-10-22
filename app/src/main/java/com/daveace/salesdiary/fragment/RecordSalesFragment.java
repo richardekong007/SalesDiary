@@ -33,6 +33,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
 import butterknife.BindView;
 
 import static com.daveace.salesdiary.interfaces.Constant.PRODUCTS;
@@ -48,12 +49,12 @@ public class RecordSalesFragment extends BaseFragment
     ConstraintLayout rootView;
     @BindView(R.id.quantityLeft)
     TextView quantityLeftTextView;
-    @BindView(R.id.quantitySold)
-    TextView quantitySoldTextView;
+    @BindView(R.id.amountSold)
+    TextView amountSoldTextView;
     @BindView(R.id.cost)
     TextView costTextView;
     @BindView(R.id.product)
-    TextInputEditText productInputText;
+    TextView productInputText;
     @BindView(R.id.productCode)
     TextInputEditText productCodeInputText;
     @BindView(R.id.quantity)
@@ -104,8 +105,10 @@ public class RecordSalesFragment extends BaseFragment
     }
 
     private void initiateLocationService() {
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        LocationUtil.requestLocationUpdate(getActivity(), locationManager);
+        if (getActivity() != null) {
+            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            LocationUtil.requestLocationUpdate(getActivity(), locationManager);
+        }
     }
 
     private void recordSalesEvent() {
@@ -164,7 +167,7 @@ public class RecordSalesFragment extends BaseFragment
                     transaction.set(productRef, selectedProduct);
                     transaction.set(salesEventRef, salesEvent);
                     if (selectedProduct.getStock() < 1.0) {
-                        selectedProduct.setAvailable(false);
+                        selectedProduct.setAvailability();
                         transaction.set(productRef, selectedProduct);
                         InformationAlert.Builder().setContext(getActivity())
                                 .setRootView(rootView)
@@ -180,8 +183,15 @@ public class RecordSalesFragment extends BaseFragment
                                     .setMessage(getString(R.string.record_success))
                                     .build()
                                     .show();
-                            clear(productInputText, productCodeInputText,
-                                    quantityInputText, priceInputText);
+                            clear(
+                                    productInputText,
+                                    productCodeInputText,
+                                    quantityInputText,
+                                    priceInputText,
+                                    amountSoldTextView,
+                                    costTextView,
+                                    quantityLeftTextView
+                            );
                         }
                 )
                 .addOnFailureListener(e ->
@@ -207,7 +217,7 @@ public class RecordSalesFragment extends BaseFragment
             quantityLeftTextView.setText(String.valueOf(selectedProduct.getStock()));
             costTextView.setText(String.valueOf(selectedProduct.getCost()));
             productCodeInputText.setText(products.get(selectedProductIndex).getCode());
-            displayFigures(getTotalSales(recordedQuantitySold, recordedPrice), quantitySoldTextView);
+            displayFigures(getTotalSales(recordedQuantitySold, recordedPrice), amountSoldTextView);
             return true;
         });
         quantityInputText.addTextChangedListener(new TextWatcher() {
@@ -221,11 +231,11 @@ public class RecordSalesFragment extends BaseFragment
                 try {
                     recordedQuantitySold = Double.parseDouble(text.toString());
                     double remainingStock = selectedProduct.getStock() - recordedQuantitySold;
-                    displayFigures(getTotalSales(recordedQuantitySold, recordedPrice), quantitySoldTextView);
+                    displayFigures(getTotalSales(recordedQuantitySold, recordedPrice), amountSoldTextView);
                     displayFigures(remainingStock, quantityLeftTextView);
                 } catch (NumberFormatException e) {
                     final String TAG = "Quantity Text changed";
-                    displayFigures(0.0, quantitySoldTextView);
+                    displayFigures(0.0, amountSoldTextView);
                     Log.e(TAG, e.getMessage());
                 }
             }
@@ -243,10 +253,13 @@ public class RecordSalesFragment extends BaseFragment
             public void onTextChanged(CharSequence text, int start, int before, int count) {
                 try {
                     recordedPrice = Double.parseDouble(text.toString());
-                    displayFigures(getTotalSales(recordedQuantitySold, recordedPrice), quantitySoldTextView);
+                    displayFigures(
+                            getTotalSales(recordedQuantitySold, recordedPrice),
+                            amountSoldTextView
+                    );
                 } catch (NumberFormatException e) {
                     final String TAG = "Price text changed";
-                    displayFigures(0.0, quantitySoldTextView);
+                    displayFigures(0.0, amountSoldTextView);
                     Log.e(TAG, e.getMessage());
                 }
             }
@@ -257,8 +270,10 @@ public class RecordSalesFragment extends BaseFragment
         });
 
         customerChip.setOnClickListener(view -> {
-            RecordCustomerDialog dialog = new RecordCustomerDialog();
-            dialog.show(getFragmentManager(), "Customer Record Dialog");
+            RecordCustomerDialog dialog = RecordCustomerDialog.newInstance(
+                    Objects.requireNonNull(getFragmentManager()),
+                    "Customer Record Dialog"
+            );
             dialog.setOnDoneClickListener(this);
         });
 
@@ -268,14 +283,15 @@ public class RecordSalesFragment extends BaseFragment
 
     private void setupProductMenu() {
         userId = getUserId();
-        productMenu = new PopupMenu(getActivity(), productInputText);
+        productMenu = new PopupMenu(Objects.requireNonNull(getActivity())
+                , productInputText);
         products = new ArrayList<>();
         getFireStoreHelper().readDocsFromSubCollection(USERS, userId, PRODUCTS)
                 .get()
                 .addOnCompleteListener(task -> {
                     int index = 0;
                     Product product;
-                    if (task.isSuccessful()) {
+                    if (task.isSuccessful() && task.getResult() != null) {
                         for (QueryDocumentSnapshot doc : task.getResult()) {
                             product = doc.toObject(Product.class);
                             products.add(product);

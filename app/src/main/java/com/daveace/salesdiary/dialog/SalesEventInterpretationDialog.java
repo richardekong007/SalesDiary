@@ -1,47 +1,45 @@
 package com.daveace.salesdiary.dialog;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.daveace.salesdiary.R;
-import com.daveace.salesdiary.entity.SalesEvent;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
+
+import com.daveace.salesdiary.R;
+import com.daveace.salesdiary.SalesSummaryInterpretation;
+import com.daveace.salesdiary.model.SalesSummaryFigureDatum;
+import com.daveace.salesdiary.util.PieChartUtil;
+import com.github.mikephil.charting.charts.PieChart;
+import static com.github.mikephil.charting.components.Legend.*;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+
 import butterknife.BindView;
 
-import static com.daveace.salesdiary.interfaces.Constant.SALES_EVENTS_REPORT;
-import static com.daveace.salesdiary.interfaces.Constant.SALES_EVENT_INTERPRETATION;
+import static com.daveace.salesdiary.interfaces.Constant.SALES_SUMMARY_INTERPRETATION;
 
 public class SalesEventInterpretationDialog extends BaseDialog {
 
+    @BindView(R.id.product_name)
+    TextView productName;
     @BindView(R.id.interpretation)
     TextView interpretationTextView;
     @BindView(R.id.status)
     TextView statusTextView;
 
-
     private static final String OUT_OF_STOCK = "Out of Stock";
     private static final String IN_STOCK = "In Stock";
-    private static final String TAG = "SALES_INTERPRETATION_DIALOG";
 
     private Bundle args;
+    private static final String TAG = "SALES_INTERPRETATION_DIALOG";
 
 
     public static SalesEventInterpretationDialog getInstance(FragmentManager mgr, final Bundle args) {
@@ -65,7 +63,7 @@ public class SalesEventInterpretationDialog extends BaseDialog {
     }
 
     @Override
-    int getLayout() {
+    public int getLayout() {
         return R.layout.dialog_product_interpretation_content;
     }
 
@@ -76,55 +74,35 @@ public class SalesEventInterpretationDialog extends BaseDialog {
 
     private void initUI(View view) {
         if (args == null) return;
-        String interpretation = args.getString(SALES_EVENT_INTERPRETATION);
-        SalesEvent event = args.getParcelable(SALES_EVENTS_REPORT);
-        interpretationTextView.setText(interpretation);
+        SalesSummaryFigureDatum datum = args.getParcelable(SALES_SUMMARY_INTERPRETATION);
         PieChart productAvailabilityChart = view
                 .findViewById(R.id.productAvailabilityChart);
-        setupChart(productAvailabilityChart, Objects.requireNonNull(event));
-        setProductAvailabilityStatus(statusTextView, event.getLeft());
+        productName.setText(Objects.requireNonNull(datum).getProduct());
+        setInterpretation(datum);
+        setupChart(
+                Objects.requireNonNull(getActivity()),
+                productAvailabilityChart,
+                datum
+        );
+        setProductAvailabilityStatus(statusTextView, datum.getLeft());
     }
 
-    private void setupChart(PieChart chart, SalesEvent salesEvent) {
-        double percentageSold = getPercentageValue(salesEvent.getSales(), salesEvent.getLeft());
-        double percentageLeft = getPercentageValue(salesEvent.getLeft(), salesEvent.getSales());
-        List<PieEntry> productAvailabilityEntries = new ArrayList<>();
-        Collections.addAll(productAvailabilityEntries,
-                new PieEntry((float) percentageSold, "Sold"),
-                new PieEntry((float) percentageLeft, "Left"));
-        PieDataSet dataSet = new PieDataSet(productAvailabilityEntries, "Product Availability");
-        dataSet.setValueFormatter(new PercentFormatter());
-        PieData data = new PieData(dataSet);
-        chart.setData(data);
-        designChart(chart, dataSet);
-    }
-
-    private void designChart(PieChart chart, PieDataSet dataSet) {
-        Description desc = new Description();
-        desc.setText("Product Availability");
-        styleDescription(desc);
-        Legend legend = chart.getLegend();
-        styleLegend(legend);
-        paintChart(dataSet);
-        chart.setDescription(desc);
-        chart.setCenterText(desc.getText());
-        chart.setCenterTextColor(getResources().getColor(R.color.colorPrimary, null));
-        chart.invalidate();
-    }
-
-    private void paintChart(PieDataSet dataSet) {
+    private void setupChart(Context ctx,PieChart chart, SalesSummaryFigureDatum datum) {
+        float percentageSold = (float) getPercentageValue(datum.getTotalSales(), datum.getLeft());
+        float percentageLeft = (float)getPercentageValue(datum.getLeft(), datum.getTotalSales());
         int[] colors = new int[]{R.color.blue, R.color.orange};
-        dataSet.setColors(colors, getContext());
-    }
+        String description = ctx.getString(R.string.product_availability);
+        Map<String, Float> figures = new LinkedHashMap<>();
+        figures.put(ctx.getString(R.string.sold_label),percentageSold);
+        figures.put(ctx.getString(R.string.left_label),percentageLeft);
+        PieChartUtil.constructPieChart(chart,description,figures,colors);
+        PieChartUtil.positionLegend(
+                chart,
+                LegendOrientation.VERTICAL,
+                LegendHorizontalAlignment.CENTER,
+                LegendVerticalAlignment.BOTTOM
+        );
 
-    private void styleDescription(Description desc) {
-        desc.setTextColor(getResources().getColor(R.color.colorPrimary, null));
-    }
-
-    private void styleLegend(Legend legend) {
-        legend.setTextColor(getResources().getColor(R.color.colorPrimary, null));
-        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
     }
 
     private double getPercentageValue(double value1, double value2) {
@@ -133,6 +111,16 @@ public class SalesEventInterpretationDialog extends BaseDialog {
 
     private void setProductAvailabilityStatus(TextView textView, double stock) {
         textView.setText(stock < 1.0 ? OUT_OF_STOCK : IN_STOCK);
+    }
+
+    private void setInterpretation(SalesSummaryFigureDatum datum) {
+        String interpretation = new SalesSummaryInterpretation.Builder()
+                .setContext(this.getContext())
+                .setDatum(datum)
+                .build()
+                .interpret()
+                .getInterpretation();
+        interpretationTextView.setText(interpretation);
     }
 
 }

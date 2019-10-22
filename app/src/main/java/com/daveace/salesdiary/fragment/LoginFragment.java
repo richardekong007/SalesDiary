@@ -9,7 +9,6 @@ import com.daveace.salesdiary.R;
 import com.daveace.salesdiary.alert.ErrorAlert;
 import com.daveace.salesdiary.alert.InformationAlert;
 import com.daveace.salesdiary.store.FireStoreHelper;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 import androidx.annotation.NonNull;
@@ -17,6 +16,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import java.util.Objects;
+
 import butterknife.BindView;
 
 import static com.daveace.salesdiary.interfaces.Constant.PRODUCTS;
@@ -46,7 +48,7 @@ public class LoginFragment extends BaseFragment {
     }
 
     @Override
-    public void onAttach(Context ctx) {
+    public void onAttach(@NonNull Context ctx) {
         super.onAttach(ctx);
     }
 
@@ -79,8 +81,8 @@ public class LoginFragment extends BaseFragment {
         }
         setLoading(true);
         logInButton.setEnabled(false);
-        String email = emailInput.getText().toString();
-        String password = passwordInput.getText().toString();
+        String email = Objects.requireNonNull(emailInput.getText()).toString();
+        String password = Objects.requireNonNull(passwordInput.getText()).toString();
         getFirebaseAuth().signInWithEmailAndPassword(email, password)
                 .addOnFailureListener(error -> {
                     setLoading(false);
@@ -115,7 +117,7 @@ public class LoginFragment extends BaseFragment {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        if (task.getResult().getDocuments().isEmpty())
+                        if (Objects.requireNonNull(task.getResult()).getDocuments().isEmpty())
                             replaceFragment(new InventoryFragment(), false, null);
                         else
                             replaceFragment(new ProductCatalogFragment(), false, null);

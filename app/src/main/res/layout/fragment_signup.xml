@@ -10,17 +10,20 @@
         android:id="@+id/headerTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_small"
+        android:layout_marginBottom="@dimen/dimen_tiny"
+        android:padding="@dimen/dimen_small"
         android:elevation="@dimen/elevation_lower"
         android:gravity="center"
         android:text="@string/create_profile"
+        android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         style="@style/CustomAppThemeHeader" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/imageHolder"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_tiny"
         android:elevation="@dimen/elevation_lower"
         app:layout_constraintTop_toBottomOf="@id/headerTitle">
 
@@ -36,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dimen_medium"
+        android:layout_marginTop="@dimen/dimen_small"
         app:layout_constraintTop_toBottomOf="@id/imageHolder"
         app:cardElevation="@dimen/elevation_higher"
         app:contentPadding="@dimen/dimen_medium">

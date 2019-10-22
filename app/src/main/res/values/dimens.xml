@@ -22,4 +22,6 @@
     <dimen name="chart_height">195dp</dimen>
     <dimen name="pie_radius_small">150dp</dimen>
     <dimen name="bar_height">350dp</dimen>
+    <dimen name="stroke_width">1dp</dimen>
+    <dimen name="button_height_medium">30dp</dimen>
 </resources>

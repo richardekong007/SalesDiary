@@ -9,7 +9,7 @@
     <include layout="@layout/component_inflow_outflow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimen_medium"/>
+        android:layout_marginBottom="@dimen/dimen_small"/>
 
     <com.daveace.salesdiary.customview.CustomExpandableCardView
         android:layout_width="match_parent"

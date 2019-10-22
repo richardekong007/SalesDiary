@@ -9,6 +9,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.daveace.salesdiary.Adapter.ProductsAdapter;
 import com.daveace.salesdiary.R;
 import com.daveace.salesdiary.entity.Product;
@@ -20,12 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
 import static com.daveace.salesdiary.interfaces.Constant.PRODUCTS;
@@ -59,10 +60,11 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_catalog_search, menu);
         MenuItem searchItem = menu.findItem(R.id.search);
-        SearchManager manager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchManager manager = (SearchManager) Objects.requireNonNull(getActivity())
+                .getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setSearchableInfo(Objects.requireNonNull(manager).getSearchableInfo(getActivity()
                 .getComponentName()));
@@ -106,8 +108,7 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
     private void initUI() {
         loadProducts();
         addButton.setOnClickListener(view ->
-                replaceFragment(new InventoryFragment(), false, null)
-        );
+            replaceFragment(new InventoryFragment(), false, null));
     }
 
     private void loadProducts() {
@@ -118,12 +119,10 @@ public class ProductCatalogFragment extends BaseFragment implements ProductsAdap
                 .get()
                 .addOnCompleteListener(task -> {
                     List<Product> products = new ArrayList<>();
-                    if (task.isSuccessful()) {
+                    if (task.isSuccessful() && task.getResult() != null) {
                         for (QueryDocumentSnapshot doc : task.getResult()) {
                             Product product = doc.toObject(Product.class);
-                            if (Objects.requireNonNull(product).isAvailable()) {
-                                products.add(product);
-                            }
+                            products.add(product);
                         }
                         setupRecycleView(products);
                         setLoading(false);

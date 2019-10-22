@@ -136,7 +136,7 @@ public class FireStoreHelper {
         fireStore.collection(Collection)
                 .get()
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
+                    if (task.isSuccessful() && task.getResult() != null) {
                         Log.d(TAG, "Documents read successfully");
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             data.add(document.getData());

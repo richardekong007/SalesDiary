@@ -103,7 +103,7 @@ public class InventoryFragment extends BaseFragment {
             MediaUtil.displayImage(getActivity(), imageFilePath, inventoryImage);
         }
         if (resultCode == RESULT_CANCELED) {
-            Glide.with(getActivity()).load(imageBitmap).into(inventoryImage);
+            Glide.with(Objects.requireNonNull(getActivity())).load(imageBitmap).into(inventoryImage);
             InformationAlert.Builder()
                     .setContext(getActivity())
                     .setRootView(rootView)
@@ -118,10 +118,10 @@ public class InventoryFragment extends BaseFragment {
             return;
         }
         setLoading(true);
-        String name = productNameInput.getText().toString().trim();
-        double quantity = Double.parseDouble(quantityInput.getText().toString().trim());
-        double cost = Double.parseDouble(costInput.getText().toString().trim());
-        String code = productCode.getText().toString().trim();
+        String name = Objects.requireNonNull(productNameInput.getText()).toString().trim();
+        double quantity = Double.parseDouble(Objects.requireNonNull(quantityInput.getText()).toString().trim());
+        double cost = Double.parseDouble(Objects.requireNonNull(costInput.getText()).toString().trim());
+        String code = Objects.requireNonNull(productCode.getText()).toString().trim();
         String imgPath = !(TextUtils.isEmpty(imageFilePath)) ? imageFilePath : "";
         Date date = new Date();
         Product product = Product.getInstance(name, quantity, cost, code, imgPath, date);
@@ -144,9 +144,9 @@ public class InventoryFragment extends BaseFragment {
         if (!fieldsAreValid(getActivity(), productNameInput, quantityInput, costInput))
             return;
         Product tempProduct = Product.getInstance(
-                productNameInput.getText().toString(),
-                Double.parseDouble(quantityInput.getText().toString()),
-                Double.parseDouble(costInput.getText().toString())
+                Objects.requireNonNull(productNameInput.getText()).toString(),
+                Double.parseDouble(Objects.requireNonNull(quantityInput.getText()).toString()),
+                Double.parseDouble(Objects.requireNonNull(costInput.getText()).toString())
         );
         bundle.putParcelable(PRODUCT_PARCELABLE, tempProduct);
         replaceFragment(new ScannerFragment(), true, bundle);

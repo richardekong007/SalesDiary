@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimaryHue"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/curved_rect"
+        android:backgroundTint="@color/colorPrimary"
+        android:drawableStart="@drawable/ic_pie_chart_white_24dp"
+        android:elevation="@dimen/elevation_lower"
+        android:padding="@dimen/dimen_tiny"
+        android:text="@string/profitability_status"
+        android:textAlignment="center"
+        android:textColor="@color/white" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/profitability_chart"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_marginBottom="@dimen/dimen_tiny"
+                android:background="@color/colorPrimaryHue"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/status_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/status"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/profitability_chart" />
+
+            <TextView
+                android:id="@+id/status_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_medium"
+                android:background="@color/colorPrimaryHue"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintBaseline_toBaselineOf="@+id/status_chip"
+                app:layout_constraintStart_toEndOf="@+id/status_chip"
+                app:layout_constraintTop_toBottomOf="@id/profitability_chart" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</LinearLayout>

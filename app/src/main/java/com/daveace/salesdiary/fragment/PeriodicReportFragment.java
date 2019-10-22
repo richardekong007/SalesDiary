@@ -18,6 +18,7 @@ import com.daveace.salesdiary.interfaces.BackIconActionBarMarker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -76,17 +77,16 @@ public class PeriodicReportFragment extends BaseFragment
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.cashFlowItem:
-                Bundle args = new Bundle();
-                args.putParcelableArrayList(SALES_EVENTS_REPORTS,
-                        (ArrayList<? extends Parcelable>) salesEvents);
-                args.putParcelableArrayList(EVENT_RELATED_PRODUCTS,
-                        (ArrayList<? extends Parcelable>) relatedProducts);
-                args.putParcelableArrayList(EVENTS_RELATED_CUSTOMERS,
-                        (ArrayList<? extends Parcelable>) relatedCustomers);
-                args.putString(REPORT_TYPE, reportHeader);
-                replaceFragment(new CashFlowFragment(), true, args);
+        if (item.getItemId() == R.id.cashFlowItem) {
+            Bundle args = new Bundle();
+            args.putParcelableArrayList(SALES_EVENTS_REPORTS,
+                    (ArrayList<? extends Parcelable>) salesEvents);
+            args.putParcelableArrayList(EVENT_RELATED_PRODUCTS,
+                    (ArrayList<? extends Parcelable>) relatedProducts);
+            args.putParcelableArrayList(EVENTS_RELATED_CUSTOMERS,
+                    (ArrayList<? extends Parcelable>) relatedCustomers);
+            args.putString(REPORT_TYPE, reportHeader);
+            replaceFragment(new CashFlowFragment(), true, args);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -108,11 +108,16 @@ public class PeriodicReportFragment extends BaseFragment
                     .setRootView(rootView)
                     .setMessage(String.format(getString(R.string.no_report), reportHeader))
                     .setActionCommand("Retry")
-                    .setAction(view -> getFragmentManager().popBackStackImmediate())
+                    .setAction(view -> Objects.requireNonNull(getFragmentManager()).popBackStackImmediate())
                     .build()
                     .show();
             return;
         }
+        setupRecycleView();
+
+    }
+
+    private void setupRecycleView() {
         SalesReportAdapter adapter = new SalesReportAdapter(salesEvents);
         adapter.setRelatedProducts(relatedProducts);
         adapter.setRelatedCustomer(relatedCustomers);
@@ -122,7 +127,6 @@ public class PeriodicReportFragment extends BaseFragment
         periodicReportRecyclerView.setItemAnimator(new DefaultItemAnimator());
         periodicReportRecyclerView.setLayoutManager(linearLayoutManager);
         periodicReportRecyclerView.setAdapter(adapter);
-
     }
 
     private void loadData() {

@@ -11,10 +11,11 @@
         android:id="@+id/headerTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_small"
-        android:gravity="center"
+        android:layout_marginBottom="@dimen/dimen_tiny"
+        android:padding="@dimen/dimen_small"
         android:elevation="@dimen/elevation_lower"
         android:text="@string/access_catalog_header"
+        android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         />
 
@@ -40,7 +41,7 @@
         android:id="@+id/inputSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_medium"
+        android:layout_marginTop="@dimen/dimen_tiny"
         app:layout_constraintTop_toBottomOf="@id/imageHolder"
         app:contentPadding="@dimen/dimen_medium">
 

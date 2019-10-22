@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/products_header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="@string/product"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_medium"
+        android:padding="@dimen/dimen_tiny"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/price"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_medium"
+        android:padding="@dimen/dimen_tiny"
+        android:textAlignment="center"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/stock"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_medium"
+        android:padding="@dimen/dimen_tiny"
+        android:textAlignment="center"/>
+
+</LinearLayout>

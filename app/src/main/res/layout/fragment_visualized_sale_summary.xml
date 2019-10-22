@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/dimen_small">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_small"
+        android:elevation="@dimen/elevation_lower"
+        android:padding="@dimen/dimen_small">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chart_title"
+            style="@style/CustomAppThemeHeader.small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/colorPrimary"/>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/chart_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:padding="@dimen/dimen_medium"
+        android:elevation="@dimen/elevation_lower">
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_tiny"
+        android:elevation="@dimen/elevation_lower">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/summarize"
+            style="@style/CustomAppThemeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button_height_medium"
+            android:layout_margin="@dimen/dimen_medium"
+            android:layout_gravity="end"
+            android:textSize="@dimen/text_size_tiny"
+            android:text="@string/summarize" />
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>

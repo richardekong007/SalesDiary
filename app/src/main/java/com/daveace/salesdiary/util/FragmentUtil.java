@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.daveace.salesdiary.R;
-import com.daveace.salesdiary.fragment.BaseFragment;
 
 public class FragmentUtil {
 
@@ -16,7 +15,6 @@ public class FragmentUtil {
 
         FragmentTransaction fTransaction;
         if (fragmentManagerIsNotNull(fManager)) {
-
             fTransaction = fManager.beginTransaction();
             if (fragmentIsNotNull(fragment) && argumentsAreNotNull(args)) {
                 fragment.setArguments(args);
@@ -33,6 +31,25 @@ public class FragmentUtil {
         }
     }
 
+    public static void replaceFragment(FragmentManager fManager, Fragment fragment, int resId, boolean stackOnBackStack) {
+
+        FragmentTransaction fTransaction;
+        if (fragmentManagerIsNotNull(fManager)) {
+
+            fTransaction = fManager.beginTransaction();
+            fTransaction.replace(resId, fragment, fragment.getClass().getSimpleName());
+            new Handler().post(() -> {
+                if (stackOnBackStack) {
+                    fTransaction.addToBackStack(null);
+                } else {
+                    fManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
+                fTransaction.commitAllowingStateLoss();
+            });
+        }
+    }
+
+
     public static void takeOffBackStack(FragmentManager fManager, Fragment fragment) {
 
         FragmentTransaction fTransaction;
@@ -43,21 +60,6 @@ public class FragmentUtil {
             fTransaction.commit();
             fManager.popBackStack();
         }
-    }
-
-    public static void retainFragmentInstance(FragmentManager fManager, Fragment fragment) {
-        if (fragmentIsNotNull(fragment) && fManager.getFragments().contains(fragment)) {
-            fragment.setRetainInstance(true);
-        }
-    }
-
-
-    public static Fragment getCurrentFragment(FragmentManager fManager) {
-        BaseFragment fragment = (BaseFragment) new Fragment();
-        if (fManager != null) {
-           fragment = (BaseFragment) fManager.findFragmentById(R.id.content_layout);
-        }
-        return fragment;
     }
 
     private static boolean fragmentManagerIsNotNull(FragmentManager fManager) {

@@ -1,39 +1,44 @@
 package com.daveace.salesdiary.fragment;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.daveace.salesdiary.R;
-import com.daveace.salesdiary.entity.SalesEvent;
-import com.daveace.salesdiary.interfaces.BackIconActionBarMarker;
-import com.daveace.salesdiary.util.MediaUtil;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+
+import com.daveace.salesdiary.R;
+import com.daveace.salesdiary.entity.SalesEvent;
+import com.daveace.salesdiary.interfaces.BackIconActionBarMarker;
+import com.daveace.salesdiary.interfaces.Summarizable;
+import com.daveace.salesdiary.util.MediaUtil;
+import com.daveace.salesdiary.util.PieChartUtil;
+import com.github.mikephil.charting.charts.PieChart;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 import butterknife.BindView;
 
+import static com.daveace.salesdiary.interfaces.Constant.EVENT_RELATED_PRODUCTS;
+import static com.daveace.salesdiary.interfaces.Constant.PROFIT_LOSS_CHART_TITLE;
 import static com.daveace.salesdiary.interfaces.Constant.REPORT_TYPE;
+import static com.daveace.salesdiary.interfaces.Constant.SALES_COST_CHART_TITLE;
 import static com.daveace.salesdiary.interfaces.Constant.SALES_EVENTS_REPORTS;
 import static com.daveace.salesdiary.interfaces.Constant.SPACE;
+import static com.daveace.salesdiary.interfaces.Constant.TOTAL_COST;
+import static com.daveace.salesdiary.interfaces.Constant.TOTAL_INFLOW;
+import static com.daveace.salesdiary.interfaces.Constant.TOTAL_LOSS;
+import static com.daveace.salesdiary.interfaces.Constant.TOTAL_OUTFLOW;
+import static com.daveace.salesdiary.interfaces.Constant.TOTAL_PROFIT;
+import static com.daveace.salesdiary.interfaces.Constant.TOTAL_SALES;
 
-public class CashFlowFragment extends BaseFragment implements BackIconActionBarMarker {
+public class CashFlowFragment extends BaseFragment implements BackIconActionBarMarker, Summarizable {
 
     @BindView(R.id.inflowText)
     TextView inflowText;
@@ -50,32 +55,25 @@ public class CashFlowFragment extends BaseFragment implements BackIconActionBarM
     @BindView(R.id.moreButton)
     AppCompatButton moreButton;
 
-    private PieChart saleCostPieChart;
+    private PieChart salesCostPieChart;
     private PieChart profitLossPieChart;
     private Bundle args;
     private String reportHeader;
 
 
-    public static final String TOTAL_INFLOW = "TOTAL_INFLOW";
-    public static final String TOTAL_OUTFLOW = "TOTAL_OUTFLOW";
-    public static final String TOTAL_PROFIT = "TOTAL_PROFIT";
-    public static final String TOTAL_LOSS = "TOTAL_LOSS";
-    public static final String TOTAL_COST = "TOTAL_COST";
-    public static final String TOTAL_SALES = "TOTAL_SALES";
-    public static final String PROFIT_LOSS_CHART = "PROFIT_LOSS_CHART";
-    public static final String SALES_COST_CHART = "SALES_COST_CHART";
-    public static final String PROFIT_LOSS_CHART_TITLE = "PROFIT_LOSS_CHART_TITLE";
-    public static final String SALES_COST_CHART_TITLE = "SALES_COST_CHART_TITLE";
 
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         args = getArguments();
-        profitLossPieChart = view.findViewById(R.id.profit_loss_pie);
-        saleCostPieChart = view.findViewById(R.id.sales_cost_pie);
+        if (view != null) {
+            profitLossPieChart = view.findViewById(R.id.profit_loss_pie);
+            salesCostPieChart = view.findViewById(R.id.sales_cost_pie);
+        }
         initUI();
         return view;
     }
@@ -98,137 +96,100 @@ public class CashFlowFragment extends BaseFragment implements BackIconActionBarM
     }
 
     private void initUI() {
-        if (args == null) {
-            return;
-        }
-        reportHeader = Objects.requireNonNull(args.getString(REPORT_TYPE))
-                .concat(getString(R.string.cash_flow));
+        if (args == null) return;
+        reportHeader = Objects.requireNonNull(args.getString(REPORT_TYPE)).concat(getString(R.string.cash_flow));
         List<SalesEvent> salesEvents = args.getParcelableArrayList(SALES_EVENTS_REPORTS);
-        double totalInflow = getTotalInflow(salesEvents);
-        double totalOutFlow = getTotalOutFlow(salesEvents);
-        float totalProfit = (float) getTotalProfit(Objects.requireNonNull(salesEvents));
-        float totalLoss = (float) getTotalLoss(Objects.requireNonNull(salesEvents));
-        float totalSales = (float) getTotalSalesAmount(salesEvents);
-        float totalCost = (float) getTotalCost(salesEvents);
-        List<PieEntry> profitLossEntries = new ArrayList<>();
-        Collections.addAll(profitLossEntries,
-                new PieEntry(getPercentage(totalProfit, totalLoss), getString(R.string.profitLabel)),
-                new PieEntry(getPercentage(totalLoss, totalProfit), getString(R.string.lossLabel)));
-        List<PieEntry> salesCostEntries = new ArrayList<>();
-        Collections.addAll(salesCostEntries,
-                new PieEntry(getPercentage(totalSales, totalCost), getString(R.string.salesLabel)),
-                new PieEntry(getPercentage(totalCost, totalSales), getString(R.string.costLabel)));
-        constructPieChart(profitLossPieChart, profitLossEntries,
-                getString(R.string.profit_and_loss), R.color.blue, R.color.red);
-        profitLossPieChart.setCenterText(getString(R.string.profit_and_loss));
-        constructPieChart(saleCostPieChart, salesCostEntries,
-                getString(R.string.sales_and_cost), R.color.green, R.color.orange);
-        saleCostPieChart.setCenterText(getString(R.string.sales_and_cost));
-        inflowText.setText(String.valueOf(totalInflow));
-        outflowText.setText(String.valueOf(totalOutFlow));
-        salesText.setText(String.valueOf(totalSales));
-        costText.setText(String.valueOf(totalCost));
-        profitText.setText(String.valueOf(totalProfit));
-        lossText.setText(String.valueOf(totalLoss));
-
+        setFigures(salesEvents);
+        constructSalesCostPie(salesEvents);
+        constructProfitLossPie(salesEvents);
         moreButton.setOnClickListener(view -> {
-            Bitmap profitLossPie = MediaUtil.createBitmap(
-                    profitLossPieChart,
-                    profitLossPieChart.getWidth(),
-                    profitLossPieChart.getHeight());
-            Bitmap salesCostPie = MediaUtil.createBitmap(
-                    saleCostPieChart,
-                    saleCostPieChart.getWidth(),
-                    saleCostPieChart.getHeight());
-            args.putDouble(TOTAL_INFLOW, totalInflow);
-            args.putDouble(TOTAL_OUTFLOW, totalOutFlow);
-            args.putFloat(TOTAL_COST, totalCost);
-            args.putFloat(TOTAL_LOSS, totalLoss);
-            args.putFloat(TOTAL_PROFIT, totalProfit);
-            args.putFloat(TOTAL_SALES, totalSales);
-            args.putString(PROFIT_LOSS_CHART_TITLE, profitLossPieChart.getDescription().getText());
-            args.putString(SALES_COST_CHART_TITLE, saleCostPieChart.getDescription().getText());
-            args.putParcelable(PROFIT_LOSS_CHART, profitLossPie);
-            args.putParcelable(SALES_COST_CHART, salesCostPie);
-            replaceFragment(new SummaryFragment(), true, args);
+            Bundle bundle = makeBundle(salesEvents);
+            replaceFragment(new VisualizedSaleSummaryFragment(), true, bundle);
         });
 
-
     }
 
-
-    private void constructPieChart(PieChart pieChart, List<PieEntry> entries, String dataSetLabel, int... colors) {
-        PieDataSet pieDataSet = new PieDataSet(entries, dataSetLabel);
-        Description desc = new Description();
-        pieChart.setDescription(desc);
-        desc.setText(dataSetLabel);
-        Legend pieChartLegend = pieChart.getLegend();
-        pieDataSet.setValueFormatter(new PercentFormatter());
-        PieData data = new PieData(pieDataSet);
-        pieChart.setData(data);
-        styleDescription(desc);
-        pieChart.setCenterTextColor(getResources().getColor(R.color.colorPrimary, null));
-        styleLegend(pieChartLegend);
-        if (colors.length > 0) {
-            pieDataSet.setColors(colors, getActivity());
-        }
-        pieChart.invalidate();
+    private void constructProfitLossPie(List<SalesEvent> events) {
+        Map<String, Float> data = new LinkedHashMap<>();
+        int[] colors = new int[]{R.color.bright_blue, R.color.red};
+        Float totalProfit = getPercentageValue((float) getTotalProfit(events),
+                (float) getTotalLoss(events)
+        );
+        Float totalLoss = getPercentageValue((float) getTotalLoss(events),
+                (float) getTotalProfit(events)
+        );
+        data.put(getString(R.string.profitLabel), totalProfit);
+        data.put(getString(R.string.lossLabel), totalLoss);
+        PieChartUtil.constructPieChart(
+                profitLossPieChart,
+                getString(R.string.profit_and_loss),
+                data,
+                colors
+        );
     }
 
-    private void styleDescription(Description desc) {
-        desc.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+    private void constructSalesCostPie(List<SalesEvent> events) {
+        Map<String, Float> data = new LinkedHashMap<>();
+        int[] colors = new int[]{R.color.green, R.color.orange};
+        Float totalSales = getPercentageValue((float) getTotalSalesAmount(events),
+                (float) getTotalCost(events)
+        );
+        Float totalCost = getPercentageValue((float) getTotalCost(events),
+                (float) getTotalSalesAmount(events)
+        );
+        data.put(getString(R.string.salesLabel), totalSales);
+        data.put(getString(R.string.costLabel), totalCost);
+        PieChartUtil.constructPieChart(
+                salesCostPieChart,
+                getString(R.string.sales_and_cost),
+                data,
+                colors
+        );
     }
 
-    private void styleLegend(Legend pieChartLegend) {
-        pieChartLegend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        pieChartLegend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
-        pieChartLegend.setOrientation(Legend.LegendOrientation.VERTICAL);
-        pieChartLegend.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+    private void setFigures(List<SalesEvent> salesEvents) {
+        inflowText.setText(String.valueOf(getTotalInflow(salesEvents)));
+        outflowText.setText(String.valueOf(getTotalOutFlow(salesEvents)));
+        profitText.setText(String.valueOf(getTotalProfit(salesEvents)));
+        lossText.setText(String.valueOf(getTotalLoss(salesEvents)));
+        salesText.setText(String.valueOf(getTotalSalesAmount(salesEvents)));
+        costText.setText(String.valueOf(getTotalCost(salesEvents)));
     }
 
-    private double getTotalProfit(List<SalesEvent> salesEvents) {
-        return salesEvents.stream()
-                .map(events -> events.getSalesPrice() - events.getCostPrice())
-                .filter(profits -> profits > 0)
-                .reduce(0.0, (initProfit, nextProfit) -> initProfit + nextProfit);
+    private Bundle makeBundle(List<SalesEvent> salesEvents) {
+        Bundle bundle = new Bundle();
+        byte[] salesCostPieBytes = getSalesCostPieBytes();
+        bundle.putParcelableArrayList(SALES_EVENTS_REPORTS,
+                args.getParcelableArrayList(SALES_EVENTS_REPORTS));
+        bundle.putParcelableArrayList(EVENT_RELATED_PRODUCTS,
+                args.getParcelableArrayList(EVENT_RELATED_PRODUCTS));
+        bundle.putString(REPORT_TYPE, args.getString(REPORT_TYPE));
+        bundle.putDouble(TOTAL_INFLOW, getTotalInflow(salesEvents));
+        bundle.putDouble(TOTAL_OUTFLOW, getTotalOutFlow(salesEvents));
+        bundle.putFloat(TOTAL_COST, (float) getTotalCost(salesEvents));
+        bundle.putFloat(TOTAL_LOSS, (float) getTotalLoss(salesEvents));
+        bundle.putFloat(TOTAL_PROFIT, (float) getTotalProfit(salesEvents));
+        bundle.putFloat(TOTAL_SALES, (float) getTotalSalesAmount(salesEvents));
+        bundle.putString(PROFIT_LOSS_CHART_TITLE,
+                profitLossPieChart.getDescription().getText());
+        bundle.putString(SALES_COST_CHART_TITLE,
+                salesCostPieChart.getDescription().getText());
+        getImageStrings().put(salesCostPieChart.getDescription().getText(),
+                MediaUtil.encodeBytes(salesCostPieBytes)
+        );
+        return bundle;
     }
 
-    private double getTotalLoss(List<SalesEvent> salesEvents) {
-        double totalLoss = salesEvents.stream()
-                .map(event -> event.getSalesPrice() - event.getCostPrice())
-                .filter(amount -> amount < 0)
-                .reduce(0.0, (initAmount, nextAmount) -> initAmount + nextAmount);
-        return (totalLoss < 0) ? -(totalLoss) : totalLoss;
-    }
-
-    private double getTotalCost(List<SalesEvent> salesEvents) {
-        return salesEvents.stream()
-                .map(SalesEvent::getCostPrice)
-                .reduce(0.0, (initCost, nextCost) -> initCost + nextCost);
-    }
-
-    private double getTotalSalesAmount(List<SalesEvent> salesEvents) {
-        return salesEvents.stream()
-                .map(SalesEvent::getSalesPrice)
-                .reduce(0.0, (initPrice, nextPrice) -> initPrice + nextPrice);
-    }
-
-    private double getTotalOutFlow(List<SalesEvent> salesEvents) {
-        return getTotalCost(salesEvents) + getTotalLoss(salesEvents);
-    }
-
-    private double getTotalInflow(List<SalesEvent> salesEvents) {
-        return getTotalSalesAmount(salesEvents) - getTotalLoss(salesEvents);
-    }
-
-    private float getPercentage(double amount, double quotient) {
-        float percentage = 0f;
-        try {
-            percentage = (float) (amount / (amount + quotient) * 100);
-        } catch (ArithmeticException e) {
-            e.printStackTrace();
-        }
-        return percentage;
+    private byte[] getSalesCostPieBytes() {
+        int width = salesCostPieChart.getWidth();
+        int height = salesCostPieChart.getHeight();
+        return MediaUtil.toByteArray(
+                MediaUtil.createBitmap(
+                        salesCostPieChart,
+                        width,
+                        height
+                )
+        );
     }
 
 }

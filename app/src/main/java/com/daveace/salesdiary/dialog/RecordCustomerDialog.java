@@ -18,6 +18,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.fragment.app.FragmentManager;
+
+import java.util.Objects;
+
 import butterknife.BindView;
 
 import static com.daveace.salesdiary.interfaces.Constant.CUSTOMERS;
@@ -45,6 +49,12 @@ public class RecordCustomerDialog extends BaseDialog {
     AppCompatButton doneButton;
     private FirebaseAuth fbAuth;
     private OnDoneClickListener onDoneClickListener;
+
+    public static RecordCustomerDialog newInstance(@NonNull FragmentManager fm, String tag) {
+        RecordCustomerDialog dialog = new RecordCustomerDialog();
+        dialog.show(fm, tag);
+        return dialog;
+    }
 
     @Nullable
     @Override
@@ -81,22 +91,15 @@ public class RecordCustomerDialog extends BaseDialog {
             return;
 
         Customer customer = Customer.getInstance(
-                customerNameInput.getText().toString(),
-                emailInput.getText().toString(),
-                phoneInput.getText().toString(),
-                companyEditText.getText().toString()
+                Objects.requireNonNull(customerNameInput.getText()).toString(),
+                Objects.requireNonNull(emailInput.getText()).toString(),
+                Objects.requireNonNull(phoneInput.getText()).toString(),
+                Objects.requireNonNull(companyEditText.getText()).toString()
         );
 
         String signaturePath = signatureDrawer.save();
         customer.setSignaturePath(signaturePath);
-        String userId = fbAuth.getCurrentUser().getUid();
-        /*SubCollectionPath metaData = new SubCollectionPath(
-                USERS,
-                userId,
-                CUSTOMERS,
-                customer.getId(),
-                customer);*/
-
+        String userId = Objects.requireNonNull(fbAuth.getCurrentUser()).getUid();
         SubCollectionPath metaData = new SubCollectionPath
                 .Builder()
                 .setCollection(USERS)

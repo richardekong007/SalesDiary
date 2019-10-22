@@ -10,6 +10,11 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+
 import com.daveace.salesdiary.R;
 import com.daveace.salesdiary.alert.InformationAlert;
 import com.google.android.gms.vision.CameraSource;
@@ -17,14 +22,10 @@ import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
+import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
 import butterknife.BindView;
 
 public class ScannerFragment extends BaseFragment {
@@ -99,7 +100,7 @@ public class ScannerFragment extends BaseFragment {
         BarcodeDetector detector = new BarcodeDetector.Builder(getActivity())
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
                 .build();
-        cam = new CameraSource.Builder(getActivity(), detector)
+        cam = new CameraSource.Builder(Objects.requireNonNull(getActivity()), detector)
                 .setRequestedPreviewSize(1920, 1080)
                 .setAutoFocusEnabled(true)
                 .build();
@@ -107,7 +108,7 @@ public class ScannerFragment extends BaseFragment {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 try {
-                    if (ActivityCompat.checkSelfPermission(getActivity(), CAM_PERMISSION)
+                    if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), CAM_PERMISSION)
                             == (PackageManager.PERMISSION_GRANTED))
                         cam.start(surfaceView.getHolder());
                     else

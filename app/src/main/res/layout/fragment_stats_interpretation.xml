@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:padding="@dimen/dimen_small"
     >
 
@@ -14,7 +16,8 @@
         android:backgroundTint="@color/colorPrimary"
         android:text="@string/sales_statistics_and_availability_status"
         android:textAlignment="center"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/salesBars"

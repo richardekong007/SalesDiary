@@ -15,6 +15,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -22,12 +23,15 @@ import com.bumptech.glide.Glide;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.R;
 
-public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductAdapterViewHolder> implements Filterable {
+import static android.view.View.VISIBLE;
+
+public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductItemViewHolder>
+        implements Filterable {
 
     private List<Product> products;
     private List<Product> filteredProducts;
-
     private OnProductClickListener productLongClickListener;
+
 
     public ProductsAdapter(List<Product> products) {
         this.products = products;
@@ -36,26 +40,34 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
     @NonNull
     @Override
-    public ProductAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+    public ProductItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View contentView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_product_detail, parent, false);
         ButterKnife.bind(this, contentView);
-        return new ProductAdapterViewHolder(contentView);
+        return new ProductItemViewHolder(contentView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductAdapterViewHolder holder, int position) {
-        Context ctx = holder.itemView.getContext();
+    public void onBindViewHolder(@NonNull ProductsAdapter.ProductItemViewHolder holder, int position) {
         Product product = filteredProducts.get(position);
+        Context ctx = holder.itemView.getContext();
         holder.productName.setText(product.getName());
         holder.priceElement.setText(String.valueOf(product.getCost()));
         holder.stockElement.setText(String.valueOf(product.getStock()));
         Glide.with(ctx).load(ctx.getResources().getDrawable(R.mipmap.stock, null))
                 .into(holder.productImageElement);
+        if (!product.isAvailable()) {
+            holder.statusTextView.setVisibility(VISIBLE);
+            holder.statusTextView.setText(
+                    ctx.getString(R.string.out_of_stock_hint)
+            );
+            holder.statusTextView.setTextColor(
+                    ctx.getColor(R.color.red)
+            );
+        }
         holder.itemLayout.setOnClickListener(view ->
-                productLongClickListener.onProductClick(product, holder.itemLayout));
-
+                productLongClickListener.onProductClick(product, holder.itemLayout)
+        );
     }
 
     @Override
@@ -101,7 +113,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         this.productLongClickListener = listener;
     }
 
-    class ProductAdapterViewHolder extends RecyclerView.ViewHolder {
+    class ProductItemViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.itemLayout)
         LinearLayout itemLayout;
         @BindView(R.id.productImageElement)
@@ -112,8 +124,10 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         TextView priceElement;
         @BindView(R.id.stockElement)
         TextView stockElement;
+        @BindView(R.id.status_text)
+        TextView statusTextView;
 
-        ProductAdapterViewHolder(@NonNull View itemView) {
+        ProductItemViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

@@ -114,11 +114,9 @@ public class SalesEventDetailsFragment extends BaseFragment implements OnMapRead
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.salesStatItem:
-                Bundle bundle = getArguments();
-                replaceFragment(new StatsInterpretationFragment(), true, bundle);
-                break;
+        if (item.getItemId() == R.id.salesStatItem) {
+            Bundle bundle = getArguments();
+            replaceFragment(new ProductStatisticsFragment(), true, bundle);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -161,7 +159,8 @@ public class SalesEventDetailsFragment extends BaseFragment implements OnMapRead
     public void onMapReady(GoogleMap googleMap) {
         LatLng coordinate;
 
-        SalesEvent salesEvent = getArguments().getParcelable(SALES_EVENTS_REPORT);
+        SalesEvent salesEvent = Objects.requireNonNull(getArguments())
+                .getParcelable(SALES_EVENTS_REPORT);
         Double lat = Objects.requireNonNull(salesEvent).getLatitude();
         Double lng = salesEvent.getLongitude();
         coordinate = new LatLng(lat, lng);
@@ -186,7 +185,7 @@ public class SalesEventDetailsFragment extends BaseFragment implements OnMapRead
         try {
             Bundle bundle = getArguments();
             SalesEvent salesEventsDetail =
-                    bundle.getParcelable(SALES_EVENTS_REPORT);
+                    Objects.requireNonNull(bundle).getParcelable(SALES_EVENTS_REPORT);
             Customer relatedCustomer =
                     bundle.getParcelable(EVENTS_RELATED_CUSTOMER);
             Product relatedProduct =
@@ -214,7 +213,7 @@ public class SalesEventDetailsFragment extends BaseFragment implements OnMapRead
             customerPhoneTextView.setText(Objects.requireNonNull(relatedCustomer)
                     .getPhone());
 
-            Glide.with(getActivity()).load(getActivity()
+            Glide.with(Objects.requireNonNull(getActivity())).load(getActivity()
                     .getResources().getDrawable(R.mipmap.stock, null))
                     .into(productImageView);
             Glide.with(getActivity()).load(getActivity()
@@ -242,9 +241,8 @@ public class SalesEventDetailsFragment extends BaseFragment implements OnMapRead
                     .getResources().getDrawable(R.drawable.ic_phone_black, null))
                     .into(customerPhoneImageView);
 
-            productStats.setOnClickListener(view ->{
-                replaceFragment(new StatsInterpretationFragment(), true, bundle);
-            });
+            productStats.setOnClickListener(view ->
+                replaceFragment(new ProductStatisticsFragment(), true, bundle));
 
         } catch (NullPointerException e) {
             e.printStackTrace();

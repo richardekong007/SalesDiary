@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -22,11 +23,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 import androidx.print.PrintHelper;
 
@@ -37,6 +40,7 @@ public class SignatureDrawer extends View {
     private static final int STROKE_WIDTH = 8;
     private static final Paint.Style PAINT_STYLE = Paint.Style.STROKE;
     private static final Paint.Cap STROKE_CAP = Paint.Cap.ROUND;
+    private static final String FILE_NAME_PATTERN = "dd-mm-yyyy HH:mm:ss";
     private Bitmap bitmap;
     private Canvas bitmapCanvas;
     private final Paint paintScreen;
@@ -163,7 +167,10 @@ public class SignatureDrawer extends View {
 
     public String save() {
         drawToBitmap();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                FILE_NAME_PATTERN,
+                Locale.getDefault()
+        );
         String imageName = dateFormat.format(new Date());
         File imageFile = new File(
                 Objects.requireNonNull(
@@ -171,15 +178,21 @@ public class SignatureDrawer extends View {
                         .getAbsolutePath()
                         + File.separator
                         + imageName
-                        + Constant.IMAGE_FILE_TYPE);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos);
+                        + Constant.IMAGE_FILE_TYPE
+        );
+        writeBitmapToFile(imageFile);
+        return imageFile.getAbsolutePath();
+    }
+
+    private void writeBitmapToFile(File imageFile) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        BitmapCompressionTask compressionTask = new BitmapCompressionTask(stream);
         try (FileOutputStream fos = new FileOutputStream(imageFile)) {
-            fos.write(baos.toByteArray());
-        } catch (IOException e) {
+            stream = compressionTask.execute(bitmap).get();
+            fos.write(stream.toByteArray());
+        } catch (IOException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        return imageFile.getAbsolutePath();
     }
 
     public void print() {
@@ -196,6 +209,25 @@ public class SignatureDrawer extends View {
 
     public void setOnTouchEndListener(OnTouchEndListener onTouchEndListener) {
         this.onTouchEndListener = onTouchEndListener;
+    }
+
+    private static class BitmapCompressionTask extends AsyncTask<Bitmap, Void, ByteArrayOutputStream> {
+
+        private ByteArrayOutputStream stream;
+
+        public BitmapCompressionTask(ByteArrayOutputStream stream) {
+            this.stream = stream;
+        }
+
+        @Override
+        protected ByteArrayOutputStream doInBackground(Bitmap... bitmaps) {
+            bitmaps[0].compress(
+                    Bitmap.CompressFormat.JPEG,
+                    80,
+                    stream
+            );
+            return stream;
+        }
     }
 
     public interface OnTouchEndListener {

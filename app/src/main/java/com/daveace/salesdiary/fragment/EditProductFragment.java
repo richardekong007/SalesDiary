@@ -14,7 +14,6 @@ import com.daveace.salesdiary.alert.InformationAlert;
 import com.daveace.salesdiary.entity.Product;
 import com.daveace.salesdiary.store.FireStoreHelper;
 import com.daveace.salesdiary.util.MediaUtil;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
@@ -22,6 +21,7 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+
 import butterknife.BindView;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -33,7 +33,6 @@ import static com.daveace.salesdiary.util.StringUtil.fieldsAreValid;
 
 
 public class EditProductFragment extends BaseFragment {
-
 
     @BindView(R.id.rootView)
     ScrollView rootView;
@@ -79,7 +78,7 @@ public class EditProductFragment extends BaseFragment {
             MediaUtil.displayImage(getActivity(), productImagePath, productImageView);
         }
         if (resultCode == RESULT_CANCELED) {
-            Glide.with(getActivity()).load(imageBitmap).into(productImageView);
+            Glide.with(Objects.requireNonNull(getActivity())).load(imageBitmap).into(productImageView);
             InformationAlert.Builder()
                     .setContext(getActivity())
                     .setRootView(rootView)
@@ -91,7 +90,7 @@ public class EditProductFragment extends BaseFragment {
 
     private void initView() {
         imageBitmap = MediaUtil.createBitmap(productImageView);
-        product = getArguments().getParcelable(PRODUCT_BUNDLE);
+        product = Objects.requireNonNull(getArguments()).getParcelable(PRODUCT_BUNDLE);
         if (product != null) {
             productInput.setText(Objects.requireNonNull(product).getName());
             quantityInput.setText(String.valueOf(product.getStock()));
@@ -99,7 +98,7 @@ public class EditProductFragment extends BaseFragment {
             productCode.setText(product.getCode());
             String imagePath = product.getImagePath();
             if (imagePath != null && imagePath.length() > 0) {
-                Glide.with(getActivity())
+                Glide.with(Objects.requireNonNull(getActivity()))
                         .load(imagePath)
                         .into(productImageView);
             }
@@ -116,12 +115,13 @@ public class EditProductFragment extends BaseFragment {
         }
         setLoading(true);
         if (product != null) {
-            product.setName(productInput.getText()
+            product.setName(Objects.requireNonNull(productInput.getText())
                     .toString());
-            product.setStock(Double.parseDouble(quantityInput.getText()
+            product.setStock(Double.parseDouble(Objects.requireNonNull(quantityInput.getText())
                     .toString()));
-            product.setCost(Double.parseDouble(costInput.getText()
+            product.setCost(Double.parseDouble(Objects.requireNonNull(costInput.getText())
                     .toString()));
+            product.setAvailability();
             FireStoreHelper.getInstance()
                     .update(USERS, getUserId(), PRODUCTS, product.getId(), product);
             setLoading(false);
